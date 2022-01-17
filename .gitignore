@@ -19,6 +19,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
+.gitignore
 .application.yml
 *.iws
 *.iml
