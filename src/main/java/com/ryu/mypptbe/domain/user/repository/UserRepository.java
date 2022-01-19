@@ -1,4 +1,4 @@
-package com.ryu.mypptbe.domain.repository;
+package com.ryu.mypptbe.domain.user.repository;
 
 import com.ryu.mypptbe.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

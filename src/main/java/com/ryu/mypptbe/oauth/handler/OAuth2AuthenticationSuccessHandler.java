@@ -1,9 +1,10 @@
 package com.ryu.mypptbe.oauth.handler;
 
 import com.ryu.mypptbe.config.AppProperties;
-import com.ryu.mypptbe.oauth.domain.Role;
+import com.ryu.mypptbe.domain.user.repository.UserRefreshTokenRepository;
+import com.ryu.mypptbe.domain.user.UserRefreshToken;
+import com.ryu.mypptbe.oauth.domain.RoleType;
 import com.ryu.mypptbe.oauth.domain.dto.OAuthAttributes;
-import com.ryu.mypptbe.oauth.domain.dto.ProviderType;
 import com.ryu.mypptbe.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ryu.mypptbe.oauth.token.AuthToken;
 import com.ryu.mypptbe.oauth.token.AuthTokenProvider;
@@ -13,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -39,7 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final AuthTokenProvider tokenProvider;
     private final AppProperties appProperties;
-    //private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
 
@@ -69,19 +69,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         String providerType = authToken.getAuthorizedClientRegistrationId();
 
-        //OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         OidcUser oAuth2User = ((OidcUser) authentication.getPrincipal());
 
         OAuthAttributes userInfo = OAuthAttributes.of(providerType, oAuth2User.getAttributes());
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
-        Role role = hasAuthority(authorities, Role.ADMIN.getKey()) ? Role.ADMIN : Role.USER;
+        RoleType roleType = hasAuthority(authorities, RoleType.ADMIN.getKey()) ? RoleType.ADMIN : RoleType.USER;
 
         Date now = new Date();
         AuthToken accessToken = tokenProvider.createAuthToken(
 
                 userInfo.getUserId(),
-                role.getKey(),
+                roleType.getKey(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
@@ -94,14 +93,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 new Date(now.getTime() + refreshTokenExpiry)
         );
 
-//        // DB 저장
-//        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
-//        if (userRefreshToken != null) {
-//            userRefreshToken.setRefreshToken(refreshToken.getToken());
-//        } else {
-//            userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
-//            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
-//        }
+        // DB 저장
+        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getUserId());
+        if (userRefreshToken != null) {
+            userRefreshToken.setRefreshToken(refreshToken.getToken());
+        } else {
+            userRefreshToken = new UserRefreshToken(userInfo.getUserId(), refreshToken.getToken());
+            userRefreshTokenRepository.saveAndFlush(userRefreshToken);
+        }
 
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 

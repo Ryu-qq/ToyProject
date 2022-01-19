@@ -2,7 +2,8 @@ package com.ryu.mypptbe.oauth.config;
 
 import com.ryu.mypptbe.config.AppProperties;
 import com.ryu.mypptbe.config.CorsProperties;
-import com.ryu.mypptbe.oauth.domain.Role;
+import com.ryu.mypptbe.domain.user.repository.UserRefreshTokenRepository;
+import com.ryu.mypptbe.oauth.domain.RoleType;
 import com.ryu.mypptbe.oauth.exception.RestAuthenticationEntryPoint;
 import com.ryu.mypptbe.oauth.filter.TokenAuthenticationFilter;
 import com.ryu.mypptbe.oauth.handler.OAuth2AuthenticationFailureHandler;
@@ -10,12 +11,14 @@ import com.ryu.mypptbe.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.ryu.mypptbe.oauth.handler.TokenAccessDeniedHandler;
 import com.ryu.mypptbe.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ryu.mypptbe.oauth.service.CustomOAuth2Service;
+import com.ryu.mypptbe.oauth.service.CustomUserDetailsService;
 import com.ryu.mypptbe.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,10 +37,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsProperties corsProperties;
     private final AppProperties appProperties;
     private final AuthTokenProvider tokenProvider;
-    //private final CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2Service oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
-    //private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
+
+
+    /*
+     * UserDetailsService 설정
+     * */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -56,8 +71,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/api/**").hasAnyAuthority(Role.USER.getKey())
-                    .antMatchers("/api/**/admin/**").hasAnyAuthority(Role.ADMIN.getKey())
+                    //.antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getKey())
+                    .antMatchers("/api/**").permitAll()
+                    .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getKey())
                     .anyRequest().authenticated()
                 .and()
                     .oauth2Login()
@@ -130,7 +146,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new OAuth2AuthenticationSuccessHandler(
                 tokenProvider,
                 appProperties,
-                //userRefreshTokenRepository,
+                userRefreshTokenRepository,
                 oAuth2AuthorizationRequestBasedOnCookieRepository()
         );
     }

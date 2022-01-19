@@ -25,7 +25,7 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
 
     private final String userId;
     private final String providerType;
-    private final Role role;
+    private final RoleType roleType;
     private final Collection<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
@@ -60,9 +60,9 @@ public class UserPrincipal implements UserDetails, OAuth2User, OidcUser {
     public UserPrincipal (User user,  Map<String, Object> attributes) {
         this.userId = user.getUserId();
         this.providerType = user.getProviderType();
-        this.role = user.getRole();
+        this.roleType = RoleType.USER;
         this.attributes = attributes;
-        this.authorities=Collections.singletonList(new SimpleGrantedAuthority(Role.USER.getKey()));
+        this.authorities=Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getKey()));
 
     }
 

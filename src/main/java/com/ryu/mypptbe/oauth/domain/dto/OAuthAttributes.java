@@ -1,7 +1,7 @@
 package com.ryu.mypptbe.oauth.domain.dto;
 
 import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.oauth.domain.Role;
+import com.ryu.mypptbe.oauth.domain.RoleType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -44,6 +44,7 @@ public class OAuthAttributes {
                 .userId((String) attributes.get("sub"))
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
+                .providerType("google")
                 .profileImageUrl((String) attributes.get("picture"))
                 .attributes(attributes)
                 .build();
@@ -56,6 +57,7 @@ public class OAuthAttributes {
                 .userId((String) response.get("id"))
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
+                .providerType("naver")
                 .profileImageUrl((String) response.get("profileImage"))
                 .attributes(response)
                 .build();
@@ -71,7 +73,7 @@ public class OAuthAttributes {
                 .email(email)
                 .providerType(providerType)
                 .profileImageUrl(profileImageUrl)
-                .role(Role.USER)
+                .roleType(RoleType.USER)
                 .build();
     }
 

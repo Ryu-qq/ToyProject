@@ -3,12 +3,15 @@ package com.ryu.mypptbe.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
-import com.ryu.mypptbe.oauth.domain.Role;
+import com.ryu.mypptbe.domain.post.Posts;
+import com.ryu.mypptbe.oauth.domain.RoleType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -24,19 +27,15 @@ public class User extends BaseTimeEntity {
     private Long userSeq;
 
     @Column(name = "USER_ID", length = 64, unique = true)
-
     private String userId;
 
     @Column(name = "USERNAME", length = 100)
-
     private String username;
 
     @Column(name = "EMAIL", length = 512, unique = true)
-
     private String email;
 
     @Column(name = "PROFILE_IMAGE_URL", length = 512)
-
     private String profileImageUrl;
 
     @Column(name = "PROVIDER_TYPE", length = 20)
@@ -44,7 +43,17 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType roleType;
+
+    @OneToMany(mappedBy = "user")
+    private List<Posts> posts = new ArrayList<>();
+
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "USER")
+//    private List<Posts> posts;
+//    @OneToMany(mappedBy = "user")
+//    private List<Posts> posts = new ArrayList<>();
+
 
     @Builder
     public User(
@@ -53,14 +62,14 @@ public class User extends BaseTimeEntity {
             String email,
             String profileImageUrl,
             String providerType,
-            Role role
+            RoleType roleType
     ){
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
         this.providerType = providerType;
-        this.role = role;
+        this.roleType = roleType;
     }
 
     public User update(String username, String profileImageUrl){
@@ -70,8 +79,6 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-    public String getRoleKey(){
-        return this.role.getKey();
-    }
+
 
 }

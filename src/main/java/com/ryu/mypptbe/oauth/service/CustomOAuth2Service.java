@@ -1,6 +1,6 @@
 package com.ryu.mypptbe.oauth.service;
 
-import com.ryu.mypptbe.domain.repository.UserRepository;
+import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.oauth.domain.UserPrincipal;
 import com.ryu.mypptbe.oauth.domain.dto.OAuthAttributes;
@@ -28,12 +28,7 @@ public class CustomOAuth2Service  implements OAuth2UserService <OAuth2UserReques
 
         String providerType = userRequest.getClientRegistration().getRegistrationId();
 
-        String userNameAttributeName = userRequest.getClientRegistration().
-                getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-
-
         OAuthAttributes attributes = OAuthAttributes.of(providerType, oAuth2User.getAttributes());
-
         User user = saveOrUpdate(attributes);
 
         return UserPrincipal.builder()
