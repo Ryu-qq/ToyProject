@@ -28,6 +28,7 @@ public class CustomOAuth2Service  implements OAuth2UserService <OAuth2UserReques
 
         String providerType = userRequest.getClientRegistration().getRegistrationId();
 
+
         OAuthAttributes attributes = OAuthAttributes.of(providerType, oAuth2User.getAttributes());
         User user = saveOrUpdate(attributes);
 

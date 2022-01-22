@@ -23,40 +23,19 @@ public class UserController {
     @GetMapping
     public ApiResponse< UserReponseDto > getUser() {
         org.springframework.security.core.userdetails.User principal =
-
+        
                 (org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Optional<User> user = userService.getUser(principal.getUsername());
-
         UserReponseDto userReponseDto = UserReponseDto.builder()
                 .userId(user.get().getUserId())
                 .username(user.get().getUsername())
                 .roleType(user.get().getRoleType())
                 .profileImageUrl(user.get().getProfileImageUrl())
                 .build();
-
         return ApiResponse.success("user", userReponseDto);
 
     }
 
-    @GetMapping("/test")
-    public UserReponseDto getUsertest() {
-        org.springframework.security.core.userdetails.User principal =
-
-                (org.springframework.security.core.userdetails.User)
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<User> user = userService.getUser(principal.getUsername());
-
-        UserReponseDto userReponseDto = UserReponseDto.builder()
-                .userId(user.get().getUserId())
-                .username(user.get().getUsername())
-                .roleType(user.get().getRoleType())
-                .profileImageUrl(user.get().getProfileImageUrl())
-                .build();
-
-        return userReponseDto;
-
-    }
 }

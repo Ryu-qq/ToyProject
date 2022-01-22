@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    Restaurant findByRestaurantId(String restaurantId);
+    //Restaurant findByRestaurantId(String restaurantId);
 
 }
