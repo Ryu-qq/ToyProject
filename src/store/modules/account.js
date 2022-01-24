@@ -1,4 +1,4 @@
-import accountApi from '../../api/index.js';
+import accountApi from '../../api/account.js';
 
 
 export default{
@@ -14,7 +14,6 @@ export default{
         fetchUser({commit}){
             accountApi.getUser(
               res => {
-                console.log("res =" + res)
                 commit('setUser', res.user)
                 
               }

@@ -15,7 +15,7 @@ export default {
       this.fetchUser()
       
     }
-    this.$router.replace('/')
+    this.$router.replace('/store')
   },
 
   methods: {
