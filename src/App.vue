@@ -3,42 +3,39 @@
     <transition name="page">
     <router-view></router-view>
     </transition>
-    <spinner :loading = "true"></spinner>
   </div>
 </template>
 
 <script>
 
-import Spinner from './components/Spinner.vue'
-import bus from './utils/bus.js'
 
 export default {
-  components: { Spinner },
+  components: {  },
 
   name: 'App',
   data(){
     return{
-      loadingStatus: false,
+     
     };
   },
-  methods: {
-    startSpinner(){
-      this.loadingStatus = true
-    },
-    endSpinner(){
-      this.loadingStatus = false
-    }
-  },
-  create(){
-    bus.$on('start:spinner', this.startSpinner);
-    bus.$on('end:spinner', this.endSpinner);
+  // methods: {
+  //   startSpinner(){
+  //     this.loadingStatus = true
+  //   },
+  //   endSpinner(){
+  //     this.loadingStatus = false
+  //   }
+  // },
+  // create(){
+  //   bus.$on('start:spinner', this.startSpinner);
+  //   bus.$on('end:spinner', this.endSpinner);
 
-  },
-  beforeDestroy(){
-    bus.$off('start:spinner', this.startSpinner);
-    bus.$off('end:spinner', this.endSpinner);
+  // },
+  // beforeDestroy(){
+  //   bus.$off('start:spinner', this.startSpinner);
+  //   bus.$off('end:spinner', this.endSpinner);
 
-  },
+  // },
 }
 </script>
 

@@ -1,21 +1,22 @@
 <template>
-  <div class ="container">
-    
-    <div class ="search">
-         <input class="search-input" 
-                type="text" placeholder="검색어를 입력하세요"/>
-                <!-- @keyup.enter="search"/> -->
-          
-          <div class ="options">
-            <button>검색</button>
-          </div>
-    </div>
-    <div class ="map_wrap">
-      <div id="map" class="map"></div>
-      <button class="custom_typecontrol" @click="setCurrentPos()">
-        <i class="fas fa-crosshairs fa-2x" id="icon"></i>
-      </button>
-    </div>
+  <div class ="body">
+
+      <div class ="search">
+          <input class="search-input" 
+                  type="text" placeholder="검색어를 입력하세요"/>
+                  <!-- @keyup.enter="search"/> -->
+            
+            <div class ="options">
+              <button>검색</button>
+            </div>
+      </div>
+
+      <div class ="map_wrap">
+        <div id="map" class="map"></div>
+        <button class="custom_typecontrol" @click="setCurrentPos()">
+          <i class="fas fa-crosshairs fa-3x" id="icon"></i>
+        </button>
+      </div>
   </div>
 </template>
 
@@ -31,11 +32,12 @@ export default {
     }
   },
   created(){
-    bus.$emit('start:spinner');
+   bus.$emit('start:spinner');
 
   },
 
   mounted(){
+    
     if(!("geolocation" in navigator)){
       return;
     }
@@ -51,7 +53,7 @@ export default {
     }, err =>{
       console.log(err.message);
     })
-    bus.$emit('end:spinner')
+    
   },
 
   methods: {
@@ -70,9 +72,10 @@ export default {
       this.options = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(37.570137, 126.977018), //지도의 중심좌표.
-        level: 3 //지도의 레벨(확대, 축소 정도)
+        level: 4 //지도의 레벨(확대, 축소 정도)
       };
       this.map = new kakao.maps.Map(container, this.options);
+      bus.$emit('end:spinner')
       return this.map;
   
       //지도 생성 및 객체 리턴
@@ -91,13 +94,14 @@ export default {
 
 <style>
 
-.container{
+.body{
     display: flex;
     flex-direction: column;
     align-content: space-between;
     justify-content: center;
     width: 100%;
-    padding: 20px 5%;
+    height: 700px;
+    padding: 24px 6%;
 }
 
 .search{
@@ -107,7 +111,7 @@ export default {
 }
 
 .search-input{
-   margin-right:10px;
+   margin-right:12px;
    width: 100%;
    border: 3px solid whitesmoke;
 }
@@ -118,36 +122,39 @@ export default {
 
 }
 
-button{
+.search button{
   width:80px;
-  flex-shrink:  0;
-  padding: 9px 25px;
-  background-color: rgba(60, 184, 35, 0.8);
-  border: none;
+  padding: 9px 18px;
+  background-color: #fff;
+  border: 1px solid rgba(91, 199, 70, 0.8) ;
+  border-radius: 50px;
   cursor:pointer;
-  transition: all 0.3 ease 0s;
 }
 
-button:hover{
-  background-color: rgba(124, 218, 106, 0.8);
+.search button:hover{
+  background-color: #65be6a;
 }
+
 
 .map_wrap{
   width: 100%;
-  height:600px;
+  height:100%;
   position:relative;
   overflow:hidden; 
 }
+
 .map {
   width: 100%;
   height: 100%;
-  align-items: center;
   padding: 10%;
 }
-.custom_typecontrol{
+
+
+.map_wrap .custom_typecontrol{
+  background-color: #fff;
   position:absolute;
   top:10px;
-  right: 5px;
+  right: 23px;
   align-content: flex-end;
   overflow:hidden;
   width:auto;
@@ -155,7 +162,15 @@ button:hover{
   margin:0;
   padding:0;
   z-index:1;
-  font-size:12px;
+  border: none;
+  font-size:0.6rem;
   cursor: pointer;
+  box-shadow: 10px 10px 10px -5px rgba(25, 42, 70, .2);
+
+  transition: 0.2s;
+}
+
+.map_wrap .custom_typecontrol:hover{
+  transform: translate(0, -3px);
 }
 </style>

@@ -3,7 +3,7 @@
     <div>                    
       <li v-for='social in socials' v-bind:key ="social.socialType">
         <a class='social_btn' :href ='socialLoginUrl(social.socialType)'>
-            <img class ='social_login' src= social.src :style='{width: social.width, height: social.height}'>
+            <img class ='social_login' :src= "social.src" :style='{width: social.width, height: social.height}'>
                {{social.comment}}
         </a>
        </li>
@@ -22,9 +22,9 @@ export default {
           socials:[
             {
               socialType: 'google',
-              src: $.getSocialImage('google'),
-              width: '32px',
-              height: '32px',
+              src: require("../../assets/btn_google.png"),
+              width: '39px',
+              height: '39px',
               comment: '구글 로그인'
             },
           ]
@@ -32,8 +32,8 @@ export default {
     },
     methods: {
         ...mapActions(['fetchUser']),
-        ...mapMutations(['setToken']),
 
+        ...mapMutations(['setToken']),
         socialLoginUrl (socialType) {
             return $.getSocialLoginUrl(socialType)
         }
@@ -74,8 +74,8 @@ li{
 .social_login {
     height: 32px;
     float: left;
-    margin-top: 5.2px;
-    margin-left: 10px;
+    margin-top: 3.9px;
+  
     
 }
 

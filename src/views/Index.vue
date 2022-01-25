@@ -1,12 +1,12 @@
 <template>
     <div>
+        
         <nav-bar
             @onOpenLoginModal ='openLoginModal'
             @onLogout = 'logout'>
         </nav-bar>
 
         <router-view></router-view>
-
         <sign-in-modal  v-if="isLoginModalOpen"
                 :isOpen="isLoginModalOpen"
                 @onCloseModal="isLoginModalOpen = false">
@@ -20,6 +20,7 @@
             </div>
 
         </sign-in-modal>
+        
     </div>
 </template>
 
@@ -28,16 +29,18 @@
 import NavBar from '../components/NavBar.vue'
 import LoginModal from '../components/common/LoginModal.vue'
 import SignInModal from '../components/common/ModalView.vue'
+
 import {mapGetters, mapMutations} from 'vuex'
 
 export default {
     components:{NavBar, LoginModal, SignInModal},
     data(){
         return{
-            isLoginModalOpen: false
+            isLoginModalOpen: false,
         }
     },
     methods: {
+
          ...mapMutations(['setToken', 'setUser']),
         
         openLoginModal(){
@@ -51,6 +54,7 @@ export default {
             if (this.$route.path !== '/store') this.$router.push('/store')
         },
     },
+
     computed:{
         ...mapGetters(['token']),
     },
