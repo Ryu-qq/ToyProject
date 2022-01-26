@@ -9,6 +9,7 @@
 <script>
 import bus from '../utils/bus.js'
 
+
 export default {
 
   created(){
@@ -18,6 +19,10 @@ export default {
   },
   mounted(){
     
+  },
+
+  computed:{
+
   },
 
 }

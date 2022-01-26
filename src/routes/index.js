@@ -28,6 +28,11 @@ export const router = new VueRouter({
                 name:'LookAround',
                 component: LookAround,
             },
+            {
+                path:'/mypage',
+                name:'MyPage',
+                component: MyPage,
+            },
 
         ]
 
@@ -38,11 +43,7 @@ export const router = new VueRouter({
         component: RedirectView
     },
     
-    {
-        path:'/mypage',
-        name:'MyPage',
-        component: MyPage,
-    },
+    
       
 
     ]

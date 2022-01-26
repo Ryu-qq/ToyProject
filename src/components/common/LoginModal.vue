@@ -68,7 +68,7 @@ li{
 }
 
 .social_btn:hover {
-  color: #42b983;
+  color: #A6A6A6;
 }
 
 .social_login {

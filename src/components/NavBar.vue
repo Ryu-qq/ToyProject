@@ -15,12 +15,8 @@
                  <div v-if="!isLoggedIn" >
                     <a> <button  @click ='$emit("onOpenLoginModal")'>로그인</button> </a>
                 </div>
-                <div v-else >
-                    <div>
-                        <span class> {{username}} 님 환영합니다!</span>
-                        <img class ="my-picture"  :src="profileImageUrl" alt = photo @click="goMyPage()"/>
-                    </div>
-                     <!-- <a> <button @click="logout()"> 로그아웃 </button> </a> -->
+                <div v-else class="my-picture" >
+                    <img :src="profileImageUrl" alt = photo @click="goMyPage()"/>
                 </div>
             </div>
 
@@ -81,13 +77,6 @@ export default {
             if (this.$route.path !== '/mypage') this.$router.push('/mypage')
 
         },
-
-        logout(){
-            this.setToken(null)
-            this.setUser(null)
-            alert('로그아웃되었습니다.')
-            if (this.$route.path !== '/store') this.$router.push('/store')
-        }
     },
 
 }
@@ -102,6 +91,13 @@ export default {
     margin:0;
     padding:0;
     background-color: whitesmoke;
+}
+
+.header{
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    
 }
 
 .header-container{
@@ -120,7 +116,7 @@ export default {
 }
 
 .logo span:hover{
-    color: rgb(110, 173, 81);
+    color: #A6A6A6;
     transform: translate(0, -3px);
 }
 
@@ -143,13 +139,11 @@ export default {
 }
 
 .nav_links li a:hover{
-    color: #65be6a;
+    color: #A6A6A6;
 }
 
 .my-info{
-    text-align-last: right;
     align-items: center;
-    padding: 7px 0;
 }
 
 .my-info span{
@@ -157,8 +151,13 @@ export default {
 }
 
 .my-picture{
-    width: 15%;
-    height: 15%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.my-picture img{
+
     cursor:pointer;
 }
 
@@ -174,19 +173,19 @@ li, a{
 button{
     padding: 9px 18px;
     background-color: #fff;
-    border: 1px solid rgba(91, 199, 70, 0.8) ;
-    border-radius: 50px;
+    border: 1px solid #f5f5f5;
+    border-radius: 10px;
     cursor:pointer;
 }
 
 button:hover{
-    background-color: #65be6a;
+    background-color: #A6A6A6;
 }
 
 img {
     border-radius: 50%;
-    width: 15%;
-    height: 15%;
+    width: 40%;
+    height: 40%;
 }
 
 </style>

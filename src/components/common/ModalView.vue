@@ -95,10 +95,15 @@ export default {
 
 .modal-footer button{
     padding: 9px 25px;
-    background-color: rgb(66, 184, 11);
-    border: none;
-    border-radius: 30px;
+    background-color: #fff;
+    border: 3px solid #f5f5f5;
+    border-radius: 10px;
     cursor:pointer;
-    transition: all 0.3 ease 0s;
+}
+
+.modal-footer button:hover{
+
+    background-color: #A6A6A6;
+
 }
 </style>

@@ -6,7 +6,16 @@
                   type="text" placeholder="검색어를 입력하세요"/>
                   <!-- @keyup.enter="search"/> -->
             
-            <div class ="options">
+            <div class ="search-input-options">
+              <select v-model="form.category" class="search-select">
+                <option selected>카테고리</option>
+                <option
+                  v-for="(category, index) in categories"
+                  :key="index">
+                  {{ category }}
+                </option>
+              </select>
+
               <button>검색</button>
             </div>
       </div>
@@ -28,7 +37,22 @@ export default {
     return {
       gps_lat: null,
       gps_lng: null,
-      map:''
+      customMap:{},
+      categories: [
+        "한식",
+        "중식",
+        "일식",
+        "양식",
+        "분식",
+        "구이",
+        "회/초밥",
+        "포차/가맥",
+        "기타",
+      ],
+      form: {
+        keyword: "",
+        category: "카테고리",
+      },
     }
   },
   created(){
@@ -43,16 +67,17 @@ export default {
     }
 
       navigator.geolocation.getCurrentPosition(pos =>{
+        
         this.gps_lat = pos.coords.latitude;
         this.gps_lng = pos.coords.longitude;
 
-      window.kakao && window.kakao.maps
-      ? this.initMap()
-      : this.addKakaoMapScript();
+        window.kakao && window.kakao.maps
+        ? this.initMap()
+        : this.addKakaoMapScript();
       
-    }, err =>{
-      console.log(err.message);
-    })
+      }, err =>{
+        console.log(err.message);
+      });
     
   },
 
@@ -67,32 +92,31 @@ export default {
     },
 
     initMap() {
-      var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
-      //this.getMyPosition()
+      let container = document.getElementById("map"); 
       this.options = {
-        //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(37.570137, 126.977018), //지도의 중심좌표.
-        level: 4 //지도의 레벨(확대, 축소 정도)
+        
+        center: new kakao.maps.LatLng(37.570137, 126.977018), 
+        level: 6
       };
-      this.map = new kakao.maps.Map(container, this.options);
-      bus.$emit('end:spinner')
-      return this.map;
-  
-      //지도 생성 및 객체 리턴
+      
+      this.customMap = new kakao.maps.Map(container, this.options);
     },
+
     setCurrentPos(){
-      var moveLatLon = new kakao.maps.LatLng(this.gps_lat  , this.gps_lng);
-      // 지도 중심을 이동 시킵니다
-      return this.map.setCenter(moveLatLon);
+      
+      let moveLatLon = new kakao.maps.LatLng(this.gps_lat  , this.gps_lng);
+
+      return this.customMap.setCenter(moveLatLon);
     },
   },
+
       
 
 }
 </script>
 
 
-<style>
+<style scoped>
 
 .body{
     display: flex;
@@ -101,7 +125,7 @@ export default {
     justify-content: center;
     width: 100%;
     height: 700px;
-    padding: 24px 6%;
+    padding: 70px 6%
 }
 
 .search{
@@ -113,28 +137,50 @@ export default {
 .search-input{
    margin-right:12px;
    width: 100%;
-   border: 3px solid whitesmoke;
+   border: 3px solid #f5f5f5;
+   border-radius: 10px;
 }
 
 .search-input:focus{
    outline: none;
-   border-color: rgba(91, 199, 70, 0.8);
+   border-color: #A6A6A6;
 
+}
+
+.search-input-options{
+  display: flex;
+  justify-content: space-between;
 }
 
 .search button{
   width:80px;
-  padding: 9px 18px;
+  padding: 7px 18px;
   background-color: #fff;
-  border: 1px solid rgba(91, 199, 70, 0.8) ;
-  border-radius: 50px;
+  border: 3px solid #f5f5f5 ;
+  border-radius: 10px;
   cursor:pointer;
 }
 
 .search button:hover{
-  background-color: #65be6a;
+  background-color: #A6A6A6;
 }
 
+.search-select{
+  border: 3px solid #f5f5f5;
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 0 6px;
+  
+}
+
+.search-select:hover{
+  border: 3px solid #A6A6A6;
+}
+
+.search-select:focus{
+  border: 3px solid #A6A6A6;
+  outline:none;
+}
 
 .map_wrap{
   width: 100%;

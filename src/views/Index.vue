@@ -7,6 +7,7 @@
         </nav-bar>
 
         <router-view></router-view>
+
         <sign-in-modal  v-if="isLoginModalOpen"
                 :isOpen="isLoginModalOpen"
                 @onCloseModal="isLoginModalOpen = false">
@@ -64,6 +65,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 
 </style>
