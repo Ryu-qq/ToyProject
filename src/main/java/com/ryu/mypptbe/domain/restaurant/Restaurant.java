@@ -23,7 +23,6 @@ public class Restaurant {
     @Column(name = "SCORE_AVG")
     private int scoreAvg;
 
-
     @OneToMany(mappedBy = "restaurant")
     private List<Posts> posts = new ArrayList<>();
 
