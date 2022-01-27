@@ -8,7 +8,7 @@
             <span> {{username}} 님 환영합니다!</span>
             
             <button class="setting-btn"> 프로필 편집 </button>
-             <button class="post-btn" > 게시물 등록하기 </button>
+             <button class="post-btn" ><router-link to="/post">게시물 등록하기</router-link></button>
             <button @click="logout()"> <i class="fas fa-sign-out-alt"></i></button>
             
           </div>
@@ -31,19 +31,11 @@
       <div class="mypage-postlist">
         <div clsss="mypage-postrow">
           <div class="post-container">
-            <post> </post>
-            <post> </post>
-            <post> </post>
+
           </div>
         </div>
         <div>
-          <div clsss="mypage-postrow">
-            <div class="post-container">
-            <post> </post>
-            <post> </post>
-          </div>
-          </div>
-        </div>
+      </div>
         
         
       </div>
@@ -55,16 +47,19 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex'
-import Post from '../components/Post.vue'
 export default {
   
   components:{
-    Post,
+
+    
+    
   },
 
   created(){
-    
 
+   
+    
+    
   },
 
   mounted(){
@@ -215,8 +210,11 @@ section .mypage-info{
     border: 1px solid #fff ;
     border-radius: 10px;
     background-color: #f8f8f8;
-    
+    text-decoration: none;
+}
 
+.mypage-info a{
+    color:#000;
 }
 
 

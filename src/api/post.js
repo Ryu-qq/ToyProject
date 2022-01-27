@@ -1,16 +1,17 @@
 import req from './req-wrapper'
 
 
+
+
 const BE_URI = {
-    POST:'/post',
-    POSTLIST:'post',
+    POST: `/post`,
+    POSTLIST: `/mypage`,
 
 }
 
 export default{
-    getUser(success) {
-        console.log("1")
-        req.get(BE_URI.USER, success)
+    Uploadpost(body, success) {
+        req.post(BE_URI.POST, body ,success)
     }
 
 }

@@ -46,15 +46,9 @@ export default {
         isLoggedIn () {
             return this.token != null
         },
-
         isAdmin () {
             return this.user && this.user.roleType === 'ADMIN'
         },
-        username () {
-            if (!this.user) return ''
-            return this.user.username
-        },
-
         roleType () {
             if (!this.user) return ''
             return this.user.roleType
@@ -74,7 +68,8 @@ export default {
         ...mapMutations(['setToken', 'setUser']),
 
         goMyPage(){
-            if (this.$route.path !== '/mypage') this.$router.push('/mypage')
+            const userId = this.user.userId
+            if (this.$route.path !== '/mypage') this.$router.push('/mypage/' + userId)
 
         },
     },

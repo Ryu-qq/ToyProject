@@ -7,11 +7,14 @@
         </nav-bar>
 
         <router-view></router-view>
+        
+        <!-- <transition name="page">
+        </transition> -->
+       
 
         <sign-in-modal  v-if="isLoginModalOpen"
-                :isOpen="isLoginModalOpen"
                 @onCloseModal="isLoginModalOpen = false">
-            
+        
             <div slot = 'header'>
                 <h4 slot> 로그인 </h4>
             </div>
@@ -19,7 +22,6 @@
             <div slot ="body">
                 <login-modal></login-modal>
             </div>
-
         </sign-in-modal>
         
     </div>
@@ -66,6 +68,7 @@ export default {
 </script>
 
 <style scoped>
+
 
 
 </style>

@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <transition name="page">
-    <router-view></router-view>
-    </transition>
+
+    <index-view></index-view>
+
   </div>
 </template>
 
 <script>
 
+import IndexView from './views/Index.vue';
+
 
 export default {
-  components: {  },
+  components: { IndexView },
 
   name: 'App',
   data(){

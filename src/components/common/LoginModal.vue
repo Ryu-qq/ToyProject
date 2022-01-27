@@ -16,7 +16,6 @@ import $ from '../../utils/utils'
 import {mapActions, mapMutations} from 'vuex'
 
 export default {
-    props:['isOpen'],
     data(){
         return{
           socials:[

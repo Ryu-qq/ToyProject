@@ -7,6 +7,7 @@ import MyPage from '../views/MyPageView';
 import Store from '../views/StoreView';
 import RedirectView from '../views/oauth/RedirectView'
 import IndexPage from '../views/Index.vue';
+import Post from '../views/Post.vue';
 
 
 Vue.use(VueRouter);
@@ -29,10 +30,17 @@ export const router = new VueRouter({
                 component: LookAround,
             },
             {
-                path:'/mypage',
+                path:'/mypage/:userId',
                 name:'MyPage',
                 component: MyPage,
+            
             },
+            {
+                path:'/post',
+                name:'Post',
+                component: Post,
+            },
+            
 
         ]
 

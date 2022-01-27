@@ -22,4 +22,9 @@ export default{
         .then(handler.handle(success))
         .catch(fail)
     },
+    post (url, body, success, fail = err => err.response.data.message, config) {
+        axios.post(wrap(url), body, appendAuth(config))
+          .then(handler.handle(success))
+          .catch(fail)
+      },
 }
