@@ -1,109 +1,96 @@
 <template>
-  <div>
-    <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+	<div>
+		<transition name="modal">
+			<div class="modal-mask">
+				<div class="modal-wrapper">
+					<div class="modal-container">
+						<div class="modal-header">
+							<slot name="header"> default header </slot>
+						</div>
 
-          <div class="modal-header">
-            <slot name="header">
-              default header
-            </slot>
-          </div>
+						<div class="modal-body">
+							<slot name="body"> default body </slot>
+						</div>
 
-          <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <slot name="footer">
-               <button @click='$emit("onCloseModal")'> 닫기 </button>
-            </slot>
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-  </transition>
-      
-  </div>
+						<div class="modal-footer">
+							<slot name="footer">
+								<button @click="$emit('onCloseModal')">닫기</button>
+							</slot>
+						</div>
+					</div>
+				</div>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
 .modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
+	position: fixed;
+	z-index: 9998;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: table;
+	transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+	display: table-cell;
+	vertical-align: middle;
 }
 
 .modal-container {
-  width: 500px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+	width: 500px;
+	margin: 0px auto;
+	padding: 20px 30px;
+	background-color: #fff;
+	border-radius: 2px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+	transition: all 0.3s ease;
 }
 
 .modal-header h4 {
-  margin-top: 0;
-  
+	margin-top: 0;
 }
 
 .modal-body {
-  margin: 20px 0;
+	margin: 20px 0;
 }
 
 .modal-default-button {
-  float: right;
+	float: right;
 }
 
 .modal-enter {
-  opacity: 0;
+	opacity: 0;
 }
 
 .modal-leave-active {
-  opacity: 0;
+	opacity: 0;
 }
 
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	transform: scale(1.1);
 }
 
-.modal-footer button{
-    padding: 9px 25px;
-    background-color: #fff;
-    border: 3px solid #f5f5f5;
-    border-radius: 10px;
-    cursor:pointer;
+.modal-footer button {
+	padding: 9px 25px;
+	background-color: #fff;
+	border: 3px solid #f5f5f5;
+	border-radius: 10px;
+	cursor: pointer;
 }
 
-.modal-footer button:hover{
-
-    background-color: #A6A6A6;
-
+.modal-footer button:hover {
+	background-color: #a6a6a6;
 }
 </style>
