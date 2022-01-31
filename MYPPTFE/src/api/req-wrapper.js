@@ -2,7 +2,12 @@ import axios from 'axios';
 import store from '../store/index.js';
 import handler from './res-handler';
 
-const BACKEND_DOMAINPORT = 'http://localhost:8080';
+// const instance = axios.create({
+// 	baseURL: process.env.VUE_APP_API_URL,
+
+// })
+
+const BACKEND_DOMAINPORT = process.env.VUE_APP_API_URL;
 const URI_PREPENDER = '/api/v1';
 const wrap = url => `${BACKEND_DOMAINPORT}${URI_PREPENDER}${url}`;
 const appendAuth = config => {

@@ -1,13 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import LookAround from '../views/LookAroundView';
-import MyPage from '../views/MyPageView';
-import Store from '../views/StoreView';
-import RedirectView from '../views/oauth/RedirectView';
-import IndexPage from '../views/Index.vue';
-import Post from '../views/Post.vue';
-
 Vue.use(VueRouter);
 
 export const router = new VueRouter({
@@ -15,35 +8,39 @@ export const router = new VueRouter({
 	routes: [
 		{
 			path: '/',
-			redirect: '/store',
-			component: IndexPage,
+			redirect: '/map',
+			component: () => import('@/views/Index'),
 			children: [
 				{
-					path: '/store',
-					name: 'Store',
-					component: Store,
+					path: '/map',
+					name: 'Map',
+					component: () => import('@/views/Map'),
 				},
 				{
 					path: '/lookaround',
 					name: 'LookAround',
-					component: LookAround,
+					component: () => import('@/views/LookAround'),
 				},
 				{
 					path: '/mypage/:userId',
 					name: 'MyPage',
-					component: MyPage,
+					component: () => import('@/views/MyPage'),
 				},
 				{
 					path: '/post',
 					name: 'Post',
-					component: Post,
+					component: () => import('@/views/Post'),
 				},
 			],
 		},
 		{
 			path: '/oauth/redirect',
 			name: 'RedirectView',
-			component: RedirectView,
+			component: () => import('@/views/oauth/RedirectView'),
+		},
+		{
+			path: '*',
+			component: () => import('@/views/NotFoundPage'),
 		},
 	],
 });

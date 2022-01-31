@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import IndexView from './views/Index.vue';
+import IndexView from '@/views/Index.vue';
 
 export default {
 	name: 'App',
@@ -13,24 +13,6 @@ export default {
 	data() {
 		return {};
 	},
-	// methods: {
-	//   startSpinner(){
-	//     this.loadingStatus = true
-	//   },
-	//   endSpinner(){
-	//     this.loadingStatus = false
-	//   }
-	// },
-	// create(){
-	//   bus.$on('start:spinner', this.startSpinner);
-	//   bus.$on('end:spinner', this.endSpinner);
-
-	// },
-	// beforeDestroy(){
-	//   bus.$off('start:spinner', this.startSpinner);
-	//   bus.$off('end:spinner', this.endSpinner);
-
-	// },
 };
 </script>
 

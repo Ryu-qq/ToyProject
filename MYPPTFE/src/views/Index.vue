@@ -4,9 +4,6 @@
 
 		<router-view></router-view>
 
-		<!-- <transition name="page">
-        </transition> -->
-
 		<sign-in-modal
 			v-if="isLoginModalOpen"
 			@onCloseModal="isLoginModalOpen = false"

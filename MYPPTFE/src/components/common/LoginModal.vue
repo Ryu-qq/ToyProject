@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import $ from '../../utils/utils';
+import $ from '@/utils/utils';
 import { mapActions, mapMutations } from 'vuex';
 
 export default {
@@ -25,7 +25,7 @@ export default {
 			socials: [
 				{
 					socialType: 'google',
-					src: require('../../assets/btn_google.png'),
+					src: require('@/assets/btn_google.png'),
 					width: '39px',
 					height: '39px',
 					comment: '구글 로그인',
