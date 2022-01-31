@@ -35,8 +35,8 @@ export default {
 	},
 	methods: {
 		...mapActions(['fetchUser']),
-
 		...mapMutations(['setToken']),
+
 		socialLoginUrl(socialType) {
 			return $.getSocialLoginUrl(socialType);
 		},

@@ -8,18 +8,18 @@ export const router = new VueRouter({
 	routes: [
 		{
 			path: '/',
-			redirect: '/map',
-			component: () => import('@/views/Index'),
+			redirect: '/storeview',
+			component: () => import('@/views/IndexView'),
 			children: [
 				{
-					path: '/map',
-					name: 'Map',
-					component: () => import('@/views/Map'),
+					path: '/storeview',
+					name: 'StoreView',
+					component: () => import('@/views/StoreView'),
 				},
 				{
 					path: '/lookaround',
 					name: 'LookAround',
-					component: () => import('@/views/LookAround'),
+					component: () => import('@/views/LookAroundView'),
 				},
 				{
 					path: '/mypage/:userId',
@@ -40,7 +40,7 @@ export const router = new VueRouter({
 		},
 		{
 			path: '*',
-			component: () => import('@/views/NotFoundPage'),
+			component: () => import('@/views/NotFoundPageView'),
 		},
 	],
 });

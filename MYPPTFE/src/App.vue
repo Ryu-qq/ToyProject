@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import IndexView from '@/views/Index.vue';
+import IndexView from '@/views/IndexView.vue';
 
 export default {
 	name: 'App',

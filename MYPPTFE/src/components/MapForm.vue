@@ -1,25 +1,5 @@
 <template>
-	<div class="body">
-		<div class="search">
-			<input
-				class="search-input"
-				type="text"
-				placeholder="검색어를 입력하세요"
-			/>
-			<!-- @keyup.enter="search"/> -->
-
-			<div class="search-input-options">
-				<select v-model="form.category" class="search-select">
-					<option selected>카테고리</option>
-					<option v-for="(category, index) in categories" :key="index">
-						{{ category }}
-					</option>
-				</select>
-
-				<button>검색</button>
-			</div>
-		</div>
-
+	<div>
 		<div class="map_wrap">
 			<div id="map" class="map"></div>
 			<button class="custom_typecontrol" @click="setCurrentPos()">
@@ -30,36 +10,11 @@
 </template>
 
 <script>
-import bus from '../utils/bus.js';
+import bus from '@/utils/bus.js';
 
 export default {
-	data() {
-		return {
-			gps_lat: null,
-			gps_lng: null,
-			customMap: {},
-			categories: [
-				'한식',
-				'중식',
-				'일식',
-				'양식',
-				'분식',
-				'구이',
-				'회/초밥',
-				'포차/가맥',
-				'기타',
-			],
-			form: {
-				keyword: '',
-				category: '카테고리',
-			},
-		};
-	},
-	created() {
-		bus.$emit('start:spinner');
-	},
-
 	mounted() {
+		bus.$emit('start:spinner');
 		if (!('geolocation' in navigator)) {
 			return;
 		}
@@ -78,7 +33,6 @@ export default {
 			},
 		);
 	},
-
 	methods: {
 		addKakaoMapScript() {
 			const script = document.createElement('script');
@@ -97,6 +51,7 @@ export default {
 			};
 
 			this.customMap = new kakao.maps.Map(container, this.options);
+			bus.$emit('end:spinner');
 		},
 
 		setCurrentPos() {
@@ -108,69 +63,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.body {
-	display: flex;
-	flex-direction: column;
-	align-content: space-between;
-	justify-content: center;
-	width: 100%;
-	height: 700px;
-	padding: 70px 6%;
-}
-
-.search {
-	display: flex;
-	width: 100%;
-	margin-bottom: 20px;
-}
-
-.search-input {
-	margin-right: 12px;
-	width: 100%;
-	border: 3px solid #f5f5f5;
-	border-radius: 10px;
-}
-
-.search-input:focus {
-	outline: none;
-	border-color: #a6a6a6;
-}
-
-.search-input-options {
-	display: flex;
-	justify-content: space-between;
-}
-
-.search button {
-	width: 80px;
-	padding: 7px 18px;
-	background-color: #fff;
-	border: 3px solid #f5f5f5;
-	border-radius: 10px;
-	cursor: pointer;
-}
-
-.search button:hover {
-	background-color: #a6a6a6;
-}
-
-.search-select {
-	border: 3px solid #f5f5f5;
-	border-radius: 10px;
-	margin-right: 10px;
-	padding: 0 6px;
-}
-
-.search-select:hover {
-	border: 3px solid #a6a6a6;
-}
-
-.search-select:focus {
-	border: 3px solid #a6a6a6;
-	outline: none;
-}
-
+<style>
 .map_wrap {
 	width: 100%;
 	height: 100%;

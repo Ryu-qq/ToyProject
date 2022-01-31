@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
-import LoginModal from '../components/common/LoginModal.vue';
-import SignInModal from '../components/common/ModalView.vue';
+import NavBar from '@/components/NavBar.vue';
+import LoginModal from '@/components/common/LoginModal.vue';
+import SignInModal from '@/components/common/ModalView.vue';
 
 import { mapGetters, mapMutations } from 'vuex';
 
@@ -32,6 +32,10 @@ export default {
 		return {
 			isLoginModalOpen: false,
 		};
+	},
+
+	computed: {
+		...mapGetters(['token']),
 	},
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
@@ -46,10 +50,12 @@ export default {
 			alert('로그아웃되었습니다.');
 			if (this.$route.path !== '/store') this.$router.push('/store');
 		},
-	},
-
-	computed: {
-		...mapGetters(['token']),
+		startSpinner() {
+			this.loadingStatus = true;
+		},
+		endSpinner() {
+			this.loadingStatus = false;
+		},
 	},
 };
 </script>
