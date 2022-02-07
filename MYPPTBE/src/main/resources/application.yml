@@ -16,11 +16,13 @@ spring:
       data-source-properties:
         rewriteBatchedStatements: true
 
+
+
   jpa:
-    show-sql: true
+    #show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -77,6 +79,13 @@ spring:
 #          tokenUri: https://kauth.kakao.com/oauth/token
 #          userInfoUri: https://kapi.kakao.com/v2/user/me
 #          userNameAttribute: id
+
+
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
 
 
 # jwt secret key 설정

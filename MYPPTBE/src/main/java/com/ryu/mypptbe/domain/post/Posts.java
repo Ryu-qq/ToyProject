@@ -1,6 +1,7 @@
 package com.ryu.mypptbe.domain.post;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
-import com.ryu.mypptbe.domain.restaurant.Restaurant;
+import com.ryu.mypptbe.domain.store.Address;
+import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,33 +21,48 @@ public class Posts extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postSeq;
 
-    @Column(length = 500, nullable = false)
+    @Column(name ="POST_TITLE",length = 500, nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name ="POST_CONTENT", columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(name ="POST_IAMGE_URL")
+    @Column(name ="POST_IAMGEURL")
     private String postImgUrl;
 
     @Column(name = "score")
     private int score;
 
-    @ManyToOne
+    @Embedded
+    private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_SEQ")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name ="RESTAURANT_SEQ")
-    private Restaurant restaurant;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="STORE_SEQ")
+    private Store store;
+
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void setUser(User user){
+        this.user = user;
+        user.getPosts().add(this);
+    }
+
 
 
     @Builder
-    public Posts(String title, String content, String postImgUrl, User user){
+    public Posts(String title, String content, String postImgUrl, int score, Address address){
         this.title = title;
         this.content = content;
         this.postImgUrl =postImgUrl;
-        this.user = user;
+        this.score = score;
+        this.address =address;
+
     }
 
 

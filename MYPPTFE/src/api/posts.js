@@ -1,12 +1,16 @@
 import req from './req-wrapper';
 
 const BE_URI = {
-	POST: `/post`,
+	POST: `/posts`,
 	POSTLIST: `/mypage`,
 };
 
 export default {
-	Uploadpost(body, success) {
+	uploadPost(body, success) {
 		req.post(BE_URI.POST, body, success);
+	},
+
+	getPostList(body, success) {
+		req.get(BE_URI.POSTLIST, body, success);
 	},
 };

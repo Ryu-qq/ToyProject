@@ -9,29 +9,26 @@ export const router = new VueRouter({
 		{
 			path: '/',
 			redirect: '/storeview',
-			component: () => import('@/views/IndexView'),
-			children: [
-				{
-					path: '/storeview',
-					name: 'StoreView',
-					component: () => import('@/views/StoreView'),
-				},
-				{
-					path: '/lookaround',
-					name: 'LookAround',
-					component: () => import('@/views/LookAroundView'),
-				},
-				{
-					path: '/mypage/:userId',
-					name: 'MyPage',
-					component: () => import('@/views/MyPage'),
-				},
-				{
-					path: '/post',
-					name: 'Post',
-					component: () => import('@/views/Post'),
-				},
-			],
+		},
+		{
+			path: '/storeview',
+			name: 'StoreView',
+			component: () => import('@/views/StoreView'),
+		},
+		{
+			path: '/lookaround',
+			name: 'LookAround',
+			component: () => import('@/views/LookAroundView'),
+		},
+		{
+			path: '/mypage/:userId',
+			name: 'MyPage',
+			component: () => import('@/views/MyPage'),
+		},
+		{
+			path: '/post',
+			name: 'Post',
+			component: () => import('@/views/Post'),
 		},
 		{
 			path: '/oauth/redirect',

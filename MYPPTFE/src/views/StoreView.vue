@@ -39,17 +39,7 @@ export default {
 		return {
 			loadingStatus: true,
 			customMap: {},
-			categories: [
-				'한식',
-				'중식',
-				'일식',
-				'양식',
-				'분식',
-				'구이',
-				'회/초밥',
-				'포차/가맥',
-				'기타',
-			],
+			categories: ['한식', '중식', '일식', '양식', '분식', '포차', '기타'],
 			form: {
 				keyword: '',
 				category: '카테고리',

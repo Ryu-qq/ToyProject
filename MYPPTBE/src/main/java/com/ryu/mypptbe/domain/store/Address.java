@@ -1,4 +1,4 @@
-package com.ryu.mypptbe.domain.restaurant;
+package com.ryu.mypptbe.domain.store;
 
 
 import lombok.Getter;

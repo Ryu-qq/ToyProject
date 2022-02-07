@@ -47,10 +47,6 @@ export default {
 			if (!this.user) return '';
 			return this.user.profileImageUrl;
 		},
-		toekn() {
-			if (!this.token) return '';
-			return this.token;
-		},
 	},
 
 	methods: {

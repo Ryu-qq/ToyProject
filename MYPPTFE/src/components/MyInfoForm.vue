@@ -34,7 +34,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['user']),
+		...mapGetters(['user', 'token']),
 
 		isLoggedIn() {
 			return this.token != null;
@@ -48,10 +48,6 @@ export default {
 		profileImageUrl() {
 			if (!this.user) return '';
 			return this.user.profileImageUrl;
-		},
-		toekn() {
-			if (!this.token) return '';
-			return this.token;
 		},
 	},
 	methods: {

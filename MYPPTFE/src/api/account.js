@@ -6,7 +6,6 @@ const BE_URI = {
 
 export default {
 	getUser(success) {
-		console.log('1');
 		req.get(BE_URI.USER, success);
 	},
 };

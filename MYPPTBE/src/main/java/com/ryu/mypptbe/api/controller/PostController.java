@@ -1,58 +1,66 @@
 package com.ryu.mypptbe.api.controller;
 
 
-import com.ryu.mypptbe.api.dto.UserReponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
-import com.ryu.mypptbe.api.service.PostService;
-import com.ryu.mypptbe.api.service.UserService;
+
 import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.oauth.domain.RoleType;
+import com.ryu.mypptbe.domain.post.Posts;
+import com.ryu.mypptbe.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import java.net.URI;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
-    private final UserService userService;
 
-    @ResponseBody
-    @PostMapping("/api/v1/post")
-    public ResponseEntity test(@RequestBody PostsSaveRequestDto requestDto){
+//    @GetMapping()
+//    public ApiResponse <PostsResponseDto> postList(@PathVariable("userId") String userId){
+//
+//
+//
+//
+//        return ApiResponse.success("posts", PostsResponseDto);
+//    }
 
-        org.springframework.security.core.userdetails.User principal =
 
-                (org.springframework.security.core.userdetails.User)
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @PostMapping
+    public ResponseEntity uploadPost(@RequestBody PostsSaveRequestDto requestDto, Errors errors){
+
+        System.out.println("requestDto = " + requestDto);
+
+        PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
+                .title(requestDto.getTitle())
+                .content(requestDto.getContent())
+                .postImageUrl(requestDto.getPostImageUrl())
+                .userId(requestDto.getUserId())
+                .build();
+
+        Long newPostId = postService.uploadPost(postsSaveRequestDto);
+
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
+        URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();
 
 
-        //Optional<User> account = userService.getUser(curUser.getUserId());
-//        if(account.isEmpty()){
-//            return ResponseEntity.notFound().build();
-//        }
+        EntityModel eventResource = EntityModel.of(postsSaveRequestDto);
+        eventResource.add(selfLinkBuilder.withSelfRel());
+        eventResource.add(linkTo(PostController.class).withRel("query-events"));
+        eventResource.add(selfLinkBuilder.withRel("update-event"));
 
-        postService.save(requestDto);
-
-        log.info( requestDto.getTitle());
-        log.info(requestDto.getContent());
-        log.info(requestDto.getPostImageUrl());
-
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.created(createdUri).body(eventResource);
+        //return ApiResponse.success("posts", postsSaveRequestDto);
     }
-
-
-
-
 }

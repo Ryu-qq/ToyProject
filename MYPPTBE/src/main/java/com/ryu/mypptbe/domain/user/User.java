@@ -41,13 +41,13 @@ public class User extends BaseTimeEntity {
     @Column(name = "PROVIDER_TYPE", length = 20)
     private String providerType;
 
-
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
+
 
 
     @Builder
