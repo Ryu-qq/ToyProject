@@ -1,5 +1,5 @@
 <template>
-	<div class="photo-card">
+	<div>
 		<div class="container">
 			<post-add-form></post-add-form>
 			<!-- <div class="head">
