@@ -32,13 +32,20 @@
 					</div>
 				</div>
 				<div class="photo-upload">
-					<button>불러오기<i class="fas fa-camera"></i></button>
-
-					<ul class="photo-list">
-						<li>1</li>
-						<li>2</li>
-						<li>3</li>
-					</ul>
+					<!-- <button>불러오기<i class="fas fa-camera"></i></button> -->
+					<!-- <image-upload></image-upload> -->
+					<div>
+						<input
+							ref="uploadImage"
+							multiple
+							type="file"
+							class="hidden"
+							@change="onInputImage()"
+						/>
+						<div id="preview">
+							<img v-if="url" :src="url" />
+						</div>
+					</div>
 				</div>
 				<div>
 					<textarea
@@ -58,12 +65,18 @@
 </template>
 
 <script>
+// import ImageUpload from '../common/ImageUpload.vue';
+
 export default {
+	// components: {
+	// 	ImageUpload,
+	// },
 	data() {
 		return {
 			title: '',
 			postcode: '',
 			address: '',
+			image: '',
 		};
 	},
 
@@ -108,6 +121,10 @@ export default {
 				},
 			}).open();
 		},
+		onInputImage() {
+			this.input.image = this.$refs.uploadImage.files;
+			console.log('this.input.image');
+		},
 	},
 };
 </script>
@@ -134,7 +151,6 @@ export default {
 }
 
 .page-header {
-	border-bottom: 1px solid #dee2e6;
 	padding: 15px 0;
 }
 
@@ -199,13 +215,14 @@ textarea {
 	border: 0;
 	padding: 0;
 	margin: 0;
-	border: 1px solid #d1d4d6;
+	border-bottom: 1px solid #d1d4d6;
 	background: transparent;
 }
 
 textarea {
 	width: 680px;
 	height: 200px;
+	border: 1px solid #d1d4d6;
 }
 
 button {
