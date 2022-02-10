@@ -41,6 +41,8 @@ public class PostController {
     public ResponseEntity uploadPost(@RequestBody PostsSaveRequestDto requestDto, Errors errors){
 
         System.out.println("requestDto = " + requestDto);
+        System.out.println("requestDto = " + requestDto.getPostImageUrl());
+
 
         PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
                 .title(requestDto.getTitle())

@@ -3,10 +3,12 @@ import postsApi from '../../api/posts.js';
 export default {
 	state: {
 		posts: [],
+		imageFiles: [],
 	},
 
 	getters: {
 		posts: state => state.posts,
+		imageFiles: state => state.imageFiles,
 	},
 	actions: {
 		fetchPostList({ commit }) {
@@ -15,14 +17,30 @@ export default {
 			});
 		},
 
-		fetchPostUpload({ commit }, postData) {
+		fetchPostUpload(postData) {
+			console.log('postData' + postData);
 			postsApi.uploadPost(postData);
-			commit('setPost');
+		},
+
+		fetchImageUpload({ commit }, data) {
+			commit('setImageFiles', data);
+		},
+
+		fetchImagedelete({ commit }, data) {
+			commit('deleteImageFiles', data);
 		},
 	},
 	mutations: {
 		setPost(state, posts) {
 			state.posts = posts;
+		},
+		setImageFiles(state, imageFiles) {
+			state.imageFiles = imageFiles;
+		},
+		deleteImageFiles(state, imageFiles) {
+			state.imageFiles = state.imageFiles.filter(
+				data => data.number !== Number(imageFiles),
+			);
 		},
 	},
 };

@@ -6,12 +6,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 @Getter
 @NoArgsConstructor
 public class PostsSaveRequestDto {
     private String title;
     private String content;
-    private String postImageUrl;
+    private ArrayList<HashMap<Integer, Object>> postImageUrl;
     private int score;
     private Address address;
 
@@ -20,7 +23,7 @@ public class PostsSaveRequestDto {
 
 
     @Builder
-    public PostsSaveRequestDto(String title, String content, String postImageUrl, String userId, int score, Address address) {
+    public PostsSaveRequestDto(String title, String content, ArrayList<HashMap<Integer, Object>> postImageUrl, String userId, int score, Address address) {
         this.title = title;
         this.content = content;
         this.postImageUrl = postImageUrl;

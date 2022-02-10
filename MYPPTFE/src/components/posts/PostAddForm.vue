@@ -2,7 +2,7 @@
 	<div class="contents">
 		<h1 class="page-header">후기 작성하기</h1>
 		<div class="form-wrapper">
-			<form class="form">
+			<form class="form" @submit.prevent="submitForm">
 				<div class="title">
 					<label> 상호명 </label>
 					<input id="title" v-model="title" type="text" />
@@ -32,20 +32,7 @@
 					</div>
 				</div>
 				<div class="photo-upload">
-					<!-- <button>불러오기<i class="fas fa-camera"></i></button> -->
-					<!-- <image-upload></image-upload> -->
-					<div>
-						<input
-							ref="uploadImage"
-							multiple
-							type="file"
-							class="hidden"
-							@change="onInputImage()"
-						/>
-						<div id="preview">
-							<img v-if="url" :src="url" />
-						</div>
-					</div>
+					<ImageUpload></ImageUpload>
 				</div>
 				<div>
 					<textarea
@@ -56,7 +43,7 @@
 						placeholder="가게의 후기를 남겨주세요"
 					/>
 				</div>
-				<div class="bottom">
+				<div type="submit" class="bottom">
 					<button>저장하기</button>
 				</div>
 			</form>
@@ -65,19 +52,25 @@
 </template>
 
 <script>
-// import ImageUpload from '../common/ImageUpload.vue';
+import ImageUpload from '../common/ImageUpload.vue';
 
 export default {
-	// components: {
-	// 	ImageUpload,
-	// },
+	components: {
+		ImageUpload,
+	},
 	data() {
 		return {
 			title: '',
 			postcode: '',
 			address: '',
-			image: '',
+			images: [],
+			contents: '',
 		};
+	},
+	computed: {
+		getImageList() {
+			return this.$store.getters['imageFiles'];
+		},
 	},
 
 	methods: {
@@ -121,9 +114,26 @@ export default {
 				},
 			}).open();
 		},
-		onInputImage() {
-			this.input.image = this.$refs.uploadImage.files;
-			console.log('this.input.image');
+		async submitForm() {
+			try {
+				const formData = new FormData();
+				if (this.getImageList && this.getImageList.length > 0) {
+					for (let i = 0; i < this.getImageList.length; i++) {
+						const imageForm = this.getImageList[i];
+						formData.append(`images[${i}]`, imageForm);
+					}
+				}
+				console.log(formData);
+				await this.$store.dispatch('fetchPostUpload', {
+					title: this.title,
+					contents: this.contents,
+					images: formData,
+				});
+
+				//this.$router.push('/mypage');
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 };
@@ -197,14 +207,6 @@ export default {
 	display: flex;
 }
 
-.photo-upload ul {
-	display: flex;
-}
-
-.photo-upload li {
-	padding-left: 20px;
-}
-
 .bottom {
 	display: flex;
 	justify-content: right;
@@ -226,7 +228,7 @@ textarea {
 }
 
 button {
-	font-size: 0.8rem;
+	font-size: 1rem;
 	margin: 8px 0;
 	border: 1px solid #fff;
 	border-radius: 10px;

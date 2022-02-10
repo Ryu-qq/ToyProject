@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @Entity
@@ -28,7 +30,7 @@ public class Posts extends BaseTimeEntity {
     private String content;
 
     @Column(name ="POST_IAMGEURL")
-    private String postImgUrl;
+    private ArrayList<HashMap<Integer, Object>> postImgUrl;
 
     @Column(name = "score")
     private int score;
@@ -56,7 +58,7 @@ public class Posts extends BaseTimeEntity {
 
 
     @Builder
-    public Posts(String title, String content, String postImgUrl, int score, Address address){
+    public Posts(String title, String content, ArrayList<HashMap<Integer, Object>> postImgUrl, int score, Address address){
         this.title = title;
         this.content = content;
         this.postImgUrl =postImgUrl;
@@ -66,7 +68,7 @@ public class Posts extends BaseTimeEntity {
     }
 
 
-    public void update(String title, String content, String postImgUrl) {
+    public void update(String title, String content, ArrayList<HashMap<Integer, Object>> postImgUrl) {
         this.title = title;
         this.content = content;
         this.postImgUrl =postImgUrl;

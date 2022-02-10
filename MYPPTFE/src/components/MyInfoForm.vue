@@ -116,6 +116,7 @@ export default {
 
 .mypage-info a {
 	color: #000;
+	text-decoration: none;
 }
 
 section {
