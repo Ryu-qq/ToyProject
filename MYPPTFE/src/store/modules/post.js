@@ -18,7 +18,6 @@ export default {
 		},
 
 		fetchPostUpload(postData) {
-			console.log('postData' + postData);
 			postsApi.uploadPost(postData);
 		},
 

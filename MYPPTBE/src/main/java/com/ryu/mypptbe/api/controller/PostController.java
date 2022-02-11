@@ -13,7 +13,11 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,31 +42,36 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity uploadPost(@RequestBody PostsSaveRequestDto requestDto, Errors errors){
+    public void uploadPost(@RequestParam MultipartFile file, Errors errors, HttpServletRequest request) throws IOException {
 
-        System.out.println("requestDto = " + requestDto);
-        System.out.println("requestDto = " + requestDto.getPostImageUrl());
-
-
-        PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .postImageUrl(requestDto.getPostImageUrl())
-                .userId(requestDto.getUserId())
-                .build();
-
-        Long newPostId = postService.uploadPost(postsSaveRequestDto);
-
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
-        URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();
-
-
-        EntityModel eventResource = EntityModel.of(postsSaveRequestDto);
-        eventResource.add(selfLinkBuilder.withSelfRel());
-        eventResource.add(linkTo(PostController.class).withRel("query-events"));
-        eventResource.add(selfLinkBuilder.withRel("update-event"));
-
-        return ResponseEntity.created(createdUri).body(eventResource);
+        System.out.println("request = " + request);
+        if (!file.isEmpty()) {
+            String filename = file.getOriginalFilename();
+            log.info("file.getOriginalFilename = {}", filename);
+        }
+//        System.out.println("requestDto = " + requestDto);
+//        System.out.println("requestDto = " + requestDto.getPostImageUrl());
+//
+//
+//        PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
+//                .title(requestDto.getTitle())
+//                .content(requestDto.getContent())
+//                .postImageUrl(requestDto.getPostImageUrl())
+//                .userId(requestDto.getUserId())
+//                .build();
+//
+//        Long newPostId = postService.uploadPost(postsSaveRequestDto);
+//
+//        WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
+//        URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();
+//
+//
+//        EntityModel eventResource = EntityModel.of(postsSaveRequestDto);
+//        eventResource.add(selfLinkBuilder.withSelfRel());
+//        eventResource.add(linkTo(PostController.class).withRel("query-events"));
+//        eventResource.add(selfLinkBuilder.withRel("update-event"));
+//
+//        return ResponseEntity.created(createdUri).body(eventResource);
         //return ApiResponse.success("posts", postsSaveRequestDto);
     }
 }

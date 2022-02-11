@@ -7,6 +7,7 @@ const BE_URI = {
 
 export default {
 	uploadPost(body, success) {
+		console.log(body);
 		req.post(BE_URI.POST, body, success);
 	},
 

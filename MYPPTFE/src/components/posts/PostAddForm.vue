@@ -53,7 +53,7 @@
 
 <script>
 import ImageUpload from '../common/ImageUpload.vue';
-
+import axios from 'axios';
 export default {
 	components: {
 		ImageUpload,
@@ -123,14 +123,26 @@ export default {
 						formData.append(`images[${i}]`, imageForm);
 					}
 				}
-				console.log(formData);
-				await this.$store.dispatch('fetchPostUpload', {
-					title: this.title,
-					contents: this.contents,
-					images: formData,
-				});
+				formData.append('title', this.title);
+				formData.append('contents', this.contents);
+				const { data } = await axios.post(
+					'http://localhost:8080/api/v1/posts',
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data',
+							Authorization: `Bearer ${this.$store.getters.token}`,
+						},
+					},
+				);
+				console.log(data);
+				// 	await this.$store.dispatch('fetchPostUpload', {
+				// 		title: this.title,
+				// 		contents: this.contents,
+				// 		formData,
+				// 	});
 
-				//this.$router.push('/mypage');
+				// 	//this.$router.push('/mypage');
 			} catch (error) {
 				console.log(error);
 			}
