@@ -1,5 +1,6 @@
 package com.ryu.mypptbe.domain.post;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
+import com.ryu.mypptbe.domain.images.Images;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.user.User;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Entity
@@ -27,16 +29,7 @@ public class Posts extends BaseTimeEntity {
     private String title;
 
     @Column(name ="POST_CONTENT", columnDefinition = "TEXT", nullable = false)
-    private String content;
-
-    @Column(name ="POST_IAMGEURL")
-    private ArrayList<HashMap<Integer, Object>> postImgUrl;
-
-    @Column(name = "score")
-    private int score;
-
-    @Embedded
-    private Address address;
+    private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_SEQ")
@@ -45,6 +38,11 @@ public class Posts extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="STORE_SEQ")
     private Store store;
+
+    @OneToMany(mappedBy = "posts")
+    private List<Images> images = new ArrayList<>();
+
+
 
 
     /**
@@ -55,23 +53,31 @@ public class Posts extends BaseTimeEntity {
         user.getPosts().add(this);
     }
 
+    public void setStore(Store store){
+        this.store = store;
+        store.getPosts().add(this);
+    }
+
+    public void addImages(Images images) {
+        this.images.add(images);
+        images.setPosts(this);
+    }
+
 
 
     @Builder
-    public Posts(String title, String content, ArrayList<HashMap<Integer, Object>> postImgUrl, int score, Address address){
+    public Posts(String title, String contents, User user, Store store){
         this.title = title;
-        this.content = content;
-        this.postImgUrl =postImgUrl;
-        this.score = score;
-        this.address =address;
+        this.contents = contents;
+        this.user= user;
+        this.store = store;
 
     }
 
 
-    public void update(String title, String content, ArrayList<HashMap<Integer, Object>> postImgUrl) {
+    public void update(String title, String contents) {
         this.title = title;
-        this.content = content;
-        this.postImgUrl =postImgUrl;
+        this.contents = contents;
     }
 
 

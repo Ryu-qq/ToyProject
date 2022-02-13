@@ -16,10 +16,7 @@
 		</div>
 
 		<div class="mypage-postlist">
-			<div clsss="mypage-postrow">
-				<div class="post-container"></div>
-			</div>
-			<div></div>
+			<post-list-form></post-list-form>
 		</div>
 	</div>
 </template>
@@ -27,9 +24,10 @@
 <script>
 import { mapMutations, mapGetters } from 'vuex';
 import MyInfoForm from '../components/MyInfoForm.vue';
+import PostListForm from '@/components/posts/PostListForm.vue';
 
 export default {
-	components: { MyInfoForm },
+	components: { MyInfoForm, PostListForm },
 
 	computed: {
 		...mapGetters(['token', 'user']),

@@ -1,3 +1,4 @@
+
 spring:
   profiles.active: local
   # 데이터 소스 설정
@@ -15,14 +16,19 @@ spring:
       driver-class-name: ${spring.datasource.driver-class-name}
       data-source-properties:
         rewriteBatchedStatements: true
-
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 1MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 
   jpa:
     #show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -86,6 +92,9 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+file:
+  dir: /Users/ryu/Documents/Images
 
 
 # jwt secret key 설정

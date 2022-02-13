@@ -2,6 +2,7 @@ package com.ryu.mypptbe.domain.store;
 
 
 import com.ryu.mypptbe.domain.post.Posts;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Store {
     @Id
     @Column(name = "STORE_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantSeq;
+    private Long storeSeq;
 
     @Column(name = "STORE_NAME")
     private String storeName;
@@ -23,13 +24,14 @@ public class Store {
     @Embedded
     private Address address;
 
-    @Column(name = "STORE_SCOREAVG")
-    private int scoreAvg;
-
     @OneToMany(mappedBy = "store")
     private List<Posts> posts = new ArrayList<>();
 
 
-
+    @Builder
+    public Store(String storeName, Address address){
+        this.storeName = storeName;
+        this.address = address;
+    }
 
 }

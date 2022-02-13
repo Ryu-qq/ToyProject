@@ -1,45 +1,46 @@
 package com.ryu.mypptbe.api.dto.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.store.Address;
+import com.ryu.mypptbe.domain.store.Store;
+import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Getter
 @NoArgsConstructor
+@Getter
 public class PostsSaveRequestDto {
     private String title;
-    private String content;
-    private ArrayList<HashMap<Integer, Object>> postImageUrl;
-    private int score;
-    private Address address;
-
-    private String userId;
+    private String contents;
+    @JsonIgnore
+    private User user;
+    @JsonIgnore
+    private Store store;
 
 
 
     @Builder
-    public PostsSaveRequestDto(String title, String content, ArrayList<HashMap<Integer, Object>> postImageUrl, String userId, int score, Address address) {
+    public PostsSaveRequestDto(String title, String contents, User user, Store store) {
         this.title = title;
-        this.content = content;
-        this.postImageUrl = postImageUrl;
-        this.userId =userId;
-        this.score =score;
-        this.address =address;
+        this.contents = contents;
+        this.user =user;
+        this.store =store;
     }
 
     public Posts toEntity(){
 
         Posts posts = Posts.builder()
                         .title(title)
-                        .content(content)
-                        .postImgUrl(postImageUrl)
-                        .score(score)
-                        .address(address)
+                        .contents(contents)
+                        .user(user)
+                        .store(store)
                         .build();
 
         return posts;
