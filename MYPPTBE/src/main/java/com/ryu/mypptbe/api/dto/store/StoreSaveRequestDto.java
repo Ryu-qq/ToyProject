@@ -1,6 +1,5 @@
 package com.ryu.mypptbe.api.dto.store;
 
-import com.ryu.mypptbe.domain.images.Images;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import lombok.Builder;

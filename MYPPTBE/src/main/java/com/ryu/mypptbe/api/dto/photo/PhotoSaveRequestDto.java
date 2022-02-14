@@ -1,7 +1,6 @@
-package com.ryu.mypptbe.api.dto.Images;
+package com.ryu.mypptbe.api.dto.photo;
 
-import com.ryu.mypptbe.domain.images.Images;
-import com.ryu.mypptbe.domain.post.Posts;
+import com.ryu.mypptbe.domain.images.Photo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,29 +9,29 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-public class ImagesSaveRequestDto {
+public class PhotoSaveRequestDto {
 
     private String uploadImageName;
     private String filePath;
     private Long fileSize;
 
     @Builder
-    public ImagesSaveRequestDto(String uploadImageName, String filePath, Long fileSize ){
+    public PhotoSaveRequestDto(String uploadImageName, String filePath, Long fileSize ){
         this.uploadImageName = uploadImageName;
         this.filePath = filePath;
         this.fileSize = fileSize;
     }
 
 
-    public Images toEntity(){
+    public Photo toEntity(){
 
-        Images images = Images.builder()
+        Photo photo = Photo.builder()
                 .uploadImageName(uploadImageName)
                 .filePath(filePath)
                 .fileSize(fileSize)
                 .build();
 
-        return images;
+        return photo;
     }
 
 

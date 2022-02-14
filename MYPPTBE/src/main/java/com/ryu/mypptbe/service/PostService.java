@@ -1,20 +1,18 @@
 package com.ryu.mypptbe.service;
 
+import com.ryu.mypptbe.api.dto.post.PostsResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
-import com.ryu.mypptbe.api.handler.ImageHandler;
-import com.ryu.mypptbe.domain.images.Images;
-import com.ryu.mypptbe.domain.images.repository.ImagesRepository;
+import com.ryu.mypptbe.api.handler.PhotoHandler;
+import com.ryu.mypptbe.domain.images.Photo;
+import com.ryu.mypptbe.domain.images.repository.PhotoRepository;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
-import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -23,24 +21,28 @@ import java.util.Optional;
 public class PostService {
 
     private final PostsRepository postsRepository;
-    private final ImagesRepository imagesRepository;
-    private final ImageHandler imageHandler;
+    private final PhotoRepository photoRepository;
+    private final PhotoHandler photoHandler;
 
 
     @Transactional
     public Long uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
 
         Posts posts = requestDto.toEntity();
-        List<Images> imagesList = imageHandler.parseImageInfo(files);
+        List<Photo> photoList = photoHandler.parseImageInfo(files);
 
-        if(!imagesList.isEmpty()){
-            for(Images images : imagesList)
+        if(!photoList.isEmpty()){
+            for(Photo photo : photoList)
                 // 파일을 DB에 저장
-                posts.addImages(imagesRepository.save(images));
+                posts.addPhoto(photoRepository.save(photo));
         }
 
 
         return postsRepository.save(posts).getPostSeq();
 
+    }
+
+    public List<Posts> myPostList(Long userSeq) {
+        return postsRepository.myPostList(userSeq);
     }
 }

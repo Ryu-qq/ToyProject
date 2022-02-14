@@ -1,7 +1,7 @@
 package com.ryu.mypptbe.domain.post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
-import com.ryu.mypptbe.domain.images.Images;
-import com.ryu.mypptbe.domain.store.Address;
+import com.ryu.mypptbe.domain.images.Photo;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,16 +30,18 @@ public class Posts extends BaseTimeEntity {
     @Column(name ="POST_CONTENT", columnDefinition = "TEXT", nullable = false)
     private String contents;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_SEQ")
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="STORE_SEQ")
     private Store store;
 
     @OneToMany(mappedBy = "posts")
-    private List<Images> images = new ArrayList<>();
+    private List<Photo> photos = new ArrayList<>();
 
 
 
@@ -58,9 +59,9 @@ public class Posts extends BaseTimeEntity {
         store.getPosts().add(this);
     }
 
-    public void addImages(Images images) {
-        this.images.add(images);
-        images.setPosts(this);
+    public void addPhoto(Photo photo) {
+        this.photos.add(photo);
+        photo.setPosts(this);
     }
 
 

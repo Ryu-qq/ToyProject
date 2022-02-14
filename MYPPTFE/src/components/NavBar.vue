@@ -56,8 +56,9 @@ export default {
 
 		goMyPage() {
 			const userId = this.user.userId;
-			if (this.$route.path !== '/mypage')
+			if (this.$route.path !== '/mypage/' + userId) {
 				this.$router.push('/mypage/' + userId);
+			}
 		},
 	},
 };

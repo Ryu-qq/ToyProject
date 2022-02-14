@@ -11,7 +11,7 @@ export default {
 		req.post(BE_URI.POST, body, success);
 	},
 
-	getPostList(body, success) {
-		req.get(BE_URI.POSTLIST, body, success);
+	getPostList(params, success) {
+		return req.getList(BE_URI.POSTLIST, params, success);
 	},
 };

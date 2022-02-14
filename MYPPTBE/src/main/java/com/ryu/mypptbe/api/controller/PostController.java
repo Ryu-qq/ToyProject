@@ -1,11 +1,11 @@
 package com.ryu.mypptbe.api.controller;
 
 
+import com.ryu.mypptbe.api.dto.post.PostsResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
-import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.post.Posts;
+import com.ryu.mypptbe.domain.post.repository.PostsRepository;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.store.repository.StoreRepository;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
 
@@ -38,6 +39,9 @@ public class PostController {
     private final StoreService storeService;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final PostsRepository postsRepository;
+
+
 
 
     @PostMapping

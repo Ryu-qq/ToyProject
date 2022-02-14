@@ -5,7 +5,12 @@
 			<form class="form" @submit.prevent="submitForm">
 				<div class="title">
 					<label> 상호명 </label>
-					<input id="title" v-model="title" type="text" />
+					<input
+						id="title"
+						v-model="title"
+						type="text"
+						placeholder="가게이름을 입력해주세요"
+					/>
 				</div>
 				<div class="address">
 					<div class="zipcode">
@@ -124,13 +129,10 @@ export default {
 					},
 				);
 				console.log(data);
-				// 	await this.$store.dispatch('fetchPostUpload', {
-				// 		title: this.title,
-				// 		contents: this.contents,
-				// 		formData,
-				// 	});
-
-				// 	//this.$router.push('/mypage');
+				const userId = this.user.userId;
+				if (this.$route.path !== '/mypage/' + userId) {
+					this.$router.push('/mypage/' + userId);
+				}
 			} catch (error) {
 				console.log(error);
 			}

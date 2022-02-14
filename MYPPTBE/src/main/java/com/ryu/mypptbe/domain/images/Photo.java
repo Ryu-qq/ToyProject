@@ -3,39 +3,39 @@ package com.ryu.mypptbe.domain.images;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryu.mypptbe.domain.post.Posts;
-import com.ryu.mypptbe.domain.store.Address;
-import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-@Table(name ="IMAGES")
+@Table(name ="PHOTO")
 @Entity
-public class Images {
+public class Photo {
 
     @Id
-    @Column(name = "IMAGE_SEQ")
+    @Column(name = "PHOTO_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageSeq;
+    private Long photoSeq;
 
+    @JsonIgnore
     private String uploadImageName;
+
     private String filePath;
+
+    @JsonIgnore
     private Long fileSize;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_SEQ")
     private Posts posts;
 
 
     @Builder
-    public Images(String uploadImageName, String filePath, Long fileSize){
+    public Photo(String uploadImageName, String filePath, Long fileSize){
         this.uploadImageName = uploadImageName;
         this.filePath = filePath;
         this.fileSize =fileSize;
@@ -46,7 +46,7 @@ public class Images {
     /**연관관계 편의 메서드*/
     public void setPosts(Posts posts){
         this.posts = posts;
-        posts.getImages().add(this);
+        posts.getPhotos().add(this);
     }
 
 

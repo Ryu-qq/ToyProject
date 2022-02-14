@@ -45,6 +45,7 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
 

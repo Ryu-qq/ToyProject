@@ -77,7 +77,7 @@ export default {
 	},
 	methods: {
 		imageUpload() {
-			console.log(this.$refs.files.files);
+			//console.log(this.$refs.files.files);
 
 			//하나의 배열로 넣기
 			let num = -1;
@@ -102,12 +102,9 @@ export default {
 		},
 
 		imageAddUpload() {
-			console.log(this.$refs.files.files);
-
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
-				console.log(this.uploadImageIndex);
 				this.files = [
 					...this.files,
 					//이미지 업로드

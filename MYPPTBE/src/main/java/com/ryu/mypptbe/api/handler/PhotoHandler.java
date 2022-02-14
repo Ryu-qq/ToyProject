@@ -1,17 +1,15 @@
 package com.ryu.mypptbe.api.handler;
 
 
-import com.ryu.mypptbe.api.dto.Images.ImagesSaveRequestDto;
-import com.ryu.mypptbe.domain.images.Images;
-import com.ryu.mypptbe.service.ImageService;
-import lombok.RequiredArgsConstructor;
+import com.ryu.mypptbe.api.dto.photo.PhotoSaveRequestDto;
+import com.ryu.mypptbe.domain.images.Photo;
+import com.ryu.mypptbe.service.PhotoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,21 +18,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class ImageHandler {
+public class PhotoHandler {
 
-    private final ImageService imageService;
+    private final PhotoService photoService;
 
     @Value("${file.dir}")
     private String fileDir;
 
-    public ImageHandler(ImageService imageService) {
-        this.imageService = imageService;
+    public PhotoHandler(PhotoService imageService) {
+        this.photoService = imageService;
     }
 
-    public List<Images> parseImageInfo( List<MultipartFile> multipartFiles) throws Exception {
+    public List<Photo> parseImageInfo(List<MultipartFile> multipartFiles) throws Exception {
 
         // 반환할 파일 리스트
-        List<Images> fileList = new ArrayList<>();
+        List<Photo> fileList = new ArrayList<>();
 
         // 전달되어 온 파일이 존재할 경우
         if (!CollectionUtils.isEmpty(multipartFiles)) {
@@ -86,16 +84,16 @@ public class ImageHandler {
 
 
                 // Photo 엔티티 생성
-                ImagesSaveRequestDto requestDto = ImagesSaveRequestDto.builder()
+                PhotoSaveRequestDto requestDto = PhotoSaveRequestDto.builder()
                         .uploadImageName(multipartFile.getOriginalFilename())
                         .filePath(path + File.separator + new_file_name)
                         .fileSize(multipartFile.getSize())
                         .build();
 
-                Images images = requestDto.toEntity();
+                Photo photo = requestDto.toEntity();
                 System.out.println("absolutePath+ File.separator+ path + File.separator + new_file_name = " + absolutePath+ File.separator+ path + File.separator + new_file_name);
                 // 생성 후 리스트에 추가
-                fileList.add(images);
+                fileList.add(photo);
                 // 업로드 한 파일 데이터를 지정한 파일에 저장
                 multipartFile.transferTo(new File(absolutePath+ File.separator+ path + File.separator + new_file_name));
 

@@ -11,8 +11,8 @@ export default {
 		imageFiles: state => state.imageFiles,
 	},
 	actions: {
-		fetchPostList({ commit }) {
-			postsApi.getPostList(res => {
+		fetchPostList({ commit }, payload) {
+			postsApi.getPostList(payload, res => {
 				commit('setPost', res.posts);
 			});
 		},
