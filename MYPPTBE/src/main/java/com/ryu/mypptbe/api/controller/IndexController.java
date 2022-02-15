@@ -2,6 +2,7 @@ package com.ryu.mypptbe.api.controller;
 
 
 import com.ryu.mypptbe.api.dto.post.PostsResponseDto;
+import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
 import com.ryu.mypptbe.domain.user.repository.UserRepository;
@@ -31,7 +32,7 @@ public class IndexController {
     private final PostService postService;
 
     @GetMapping("/mypage")
-    public List<PostsResponseDto> getPostList(HttpServletRequest request){
+    public ApiResponse<List<PostsResponseDto>> getPostList(HttpServletRequest request){
 
         String userId = request.getParameter("userId");
         Long userSeq = userRepository.findByUserId(userId).get().getUserSeq();
@@ -42,7 +43,7 @@ public class IndexController {
                                     .collect(Collectors.toList());
 
 
-        return collect;
+        return ApiResponse.success("posts", collect);
 
 
     }

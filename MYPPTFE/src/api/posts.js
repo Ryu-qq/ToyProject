@@ -12,6 +12,6 @@ export default {
 	},
 
 	getPostList(params, success) {
-		return req.getList(BE_URI.POSTLIST, params, success);
+		req.getList(BE_URI.POSTLIST, params, success);
 	},
 };

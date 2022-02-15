@@ -28,7 +28,7 @@ spring:
     #show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -94,7 +94,7 @@ logging:
     org.hibernate.SQL: debug
 
 file:
-  dir: /Users/ryu/Documents/Images
+  dir: /Users/ryu/ToyProject/MYPPTFE/public
 
 
 # jwt secret key 설정

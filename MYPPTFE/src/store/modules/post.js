@@ -14,6 +14,7 @@ export default {
 		fetchPostList({ commit }, payload) {
 			postsApi.getPostList(payload, res => {
 				commit('setPost', res.posts);
+				console.log(res);
 			});
 		},
 
