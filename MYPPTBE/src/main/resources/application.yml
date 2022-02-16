@@ -94,7 +94,7 @@ logging:
     org.hibernate.SQL: debug
 
 file:
-  dir: /Users/ryu/ToyProject/MYPPTFE/public
+  dir: /Users/ryu/ToyProject/MYPPTFE/assets
 
 
 # jwt secret key 설정

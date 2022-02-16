@@ -19,7 +19,7 @@
 					</div>
 
 					<ul class="mypage-tap">
-						<li>게시물 1</li>
+						<li>게시물 {{ postCnt }}</li>
 						<li>팔로워 2</li>
 						<li>팔로잉 3</li>
 					</ul>
@@ -34,7 +34,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['user', 'token']),
+		...mapGetters(['user', 'token', 'posts']),
 
 		isLoggedIn() {
 			return this.token != null;
@@ -48,6 +48,10 @@ export default {
 		profileImageUrl() {
 			if (!this.user) return '';
 			return this.user.profileImageUrl;
+		},
+
+		postCnt() {
+			return this.posts.length;
 		},
 	},
 	methods: {

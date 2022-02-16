@@ -1,16 +1,18 @@
 <template>
 	<div>
-		<!-- <div v-if="!postList.length" class="post-container">게시물이 없습니다.</div> -->
+		<div v-if="!posts.length" class="post-container">게시물이 없습니다.</div>
 
 		<div>
 			<spinner v-if="isLoading"></spinner>
 			<div class="post-preview-container">
 				<div
-					v-for="file in postList"
+					v-for="file in posts"
 					:key="file.postSeq"
 					class="post-preview-wrapper"
 				>
-					<img :src="require(`/public/${file.image[0].filePath}`)" />
+					<a :href="link">
+						<img :src="require(`/assets/${file.image[0].filePath}`)" />
+					</a>
 				</div>
 			</div>
 		</div>
@@ -20,7 +22,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
 	components: {
@@ -28,13 +30,12 @@ export default {
 	},
 	data() {
 		return {
-			postList: [],
 			isLoading: false,
 			preview: '',
 		};
 	},
 	computed: {
-		...mapGetters(['token', 'user']),
+		...mapGetters(['token', 'user', 'posts']),
 	},
 	created() {
 		this.fetchPostList();
@@ -44,25 +45,18 @@ export default {
 		async fetchPostList() {
 			//this.isLoading = true;
 
-			const { data } = await axios.get('http://localhost:8080/api/v1/mypage', {
-				params: {
-					userId: this.user.userId,
-				},
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: `Bearer ${this.token}`,
-				},
-			});
-			console.log(data);
-			this.postList = data.body.posts;
-
-			// const { data } = await postsApi.getPostList(
-			// this.$store.dispatch('fetchPostList', {
+			// const { data } = await axios.get('http://localhost:8080/api/v1/mypage', {
 			// 	params: {
 			// 		userId: this.user.userId,
 			// 	},
+			// 	headers: {
+			// 		'Content-Type': 'multipart/form-data',
+			// 		Authorization: `Bearer ${this.token}`,
+			// 	},
 			// });
 			// console.log(data);
+			//this.postList = data.body.posts;
+			this.$store.dispatch('fetchPostList');
 			//this.isLoading = false;
 		},
 	},

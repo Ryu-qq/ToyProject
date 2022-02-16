@@ -34,7 +34,7 @@ export default {
 	getList(url, success, fail = err => err.response.data.message, config) {
 		axios
 			.get(wrapUserId(url), appendAuth(config))
-			.then(handler.handle(success))
+			.then(handler.postHandler(success))
 			.catch(fail);
 	},
 };

@@ -18,6 +18,34 @@
 		<div class="mypage-postlist">
 			<post-list-form></post-list-form>
 		</div>
+		<div class="mypage-postlist">
+			<map-form></map-form>
+		</div>
+		<!-- 
+				<div class="tappage">
+			<ul>
+				<li
+					v-for="tab in tabs"
+					:key="tab.index"
+					:class="{ active: tab === selectedTab }"
+					@click="onClickTab(tab)"
+				></li>
+			</ul>
+
+			<div class="tab-content">
+				<div v-show="selectedTab === tabs[0]">
+					<div class="mypage-postlist">
+						<post-list-form></post-list-form>
+					</div>
+				</div>
+				<div v-show="selectedTab === tabs[1]">
+					<div class="mypage-mapview">
+						<map-form></map-form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
 	</div>
 </template>
 
@@ -25,9 +53,19 @@
 import { mapMutations, mapGetters } from 'vuex';
 import MyInfoForm from '../components/MyInfoForm.vue';
 import PostListForm from '@/components/posts/PostListForm.vue';
+import MapForm from '@/components/MapForm.vue';
 
 export default {
-	components: { MyInfoForm, PostListForm },
+	components: { MyInfoForm, PostListForm, MapForm },
+	data() {
+		return {
+			tabs: [PostListForm, MapForm],
+			selectedTab: '',
+		};
+	},
+	created() {
+		this.selectedTab = this.tabs[0];
+	},
 
 	computed: {
 		...mapGetters(['token', 'user']),
@@ -49,6 +87,10 @@ export default {
 
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
+
+		onClick(tab) {
+			this.selectedTab = tab;
+		},
 
 		logout() {
 			this.setToken(null);

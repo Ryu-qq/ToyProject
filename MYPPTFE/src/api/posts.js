@@ -6,9 +6,8 @@ const BE_URI = {
 };
 
 export default {
-	uploadPost(body, success) {
-		console.log(body);
-		req.post(BE_URI.POST, body, success);
+	uploadPost(params, success) {
+		req.post(BE_URI.POST, params, success);
 	},
 
 	getPostList(params, success) {
