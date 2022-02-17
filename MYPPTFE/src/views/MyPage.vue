@@ -3,47 +3,35 @@
 		<my-info-form></my-info-form>
 
 		<div class="tappage">
-			<a href="">
+			<a @click="onClickTab(0)">
 				<span
 					><i class="fas fa-th fa-1x" style="color: #a6a6a6"> 게시물</i></span
 				>
 			</a>
-			<a href=""
+			<a @click="onClickTab(1)"
 				><span
 					><i class="fas fa-map fa-1x" style="color: #a6a6a6"> 지도</i></span
 				>
 			</a>
 		</div>
 
-		<div class="mypage-postlist">
+		<div v-show="selectedTab === tabs[0]" class="mypage-postlist">
 			<post-list-form></post-list-form>
 		</div>
-		<div class="mypage-postlist">
+		<div v-show="selectedTab === tabs[1]" class="mypage-mapview">
 			<map-form></map-form>
 		</div>
-		<!-- 
+		<!-- v
 				<div class="tappage">
 			<ul>
 				<li
 					v-for="tab in tabs"
 					:key="tab.index"
 					:class="{ active: tab === selectedTab }"
-					@click="onClickTab(tab)"
+					
 				></li>
 			</ul>
 
-			<div class="tab-content">
-				<div v-show="selectedTab === tabs[0]">
-					<div class="mypage-postlist">
-						<post-list-form></post-list-form>
-					</div>
-				</div>
-				<div v-show="selectedTab === tabs[1]">
-					<div class="mypage-mapview">
-						<map-form></map-form>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div> -->
 	</div>
@@ -62,9 +50,6 @@ export default {
 			tabs: [PostListForm, MapForm],
 			selectedTab: '',
 		};
-	},
-	created() {
-		this.selectedTab = this.tabs[0];
 	},
 
 	computed: {
@@ -85,11 +70,15 @@ export default {
 		},
 	},
 
+	created() {
+		this.selectedTab = this.tabs[0];
+	},
+
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
 
-		onClick(tab) {
-			this.selectedTab = tab;
+		onClickTab(i) {
+			this.selectedTab = this.tabs[i];
 		},
 
 		logout() {
@@ -105,6 +94,9 @@ export default {
 <style scoped>
 * {
 	box-sizing: border-box;
+}
+.highLight {
+	color: #000;
 }
 
 .tappage {

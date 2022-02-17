@@ -6,11 +6,14 @@
 			<spinner v-if="isLoading"></spinner>
 			<div class="post-preview-container">
 				<div
-					v-for="file in posts"
-					:key="file.postSeq"
+					v-for="(file, index) in posts"
+					:key="index"
 					class="post-preview-wrapper"
 				>
-					<a :href="link">
+					<a
+						:index="index"
+						:href="localhost:8080/api/v1/post/`${file.image[index].postSeq}`"
+					>
 						<img :src="require(`/assets/${file.image[0].filePath}`)" />
 					</a>
 				</div>
