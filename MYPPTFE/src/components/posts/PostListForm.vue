@@ -10,10 +10,7 @@
 					:key="index"
 					class="post-preview-wrapper"
 				>
-					<a
-						:index="index"
-						:href="localhost:8080/api/v1/post/`${file.image[index].postSeq}`"
-					>
+					<a @click="goPost(`${file.postSeq}`)">
 						<img :src="require(`/assets/${file.image[0].filePath}`)" />
 					</a>
 				</div>
@@ -25,7 +22,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-//import axios from 'axios';
+import axios from 'axios';
 
 export default {
 	components: {
@@ -61,6 +58,17 @@ export default {
 			//this.postList = data.body.posts;
 			this.$store.dispatch('fetchPostList');
 			//this.isLoading = false;
+		},
+		goPost(endpoint) {
+			axios.get(`http://localhost:8080/api/v1/post/${endpoint}`, {
+				params: {
+					userId: this.user.userId,
+				},
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${this.token}`,
+				},
+			});
 		},
 	},
 };
