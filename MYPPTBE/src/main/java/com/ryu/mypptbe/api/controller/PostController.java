@@ -96,4 +96,10 @@ public class PostController {
         return ResponseEntity.created(createdUri).body(eventResource);
 
     }
+
+    @GetMapping("/{postSeq}")
+    public ResponseEntity viewPost(@PathVariable("postSeq") Long PostSeq, @RequestParam("userID") String userId){
+        userRepository.findByUserId(userId);
+
+    }
 }
