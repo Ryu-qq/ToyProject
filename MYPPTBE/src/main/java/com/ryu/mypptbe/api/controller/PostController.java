@@ -1,10 +1,12 @@
 package com.ryu.mypptbe.api.controller;
 
 
-import com.ryu.mypptbe.api.dto.post.PostsResponseDto;
+import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
+import com.ryu.mypptbe.common.ApiResponse;
+import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
@@ -16,15 +18,16 @@ import com.ryu.mypptbe.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -98,8 +101,16 @@ public class PostController {
     }
 
     @GetMapping("/{postSeq}")
-    public ResponseEntity viewPost(@PathVariable("postSeq") Long PostSeq, @RequestParam("userID") String userId){
-        userRepository.findByUserId(userId);
+    public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
 
+        //Long userSeq = userRepository.findByUserId(userId).get().getUserSeq();
+
+        Posts findPost = postService.viewPost(postSeq);
+
+        PostResponseDto responseDto = PostResponseDto.builder()
+                .posts(findPost)
+                .build();
+
+        return ApiResponse.success("post", responseDto);
     }
 }

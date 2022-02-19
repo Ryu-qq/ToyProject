@@ -1,6 +1,5 @@
 package com.ryu.mypptbe.service;
 
-import com.ryu.mypptbe.api.dto.post.PostsResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 import com.ryu.mypptbe.api.handler.PhotoHandler;
 import com.ryu.mypptbe.domain.images.Photo;
@@ -45,4 +44,10 @@ public class PostService {
     public List<Posts> myPostList(Long userSeq) {
         return postsRepository.myPostList(userSeq);
     }
+
+    public Posts viewPost(Long PostSeq){
+        return postsRepository.findById(PostSeq).get();
+
+    }
+
 }

@@ -70,6 +70,7 @@ export default {
 	margin: 0;
 	padding: 0;
 	background-color: whitesmoke;
+	z-index: 3;
 }
 
 .header {

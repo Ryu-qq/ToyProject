@@ -2,18 +2,26 @@ import postsApi from '../../api/posts.js';
 
 export default {
 	state: {
-		posts: [],
+		postList: [],
 		imageFiles: [],
+		post: {},
 	},
 
 	getters: {
-		posts: state => state.posts,
+		post: state => state.post,
+		postList: state => state.postList,
 		imageFiles: state => state.imageFiles,
 	},
 	actions: {
+		fetchPost({ commit }, data) {
+			postsApi.getPost(data, res => {
+				commit('setPost', res.post);
+			});
+		},
+
 		fetchPostList({ commit }) {
 			postsApi.getPostList(res => {
-				commit('setPost', res.posts);
+				commit('setPostList', res.posts);
 			});
 		},
 
@@ -30,8 +38,11 @@ export default {
 		},
 	},
 	mutations: {
-		setPost(state, posts) {
-			state.posts = posts;
+		setPost(state, post) {
+			state.post = post;
+		},
+		setPostList(state, postList) {
+			state.postList = postList;
 		},
 		setImageFiles(state, imageFiles) {
 			state.imageFiles = imageFiles;

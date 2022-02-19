@@ -11,7 +11,7 @@
 
 						<button class="setting-btn">프로필 편집</button>
 						<button class="post-btn">
-							<router-link to="/post">게시물 등록하기</router-link>
+							<router-link to="/postAdd">게시물 등록하기</router-link>
 						</button>
 						<button @click="logout()">
 							<i class="fas fa-sign-out-alt"></i>
@@ -34,7 +34,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['user', 'token', 'posts']),
+		...mapGetters(['user', 'token', 'postList']),
 
 		isLoggedIn() {
 			return this.token != null;
@@ -51,7 +51,7 @@ export default {
 		},
 
 		postCnt() {
-			return this.posts.length;
+			return this.postList.length;
 		},
 	},
 	methods: {
@@ -75,7 +75,6 @@ export default {
 .mypage-container {
 	display: flex;
 	flex-direction: column;
-	padding-top: 60px;
 }
 
 .mypage-header {
@@ -85,7 +84,8 @@ export default {
 }
 
 .mypage-content {
-	margin-right: 74px;
+	width: 15%;
+	margin-right: 121px;
 }
 
 .mypage-setting {
@@ -95,9 +95,15 @@ export default {
 	justify-content: center;
 }
 
+.mypage-info {
+	font-size: 0.9rem;
+	margin-bottom: 20px;
+	align-items: center;
+}
+
 .mypage-info span {
-	padding: 10px 0;
-	margin: 0 8px;
+	padding: 0;
+	margin: 0;
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
@@ -110,8 +116,7 @@ export default {
 }
 
 .mypage-info button {
-	font-size: 0.6rem;
-	margin: 8px 0;
+	margin: 0 4px;
 	border: 1px solid #fff;
 	border-radius: 10px;
 	background-color: #f8f8f8;
@@ -124,7 +129,7 @@ export default {
 }
 
 section {
-	margin-top: 15px;
+	width: 100%;
 }
 
 section .mypage-info {
@@ -136,10 +141,13 @@ button:hover {
 }
 
 ul {
-	margin-left: 8px;
+	margin: 0px;
 	padding: 0;
 	display: flex;
 	list-style: none;
-	justify-content: space-between;
+}
+li {
+	font-size: 0.9rem;
+	margin-right: 28px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="container">
 		<my-info-form></my-info-form>
 
 		<div class="tappage">
@@ -21,19 +21,6 @@
 		<div v-show="selectedTab === tabs[1]" class="mypage-mapview">
 			<map-form></map-form>
 		</div>
-		<!-- v
-				<div class="tappage">
-			<ul>
-				<li
-					v-for="tab in tabs"
-					:key="tab.index"
-					:class="{ active: tab === selectedTab }"
-					
-				></li>
-			</ul>
-
-		</div>
-	</div> -->
 	</div>
 </template>
 
@@ -95,6 +82,9 @@ export default {
 * {
 	box-sizing: border-box;
 }
+.container {
+	padding: 70px 80px;
+}
 .highLight {
 	color: #000;
 }
@@ -114,7 +104,6 @@ export default {
 .mypage-postlist {
 	display: flex;
 	flex-direction: column;
-	margin: 10px 6%;
 }
 
 .post-container {

@@ -1,15 +1,18 @@
 <template>
 	<div>
-		<div v-if="!posts.length" class="post-container">게시물이 없습니다.</div>
+		<div v-if="!postList.length" class="post-container">게시물이 없습니다.</div>
 
-		<div>
-			<spinner v-if="isLoading"></spinner>
-			<div class="post-preview-container">
-				<div
-					v-for="(file, index) in posts"
-					:key="index"
-					class="post-preview-wrapper"
-				>
+		<spinner v-if="isLoading"></spinner>
+		<div class="post-preview-container">
+			<div
+				v-for="(file, index) in postList"
+				:key="index"
+				class="post-preview-wrapper"
+			>
+				<div class="post-preview-item">
+					<div v-show="file.image.length > 1" class="isFileList">
+						<i class="fas fa-clone"></i>
+					</div>
 					<a @click="goPost(`${file.postSeq}`)">
 						<img :src="require(`/assets/${file.image[0].filePath}`)" />
 					</a>
@@ -22,7 +25,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
 	components: {
@@ -35,7 +38,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['token', 'user', 'posts']),
+		...mapGetters(['token', 'user', 'postList']),
 	},
 	created() {
 		this.fetchPostList();
@@ -43,50 +46,61 @@ export default {
 
 	methods: {
 		async fetchPostList() {
-			//this.isLoading = true;
-
-			// const { data } = await axios.get('http://localhost:8080/api/v1/mypage', {
-			// 	params: {
-			// 		userId: this.user.userId,
-			// 	},
-			// 	headers: {
-			// 		'Content-Type': 'multipart/form-data',
-			// 		Authorization: `Bearer ${this.token}`,
-			// 	},
-			// });
-			// console.log(data);
-			//this.postList = data.body.posts;
-			this.$store.dispatch('fetchPostList');
-			//this.isLoading = false;
+			await this.$store.dispatch('fetchPostList');
 		},
-		goPost(endpoint) {
-			axios.get(`http://localhost:8080/api/v1/post/${endpoint}`, {
-				params: {
-					userId: this.user.userId,
-				},
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: `Bearer ${this.token}`,
-				},
-			});
+		async goPost(endpoint) {
+			const payLoad = { endpoint: endpoint, userId: this.user.userId };
+
+			this.$store.dispatch('fetchPost', payLoad);
+
+			this.$router.push('/post/' + endpoint);
 		},
 	},
 };
 </script>
 
 <style scoped>
-.post-preview-content-container {
-	height: 100%;
-}
-
 .post-preview-container {
-	height: 100%;
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	padding: 0;
+	margin: 0;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: repeat(auto-fill, minmax(30%, auto));
+
+	row-gap: 28px;
+	column-gap: 28px;
+	width: 100%;
 }
 
 img {
-	width: 250px;
-	height: 250px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+.isFileList {
+	position: absolute;
+
+	z-index: 2;
+	font-size: 20px;
+	text-align: right;
+	width: 99%;
+	padding-right: 23px;
+}
+
+.fa-clone {
+	color: #000;
+	padding-top: 10px;
+	cursor: pointer;
+}
+
+.post-preview-item {
+	position: relative;
+	width: 100%;
+	height: 0;
+	padding-top: calc(1000 / 1000 * 100%);
 }
 </style>

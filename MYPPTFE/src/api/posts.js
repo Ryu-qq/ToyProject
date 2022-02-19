@@ -13,4 +13,9 @@ export default {
 	getPostList(params, success) {
 		req.getList(BE_URI.POSTLIST, params, success);
 	},
+	getPost(params, success) {
+		const { endpoint } = params;
+
+		req.getPost(BE_URI.POST + '/' + endpoint, success);
+	},
 };

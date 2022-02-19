@@ -26,9 +26,14 @@ export const router = new VueRouter({
 			component: () => import('@/views/MyPage'),
 		},
 		{
-			path: '/post',
-			name: 'Post',
-			component: () => import('@/views/Post'),
+			path: '/postAdd',
+			name: 'PostAdd',
+			component: () => import('@/views/PostAddView'),
+		},
+		{
+			path: '/post/:postSeq',
+			name: 'PostView',
+			component: () => import('@/views/PostView'),
 		},
 		{
 			path: '/oauth/redirect',

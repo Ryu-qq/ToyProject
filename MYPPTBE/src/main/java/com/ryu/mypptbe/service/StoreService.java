@@ -15,8 +15,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     public Long saveStore(StoreSaveRequestDto storeSaveRequestDto){
-        Store store = storeSaveRequestDto.toEntity();
-        return storeRepository.save(store).getStoreSeq();
+        return storeRepository.save(storeSaveRequestDto.toEntity()).getStoreSeq();
     }
 
 }

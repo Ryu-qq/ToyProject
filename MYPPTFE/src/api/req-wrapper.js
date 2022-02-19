@@ -37,4 +37,11 @@ export default {
 			.then(handler.postHandler(success))
 			.catch(fail);
 	},
+
+	getPost(url, success, fail = err => err.response.data.message, config) {
+		axios
+			.get(wrap(url), appendAuth(config))
+			.then(handler.handle(success))
+			.catch(fail);
+	},
 };
