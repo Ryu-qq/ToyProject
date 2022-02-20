@@ -5,6 +5,7 @@ import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
+import com.ryu.mypptbe.api.handler.AddressHandler;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
@@ -18,7 +19,6 @@ import com.ryu.mypptbe.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -43,6 +42,7 @@ public class PostController {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final PostsRepository postsRepository;
+    private final AddressHandler addressHandler;
 
 
 
@@ -59,7 +59,9 @@ public class PostController {
                             ) throws Exception {
 
 
-        Optional<User> user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserId(userId).get();
+
+        System.out.println("user = " + user.getUserSeq());
 
         Address address =Address.builder()
                 .postcode(postcode)
@@ -67,25 +69,19 @@ public class PostController {
                 .detailStreet(detailStreet)
                 .build();
 
-        StoreSaveRequestDto storeSaveRequestDto = StoreSaveRequestDto.builder()
-                .storeName(title)
-                .address(address)
-                .build();
-
-        Long storeId = storeService.saveStore(storeSaveRequestDto);
-
+        StoreSaveRequestDto getGps = addressHandler.getCoordination(address);
+        Long storeId = storeService.saveStore(getGps);
         Store store = storeRepository.getById(storeId);
 
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
-                .user(user.get())
+                .user(user)
                 .store(store)
                 .title(title)
                 .contents(contents)
                 .build();
 
         Long newPostId = postService.uploadPost(requestDto, files);
-
 
         WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
         URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();
@@ -100,10 +96,11 @@ public class PostController {
 
     }
 
+
+
     @GetMapping("/{postSeq}")
     public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
 
-        //Long userSeq = userRepository.findByUserId(userId).get().getUserSeq();
 
         Posts findPost = postService.viewPost(postSeq);
 

@@ -134,7 +134,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .main-container {
 	width: 1200px;
 	height: 400px;

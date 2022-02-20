@@ -22,6 +22,8 @@ public class PostResponseDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private Address address;
+    private double xPos;
+    private double yPos;
     private List<PhotoResponseDto> image;
 
 
@@ -34,6 +36,8 @@ public class PostResponseDto {
         this.createdDate = posts.getCreatedDate();
         this.modifiedDate = posts.getModifiedDate();
         this.address = posts.getStore().getAddress();
+        this.xPos = posts.getStore().getXPos();
+        this.yPos = posts.getStore().getYPos();
         this.image = posts.getPhotos().stream()
                         .map(photo -> new PhotoResponseDto(photo))
                         .collect(Collectors.toList());

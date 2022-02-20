@@ -21,11 +21,13 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeSeq;
 
-    @Column(name = "STORE_NAME")
-    private String storeName;
+
 
     @Embedded
     private Address address;
+
+    private double xPos;
+    private double yPos;
 
     @JsonIgnore
     @OneToMany(mappedBy = "store")
@@ -33,9 +35,10 @@ public class Store {
 
 
     @Builder
-    public Store(String storeName, Address address){
-        this.storeName = storeName;
+    public Store( Address address, double xPos, double yPos){
         this.address = address;
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 
 }

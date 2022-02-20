@@ -9,10 +9,8 @@
 				:key="index"
 				class="post-preview-wrapper"
 			>
+				<i v-show="file.image.length > 1" class="fas fa-clone"></i>
 				<div class="post-preview-item">
-					<div v-show="file.image.length > 1" class="isFileList">
-						<i class="fas fa-clone"></i>
-					</div>
 					<a @click="goPost(`${file.postSeq}`)">
 						<img :src="require(`/assets/${file.image[0].filePath}`)" />
 					</a>
@@ -81,20 +79,19 @@ img {
 	height: 100%;
 	cursor: pointer;
 }
-.isFileList {
-	position: absolute;
-
-	z-index: 2;
-	font-size: 20px;
-	text-align: right;
-	width: 99%;
-	padding-right: 23px;
+.post-preview-wrapper {
+	position: relative;
 }
 
-.fa-clone {
-	color: #000;
-	padding-top: 10px;
-	cursor: pointer;
+i {
+	position: absolute;
+	z-index: 2;
+	color: #fff;
+	font-size: 24px;
+	text-align: right;
+	width: 99%;
+	padding-right: 5px;
+	padding-top: 5px;
 }
 
 .post-preview-item {

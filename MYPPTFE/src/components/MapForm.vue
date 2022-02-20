@@ -11,8 +11,17 @@
 
 <script>
 import bus from '@/utils/bus.js';
+import { mapGetters } from 'vuex';
 
 export default {
+	data() {
+		return {
+			map: null,
+		};
+	},
+	computed: {
+		...mapGetters(['postList']),
+	},
 	mounted() {
 		bus.$emit('start:spinner');
 		if (!('geolocation' in navigator)) {
@@ -50,23 +59,60 @@ export default {
 				level: 6,
 			};
 
-			this.customMap = new kakao.maps.Map(container, this.options);
+			this.map = new kakao.maps.Map(container, this.options);
+			this.makeMaker();
 			bus.$emit('end:spinner');
 		},
 
 		setCurrentPos() {
 			let moveLatLon = new kakao.maps.LatLng(this.gps_lat, this.gps_lng);
+			return this.map.setCenter(moveLatLon);
+		},
+		makeMaker() {
+			if (this.postList.length > 0) {
+				const position = [];
+				for (var i = 0; i < this.postList.length; i++) {
+					position.push({
+						title: this.postList[i].title,
+						latlng: new kakao.maps.LatLng(
+							this.postList[i].ypos,
+							this.postList[i].xpos,
+						),
+					});
+				}
 
-			return this.customMap.setCenter(moveLatLon);
+				var markerPosition = position;
+				console.log(markerPosition);
+				var imageSrc =
+					'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+
+				for (var j = 0; j < markerPosition.length; j++) {
+					// 마커 이미지의 이미지 크기 입니다
+					var imageSize = new kakao.maps.Size(24, 35);
+
+					// 마커 이미지를 생성합니다
+					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+					// 마커를 생성합니다
+					var marker = new kakao.maps.Marker({
+						map: this.map, // 마커를 표시할 지도
+
+						title: markerPosition[j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+						position: markerPosition[j].latlng, // 마커를 표시할 위치
+						image: markerImage, // 마커 이미지
+					});
+					marker.setMap(this.map);
+				}
+			}
 		},
 	},
 };
 </script>
 
-<style>
+<style scoped>
 .map_wrap {
 	width: 100%;
-	height: 100%;
+	height: 500px;
 	position: relative;
 	overflow: hidden;
 }

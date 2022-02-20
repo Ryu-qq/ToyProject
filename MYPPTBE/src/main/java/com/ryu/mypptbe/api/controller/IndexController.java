@@ -44,24 +44,4 @@ public class IndexController {
 
     }
 
-//    @GetMapping("/mypage")
-//    public ResponseEntity getPostListV2(HttpServletRequest request){
-//
-//        String userId = request.getParameter("userId");
-//        Long userSeq = userRepository.findByUserId(userId).get().getUserSeq();
-//
-//        List<Posts> result = postService.myPostList(userSeq);
-//        List<PostsResponseDto> collect = result.stream()
-//                .map(o -> new PostsResponseDto(o))
-//                .collect(Collectors.toList());
-//
-//
-//        for(PostsResponseDto dto : collect ){
-//            URI createdUri = linkTo(IndexController.class).slash(dto.getPostSeq()).toUri();
-//            EntityModel eventResource = EntityModel.of(dto);
-//            ResponseEntity response = ResponseEntity.created(createdUri).body(eventResource);
-//
-//        }
-//
-//    }
 }

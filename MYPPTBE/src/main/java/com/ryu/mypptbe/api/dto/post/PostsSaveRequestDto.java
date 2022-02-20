@@ -6,13 +6,9 @@ import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 @NoArgsConstructor
 @Getter

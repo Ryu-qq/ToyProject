@@ -6,21 +6,24 @@ import lombok.Builder;
 
 public class StoreSaveRequestDto {
 
-    private String storeName;
     private Address address;
+    private double xPos;
+    private double yPos;
 
 
     @Builder
-    StoreSaveRequestDto(String storeName, Address address) {
-        this.storeName = storeName;
+    StoreSaveRequestDto(Address address, double xPos, double yPos) {
         this.address = address;
+        this.xPos = xPos;
+        this.yPos =yPos;
     }
 
     public Store toEntity(){
 
         Store store = Store.builder()
-                .storeName(storeName)
                 .address(address)
+                .xPos(xPos)
+                .yPos(yPos)
                 .build();
 
         return store;

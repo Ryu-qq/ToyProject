@@ -16,8 +16,6 @@ export default {
 	box-sizing: border-box;
 	padding: 80px 6%;
 	display: flex;
-	flex-direction: column;
-	align-content: space-between;
 	width: 100%;
 	height: 850px;
 }
