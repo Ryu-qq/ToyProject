@@ -1,5 +1,6 @@
 package com.ryu.mypptbe.api.controller;
 
+import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.service.FollowService;
@@ -15,14 +16,17 @@ public class FollowController {
     private final FollowRepository followRepository;
     private final FollowService followService;
 
-//    @PostMapping("/follow/{toUserId}")
-//    public Follow followUser(@PathVariable long toUserId, Authentication authentication){
-//        return followService.save(authentication.getName(), toUserId);
-//    }
-//
-//    @DeleteMapping("/follow/{toUserId}")
-//    public void unFollowUser(@PathVariable long toUserId, Authentication authentication){
-//        Long id = followService.getFollowByFromEmailToId();
-//        followRepository.deleteBy(id);
-//    }
+    @PostMapping("/follow/{toUserId}")
+    public ApiResponse<Follow> followUser(@PathVariable String toUserId, @RequestParam("fromUserId") String fromUserId){
+
+        Follow newFollow = followService.save(toUserId, fromUserId);
+        return ApiResponse.success("follow", newFollow);
+
+    }
+
+    @DeleteMapping("/follow/{toUserId}")
+    public void unFollowUser(@PathVariable String toUserId,  @RequestParam("fromUserId") String fromUserId){
+        Long findId = followService.getByToUserIdAndFromUserId(toUserId, fromUserId);
+        followRepository.deleteById(findId);
+    }
 }

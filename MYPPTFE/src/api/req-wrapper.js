@@ -31,6 +31,19 @@ export default {
 			.catch(fail);
 	},
 
+	postFollow(
+		url,
+		body,
+		success,
+		fail = err => err.response.data.message,
+		config,
+	) {
+		axios
+			.post(wrap(url), body, appendAuth(config))
+			.then(handler.handle(success))
+			.catch(fail);
+	},
+
 	getList(url, success, fail = err => err.response.data.message, config) {
 		axios
 			.get(wrap(url), appendAuth(config))

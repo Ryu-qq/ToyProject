@@ -7,21 +7,23 @@
 				</div>
 				<section>
 					<div class="mypage-info">
-						<span> {{ username }} 님 환영합니다!</span>
-
-						<button class="setting-btn">프로필 편집</button>
-						<button class="post-btn">
-							<router-link to="/post">게시물 등록하기</router-link>
-						</button>
-						<button @click="logout()">
-							<i class="fas fa-sign-out-alt"></i>
-						</button>
+						<span v-if="isLoggedIn"> {{ username }} 님 환영합니다!</span>
+						<span v-else>{{ username }} 님</span>
+						<div v-show="isLoggedIn">
+							<button class="setting-btn">프로필 편집</button>
+							<button class="post-btn">
+								<router-link to="/post">게시물 등록하기</router-link>
+							</button>
+							<button @click="logout()">
+								<i class="fas fa-sign-out-alt"></i>
+							</button>
+						</div>
 					</div>
 
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
-						<li>팔로워 2</li>
-						<li>팔로잉 3</li>
+						<li>팔로워 {{ followerCnt }}</li>
+						<li>팔로잉 {{ followingCnt }}</li>
 					</ul>
 				</section>
 			</div>
@@ -34,35 +36,56 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['user', 'token', 'postList']),
+		...mapGetters(['user', 'token', 'postList', 'userInfo', 'follow']),
 
 		isLoggedIn() {
 			return this.token != null;
 		},
 
 		username() {
-			if (!this.user) return '';
-			return this.user.username;
+			if (this.isLoggedIn) {
+				return this.user.username;
+			} else {
+				return this.userInfo.username;
+			}
 		},
 
 		profileImageUrl() {
-			if (!this.user) return '';
-			return this.user.profileImageUrl;
+			if (this.isLoggedIn) {
+				return this.user.profileImageUrl;
+			} else {
+				return this.userInfo.profileImageUrl;
+			}
 		},
 
 		postCnt() {
 			if (!this.postList) return 0;
 			return this.postList.length;
 		},
+		followerCnt() {
+			return this.userInfo.follower.length;
+		},
+		followingCnt() {
+			return this.userInfo.following.length;
+		},
 	},
 	methods: {
-		...mapMutations(['setToken', 'setUser']),
+		...mapMutations(['setToken', 'setUser', 'setUserInfo']),
 
 		logout() {
 			this.setToken(null);
 			this.setUser(null);
 			alert('로그아웃되었습니다.');
 			if (this.$route.path !== '/storeview') this.$router.push('/storeview');
+		},
+
+		getFollowInfo() {
+			const payLoad = {
+				toUserId: this.userInfo.userId,
+				fromUserId: this.user.userId,
+			};
+
+			this.$store.dispatch('fetchFollow', payLoad);
 		},
 
 		// getSomeoneInfo(){

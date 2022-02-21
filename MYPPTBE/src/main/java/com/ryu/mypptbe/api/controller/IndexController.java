@@ -4,6 +4,8 @@ package com.ryu.mypptbe.api.controller;
 import com.ryu.mypptbe.api.dto.UserReponseDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.common.ApiResponse;
+import com.ryu.mypptbe.domain.follow.Follow;
+import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.domain.user.repository.UserRepository;
@@ -31,6 +33,7 @@ public class IndexController {
 
     private final UserRepository userRepository;
     private final PostService postService;
+    private final FollowRepository followRepository;
 
     @GetMapping("/userinfo/{userId}")
     public ApiResponse< UserReponseDto> getPostList(@PathVariable String userId){
@@ -54,8 +57,9 @@ public class IndexController {
                 .roleType(user.getRoleType())
                 .posts(collect)
                 .profileImageUrl(user.getProfileImageUrl())
+                .follower(user.getFromUser())
+                .following(user.getToUser())
                 .build();
-
 
 
         return ApiResponse.success("userInfo", userReponseDto);

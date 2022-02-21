@@ -36,7 +36,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['token', 'user', 'postList']),
+		...mapGetters(['token', 'user', 'postList', 'userInfo']),
 	},
 	created() {
 		this.fetchPostList();
@@ -47,7 +47,7 @@ export default {
 			await this.$store.dispatch('fetchPostList', this.$route.params.userId);
 		},
 		async goPost(endpoint) {
-			const payLoad = { endpoint: endpoint, userId: this.user.userId };
+			const payLoad = { endpoint: endpoint, userId: this.userInfo.userId };
 
 			this.$store.dispatch('fetchPost', payLoad);
 

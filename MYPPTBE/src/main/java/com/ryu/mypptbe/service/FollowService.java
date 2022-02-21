@@ -1,5 +1,6 @@
 package com.ryu.mypptbe.service;
 
+import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.domain.user.User;
@@ -16,21 +17,27 @@ public class FollowService {
     private final FollowRepository followRepository;
 
     @Transactional
-    public void getFollowByFromEmailToId(String email, Long toId){
-//        User fromUser = userRepository.findByUserId();
-//        User toUser = userRepository.findByUserId();
+    public Long getByToUserIdAndFromUserId(String toUserId, String fromUserId){
 
-        //Follow follow = followRepository.findFollowByFromUserAndToUser(fromUser, toUser);
+        User fromUser = userRepository.findByUserId(fromUserId).get();
+        User toUser = userRepository.findByUserId(toUserId).get();
 
-//        if(follow != null) return follow.getId();
-//        else return -1;
+        Follow follow = followRepository.findByToUserAndFromUser(fromUser, toUser);
+
+        if(follow != null) return follow.getFollowSeq();
+        else return -1L;
     }
 
     @Transactional
-    public void save(String email, Long toUserId){
-//        User fromUser = userRepository.findByUserId();
-//        User toUser = userRepository.findByUserId();
-//
-//        return followRepository.save(Follow.)
+    public Follow save(String toUserId, String fromUserId){
+        User fromUser = userRepository.findByUserId(toUserId).get();
+        User toUser = userRepository.findByUserId(fromUserId).get();
+
+        FollowRequestDto follow = FollowRequestDto.builder()
+                .fromUser(fromUser)
+                .toUser(toUser)
+                .build();
+
+        return followRepository.save(follow.toEntity());
     }
 }

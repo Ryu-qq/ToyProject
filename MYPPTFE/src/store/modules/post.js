@@ -4,6 +4,7 @@ export default {
 	state: {
 		postList: [],
 		imageFiles: [],
+		userInfo: {},
 		post: {},
 	},
 
@@ -11,6 +12,7 @@ export default {
 		post: state => state.post,
 		postList: state => state.postList,
 		imageFiles: state => state.imageFiles,
+		userInfo: state => state.userInfo,
 	},
 	actions: {
 		fetchPost({ commit }, data) {
@@ -22,6 +24,7 @@ export default {
 		fetchPostList({ commit }, data) {
 			postsApi.getPostList(data, res => {
 				commit('setPostList', res.userInfo.posts);
+				commit('setUserInfo', res.userInfo);
 			});
 		},
 
@@ -38,6 +41,9 @@ export default {
 		},
 	},
 	mutations: {
+		setUserInfo(state, userInfo) {
+			state.userInfo = userInfo;
+		},
 		setPost(state, post) {
 			state.post = post;
 		},

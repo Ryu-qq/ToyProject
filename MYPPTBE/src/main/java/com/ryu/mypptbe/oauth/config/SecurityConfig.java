@@ -16,6 +16,7 @@ import com.ryu.mypptbe.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -71,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/userinfo/**").permitAll()
                     .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getKey())
                     .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getKey())
                     .anyRequest().authenticated()
