@@ -44,7 +44,7 @@ export default {
 
 	methods: {
 		async fetchPostList() {
-			await this.$store.dispatch('fetchPostList');
+			await this.$store.dispatch('fetchPostList', this.$route.params.userId);
 		},
 		async goPost(endpoint) {
 			const payLoad = { endpoint: endpoint, userId: this.user.userId };

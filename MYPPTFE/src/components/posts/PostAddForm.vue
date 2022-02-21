@@ -130,8 +130,8 @@ export default {
 				);
 				console.log(data);
 				const userId = this.user.userId;
-				if (this.$route.path !== '/mypage/' + userId) {
-					this.$router.push('/mypage/' + userId);
+				if (this.$route.path !== '/userinfo/' + userId) {
+					this.$router.push('/userinfo/' + userId);
 				}
 			} catch (error) {
 				console.log(error);

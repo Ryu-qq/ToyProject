@@ -11,7 +11,7 @@
 
 						<button class="setting-btn">프로필 편집</button>
 						<button class="post-btn">
-							<router-link to="/postAdd">게시물 등록하기</router-link>
+							<router-link to="/post">게시물 등록하기</router-link>
 						</button>
 						<button @click="logout()">
 							<i class="fas fa-sign-out-alt"></i>
@@ -51,6 +51,7 @@ export default {
 		},
 
 		postCnt() {
+			if (!this.postList) return 0;
 			return this.postList.length;
 		},
 	},
@@ -63,6 +64,13 @@ export default {
 			alert('로그아웃되었습니다.');
 			if (this.$route.path !== '/storeview') this.$router.push('/storeview');
 		},
+
+		// getSomeoneInfo(){
+		// 	if(this.$route.path !== '/mypage/' + userId){
+		// 		this.$store.dispatch('fetchUser', payLoad);
+
+		// 	}
+		// }
 	},
 };
 </script>

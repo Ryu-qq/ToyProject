@@ -16,7 +16,7 @@
 					<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
 				</div>
 				<div v-else class="my-picture">
-					<img :src="profileImageUrl" alt="photo" @click="goMyPage()" />
+					<img :src="profileImageUrl" alt="photo" @click="goUserPage()" />
 				</div>
 			</div>
 		</div>
@@ -54,10 +54,10 @@ export default {
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
 
-		goMyPage() {
+		goUserPage() {
 			const userId = this.user.userId;
-			if (this.$route.path !== '/mypage/' + userId) {
-				this.$router.push('/mypage/' + userId);
+			if (this.$route.path !== '/userinfo/' + userId) {
+				this.$router.push('/userinfo/' + userId);
 			}
 		},
 	},

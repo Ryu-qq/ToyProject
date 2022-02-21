@@ -2,7 +2,7 @@ import req from './req-wrapper';
 
 const BE_URI = {
 	POST: `/posts`,
-	POSTLIST: `/mypage`,
+	POSTLIST: `/userinfo`,
 };
 
 export default {
@@ -11,8 +11,9 @@ export default {
 	},
 
 	getPostList(params, success) {
-		req.getList(BE_URI.POSTLIST, params, success);
+		req.getList(BE_URI.POSTLIST + '/' + params, success);
 	},
+
 	getPost(params, success) {
 		const { endpoint } = params;
 

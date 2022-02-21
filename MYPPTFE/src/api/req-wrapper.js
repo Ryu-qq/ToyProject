@@ -5,8 +5,8 @@ import handler from './res-handler';
 const BACKEND_DOMAINPORT = process.env.VUE_APP_API_URL;
 const URI_PREPENDER = '/api/v1';
 const wrap = url => `${BACKEND_DOMAINPORT}${URI_PREPENDER}${url}`;
-const wrapUserId = url =>
-	`${BACKEND_DOMAINPORT}${URI_PREPENDER}${url}?userId=${store.getters.user.userId}`;
+// const wrapUserId = url =>
+// 	`${BACKEND_DOMAINPORT}${URI_PREPENDER}${url}?userId=${store.getters.user.userId}`;
 const appendAuth = config => {
 	const token = store.getters.token;
 	if (token) {
@@ -33,7 +33,7 @@ export default {
 
 	getList(url, success, fail = err => err.response.data.message, config) {
 		axios
-			.get(wrapUserId(url), appendAuth(config))
+			.get(wrap(url), appendAuth(config))
 			.then(handler.postHandler(success))
 			.catch(fail);
 	},

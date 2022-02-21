@@ -3,6 +3,7 @@ package com.ryu.mypptbe.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
+import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.oauth.domain.RoleType;
 import lombok.Builder;
@@ -48,6 +49,14 @@ public class User extends BaseTimeEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy ="fromUser" )
+    private List<Follow> fromUser = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy ="toUser" )
+    private List<Follow> toUser = new ArrayList<>();
 
 
 

@@ -21,13 +21,13 @@ export const router = new VueRouter({
 			component: () => import('@/views/LookAroundView'),
 		},
 		{
-			path: '/mypage/:userId',
-			name: 'MyPage',
-			component: () => import('@/views/MyPage'),
+			path: '/userinfo/:userId',
+			name: 'UserPage',
+			component: () => import('@/views/UserPage'),
 		},
 		{
-			path: '/postAdd',
-			name: 'PostAdd',
+			path: '/post',
+			name: 'post',
 			component: () => import('@/views/PostAddView'),
 		},
 		{

@@ -19,9 +19,9 @@ export default {
 			});
 		},
 
-		fetchPostList({ commit }) {
-			postsApi.getPostList(res => {
-				commit('setPostList', res.posts);
+		fetchPostList({ commit }, data) {
+			postsApi.getPostList(data, res => {
+				commit('setPostList', res.userInfo.posts);
 			});
 		},
 
