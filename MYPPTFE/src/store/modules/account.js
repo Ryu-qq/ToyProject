@@ -19,11 +19,11 @@ export default {
 		},
 		fetchFollow({ commit }, data) {
 			accountApi.getFollow(data, res => {
-				// const data = {
-				// 	following: res.userInfo.following,
-				// 	follower: res.userInfo.follower,
-				// };
-
+				commit('setFollow', res.follow);
+			});
+		},
+		fetchFollowStatus({ commit }, data) {
+			accountApi.getFollow(data, res => {
 				commit('setFollow', res.follow);
 			});
 		},

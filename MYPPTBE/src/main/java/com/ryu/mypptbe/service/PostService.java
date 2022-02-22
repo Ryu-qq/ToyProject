@@ -25,7 +25,7 @@ public class PostService {
 
 
     @Transactional
-    public Long uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
+    public Posts uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
 
         Posts posts = requestDto.toEntity();
         List<Photo> photoList = photoHandler.parseImageInfo(files);
@@ -37,7 +37,7 @@ public class PostService {
         }
 
 
-        return postsRepository.save(posts).getPostSeq();
+        return postsRepository.save(posts);
 
     }
 

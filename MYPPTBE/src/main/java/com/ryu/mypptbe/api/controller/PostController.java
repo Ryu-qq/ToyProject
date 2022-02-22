@@ -16,6 +16,7 @@ import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import com.ryu.mypptbe.service.PostService;
 import com.ryu.mypptbe.service.StoreService;
+import com.ryu.mypptbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
@@ -39,9 +40,7 @@ public class PostController {
 
     private final PostService postService;
     private final StoreService storeService;
-    private final StoreRepository storeRepository;
-    private final UserRepository userRepository;
-    private final PostsRepository postsRepository;
+    private final UserService userService;
     private final AddressHandler addressHandler;
 
 
@@ -59,9 +58,8 @@ public class PostController {
                             ) throws Exception {
 
 
-        User user = userRepository.findByUserId(userId).get();
+        User user = userService.getUser(userId);
 
-        System.out.println("user = " + user.getUserSeq());
 
         Address address =Address.builder()
                 .postcode(postcode)
@@ -70,18 +68,17 @@ public class PostController {
                 .build();
 
         StoreSaveRequestDto getGps = addressHandler.getCoordination(address);
-        Long storeId = storeService.saveStore(getGps);
-        Store store = storeRepository.getById(storeId);
+        Store newStore = storeService.saveStore(getGps);
 
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .user(user)
-                .store(store)
+                .store(newStore)
                 .title(title)
                 .contents(contents)
                 .build();
 
-        Long newPostId = postService.uploadPost(requestDto, files);
+        Long newPostId = postService.uploadPost(requestDto, files).getPostSeq();
 
         WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
         URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();

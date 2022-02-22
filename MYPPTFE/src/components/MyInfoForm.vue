@@ -7,9 +7,15 @@
 				</div>
 				<section>
 					<div class="mypage-info">
-						<span v-if="isLoggedIn"> {{ username }} 님 환영합니다!</span>
-						<span v-else>{{ username }} 님</span>
-						<div v-show="isLoggedIn">
+						<div v-if="isMySelf">
+							<span> {{ username }} 님 환영합니다!</span>
+						</div>
+						<div v-else class="UserInfoComponent">
+							<span>{{ username }} 님</span>
+							<button class="setting-btn">{{ FollowStatus }}</button>
+						</div>
+
+						<div v-if="isMySelf">
 							<button class="setting-btn">프로필 편집</button>
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
@@ -35,15 +41,24 @@
 import { mapGetters, mapMutations } from 'vuex';
 
 export default {
+	data() {
+		return {
+			FollowStatus: '',
+		};
+	},
 	computed: {
 		...mapGetters(['user', 'token', 'postList', 'userInfo', 'follow']),
 
-		isLoggedIn() {
-			return this.token != null;
+		isMySelf() {
+			if (this.userInfo.userId == this.user.userId) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 
 		username() {
-			if (this.isLoggedIn) {
+			if (this.isMySelf) {
 				return this.user.username;
 			} else {
 				return this.userInfo.username;
@@ -51,12 +66,16 @@ export default {
 		},
 
 		profileImageUrl() {
-			if (this.isLoggedIn) {
+			if (this.isMySelf) {
 				return this.user.profileImageUrl;
 			} else {
 				return this.userInfo.profileImageUrl;
 			}
 		},
+
+		// followStatusMsg(){
+		// 	if(this.user.following)
+		// },
 
 		postCnt() {
 			if (!this.postList) return 0;
@@ -86,6 +105,15 @@ export default {
 			};
 
 			this.$store.dispatch('fetchFollow', payLoad);
+		},
+
+		getfollowStatus() {
+			const payLoad = {
+				toUserId: this.userInfo.userId,
+				fromUserId: this.user.userId,
+			};
+
+			this.$store.dispatch('fetchFollowStatus', payLoad);
 		},
 
 		// getSomeoneInfo(){

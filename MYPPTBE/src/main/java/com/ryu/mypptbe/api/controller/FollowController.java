@@ -16,6 +16,14 @@ public class FollowController {
     private final FollowRepository followRepository;
     private final FollowService followService;
 
+    @GetMapping("/follow/{toUserId}")
+    public ApiResponse<Long> chkfollowUser(@PathVariable String toUserId, @RequestParam("fromUserId") String fromUserId){
+
+        Long followStatus = followService.getByToUserIdAndFromUserId(toUserId, fromUserId);
+        return ApiResponse.success("follow", followStatus);
+
+    }
+
     @PostMapping("/follow/{toUserId}")
     public ApiResponse<Follow> followUser(@PathVariable String toUserId, @RequestParam("fromUserId") String fromUserId){
 

@@ -4,6 +4,7 @@ package com.ryu.mypptbe.api.controller;
 import com.ryu.mypptbe.api.dto.UserReponseDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.domain.post.Posts;
+import com.ryu.mypptbe.service.FollowService;
 import com.ryu.mypptbe.service.UserService;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.user.User;
@@ -34,20 +35,21 @@ public class UserController {
                 (org.springframework.security.core.userdetails.User)
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<User> user = userService.getUser(principal.getUsername());
+        User user = userService.getUser(principal.getUsername());
 
-        List<Posts> result = user.get().getPosts();
+        List<Posts> result = user.getPosts();
         List<PostResponseDto> collect = result.stream()
                 .map(o -> new PostResponseDto(o))
                 .collect(Collectors.toList());
 
-
         UserReponseDto userReponseDto = UserReponseDto.builder()
-                .userId(user.get().getUserId())
-                .username(user.get().getUsername())
-                .roleType(user.get().getRoleType())
-                .profileImageUrl(user.get().getProfileImageUrl())
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .roleType(user.getRoleType())
+                .profileImageUrl(user.getProfileImageUrl())
                 .posts(collect)
+                .follower(user.getFromUser())
+                .following(user.getToUser())
                 .build();
 
         return ApiResponse.success("user", userReponseDto);

@@ -13,12 +13,14 @@ import com.ryu.mypptbe.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,14 +30,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/userinfo")
 public class IndexController {
 
     private final UserRepository userRepository;
     private final PostService postService;
     private final FollowRepository followRepository;
 
-    @GetMapping("/userinfo/{userId}")
+    @GetMapping("/{userId}")
     public ApiResponse< UserReponseDto> getPostList(@PathVariable String userId){
 
         //String userId = request.getParameter("userId");
@@ -60,6 +62,7 @@ public class IndexController {
                 .follower(user.getFromUser())
                 .following(user.getToUser())
                 .build();
+
 
 
         return ApiResponse.success("userInfo", userReponseDto);

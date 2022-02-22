@@ -20,8 +20,8 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public Long saveStore(StoreSaveRequestDto storeSaveRequestDto){
-        return storeRepository.save(storeSaveRequestDto.toEntity()).getStoreSeq();
+    public Store saveStore(StoreSaveRequestDto storeSaveRequestDto){
+        return storeRepository.save(storeSaveRequestDto.toEntity());
     }
 
 
