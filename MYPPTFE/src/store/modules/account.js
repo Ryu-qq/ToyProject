@@ -22,11 +22,6 @@ export default {
 				commit('setFollow', res.follow);
 			});
 		},
-		fetchFollowStatus({ commit }, data) {
-			accountApi.getFollow(data, res => {
-				commit('setFollow', res.follow);
-			});
-		},
 	},
 	mutations: {
 		setToken(state, token) {

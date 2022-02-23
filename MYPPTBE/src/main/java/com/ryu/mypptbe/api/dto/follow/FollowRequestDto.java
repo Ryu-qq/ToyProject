@@ -12,26 +12,29 @@ import lombok.NoArgsConstructor;
 public class FollowRequestDto {
 
 
-    private User fromUser;
-    private User toUser;
+    private String fromUser;
+    private String toUser;
+    private User following;
+    private User follower;
 
     @Builder
-    public FollowRequestDto(User fromUser, User toUser){
+    public FollowRequestDto(String fromUser, String toUser, User following, User follower ){
         this.fromUser =fromUser;
         this.toUser = toUser;
+        this.follower =follower;
+        this.following =following;
     }
-
 
 
     public Follow toEntity(){
 
         Follow follow = Follow.builder()
-                .fromUser(fromUser)
-                .toUser(toUser)
+                .fromUser(follower)
+                .toUser(following)
                 .build();
 
-        follow.setFromUser(fromUser);
-        follow.setToUser(toUser);
+        follow.setFromUser(follower);
+        follow.setToUser(following);
 
         return follow;
     }

@@ -12,6 +12,10 @@ export default {
 	getFollow(params, success) {
 		const { toUserId, fromUserId } = params;
 
-		req.postFollow(BE_URI.FOLLOW + '/' + toUserId, fromUserId, success);
+		req.postFollow(
+			BE_URI.FOLLOW,
+			{ fromUser: fromUserId, toUser: toUserId },
+			success,
+		);
 	},
 };

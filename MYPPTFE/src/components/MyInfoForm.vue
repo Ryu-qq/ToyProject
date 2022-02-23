@@ -12,7 +12,6 @@
 						</div>
 						<div v-else class="UserInfoComponent">
 							<span>{{ username }} 님</span>
-							<button class="setting-btn">{{ FollowStatus }}</button>
 						</div>
 
 						<div v-if="isMySelf">
@@ -31,6 +30,10 @@
 						<li>팔로워 {{ followerCnt }}</li>
 						<li>팔로잉 {{ followingCnt }}</li>
 					</ul>
+
+					<button class="setting-btn" @click="getFollowInfo()">
+						팔로우체크
+					</button>
 				</section>
 			</div>
 		</div>
@@ -106,22 +109,6 @@ export default {
 
 			this.$store.dispatch('fetchFollow', payLoad);
 		},
-
-		getfollowStatus() {
-			const payLoad = {
-				toUserId: this.userInfo.userId,
-				fromUserId: this.user.userId,
-			};
-
-			this.$store.dispatch('fetchFollowStatus', payLoad);
-		},
-
-		// getSomeoneInfo(){
-		// 	if(this.$route.path !== '/mypage/' + userId){
-		// 		this.$store.dispatch('fetchUser', payLoad);
-
-		// 	}
-		// }
 	},
 };
 </script>
@@ -175,6 +162,14 @@ export default {
 }
 
 .mypage-info button {
+	margin: 0 4px;
+	border: 1px solid #fff;
+	border-radius: 10px;
+	background-color: #f8f8f8;
+	text-decoration: none;
+}
+
+.setting-btn {
 	margin: 0 4px;
 	border: 1px solid #fff;
 	border-radius: 10px;

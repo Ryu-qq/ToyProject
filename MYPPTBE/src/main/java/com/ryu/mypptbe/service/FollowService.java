@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FollowService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final FollowRepository followRepository;
 
     @Transactional
     public Long getByToUserIdAndFromUserId(String toUserId, String fromUserId){
+        
+        User following = userService.getUser(toUserId);
+        User follower = userService.getUser(fromUserId);
 
-        User fromUser = userRepository.findByUserId(fromUserId).get();
-        User toUser = userRepository.findByUserId(toUserId).get();
-
-        Follow follow = followRepository.findByToUserAndFromUser(fromUser, toUser);
+        Follow follow = followRepository.findByToUserAndFromUser(following, follower);
 
         if(follow != null) return follow.getFollowSeq();
         else return -1L;
@@ -30,14 +30,21 @@ public class FollowService {
 
     @Transactional
     public Follow save(String toUserId, String fromUserId){
-        User fromUser = userRepository.findByUserId(toUserId).get();
-        User toUser = userRepository.findByUserId(fromUserId).get();
+
+        User following = userService.getUser(toUserId);
+        User follower = userService.getUser(fromUserId);
 
         FollowRequestDto follow = FollowRequestDto.builder()
-                .fromUser(fromUser)
-                .toUser(toUser)
+                .follower(follower)
+                .following(following)
                 .build();
 
         return followRepository.save(follow.toEntity());
+    }
+
+    @Transactional
+    public void delete(Long userId){
+        followRepository.deleteById(userId);
+
     }
 }
