@@ -23,6 +23,7 @@ export default {
 	font-size: 16px;
 	color: black;
 	text-decoration: none;
+	margin: 0 7%;
 }
 
 .page-enter-active,

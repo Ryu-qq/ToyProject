@@ -2,9 +2,17 @@
 	<div class="post-container">
 		<div class="photo-container">
 			<div class="post-preview-wrapper">
-				<i v-show="post.image.length > 1" class="fas fa-caret-left fa-2x"></i>
-				<i v-show="post.image.length > 1" class="fas fa-caret-right fa-2x"></i>
-				<img :src="require(`/assets/${post.image[0].filePath}`)" />
+				<i
+					v-if="post.image.length > 1 && photoIdx != 0"
+					class="fas fa-caret-left fa-2x"
+					@click="goLeft()"
+				></i>
+				<i
+					v-show="post.image.length > 1 && photoIdx != post.image.length - 1"
+					class="fas fa-caret-right fa-2x"
+					@click="goRight()"
+				></i>
+				<img :src="require(`/assets/${post.image[photoIdx].filePath}`)" />
 			</div>
 		</div>
 		<div class="review-container">
@@ -30,8 +38,15 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
+	data() {
+		return {
+			photoIdx: 0,
+			showLeft: '',
+			showRight: '',
+		};
+	},
 	computed: {
-		...mapGetters(['post', 'user']),
+		...mapGetters(['post', 'user', 'userInfo']),
 
 		postTitle() {
 			return this.post.title;
@@ -45,6 +60,17 @@ export default {
 				this.post.address.detailStreet
 				//padding-top: calc(500 / 1000 * 100%);
 			);
+		},
+	},
+	methods: {
+		goRight() {
+			const leng = this.post.image.length;
+			if (leng && this.photoIdx < leng - 1) this.photoIdx++;
+		},
+
+		goLeft() {
+			const leng = this.post.image.length;
+			if (leng && this.photoIdx > 0) this.photoIdx--;
 		},
 	},
 };
@@ -63,10 +89,12 @@ export default {
 	justify-content: center;
 }
 .photo-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	position: relative;
 	width: 50%;
-	height: 0;
-	margin-right: 25px;
+	background: #000;
 }
 
 .post-preview-wrapper {
@@ -74,9 +102,23 @@ export default {
 }
 
 .review-container {
+	padding: 0 5%;
 	display: flex;
 	width: 50%;
 	flex-direction: column;
+}
+
+.fa-caret-left {
+	left: 0;
+	margin-top: 33%;
+
+	cursor: pointer;
+}
+
+.fa-caret-right {
+	right: 0;
+	margin-top: 33%;
+	cursor: pointer;
 }
 
 i {
@@ -90,7 +132,6 @@ img {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	cursor: pointer;
 }
 
 .review-container div {

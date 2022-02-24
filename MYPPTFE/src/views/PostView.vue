@@ -14,7 +14,7 @@ export default {
 <style scoped>
 * {
 	box-sizing: border-box;
-	padding: 80px 6%;
+	padding: 80px 0;
 	display: flex;
 	width: 100%;
 	height: 850px;

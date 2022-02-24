@@ -1,22 +1,24 @@
 <template>
 	<div class="header">
-		<div class="header-container">
-			<nav>
-				<ul class="nav_links">
-					<router-link to="/" class="logo">
-						<span> 맛잘알 </span>
-					</router-link>
-					<li><router-link to="/">가게 찾기</router-link></li>
-					<li><router-link to="/lookaround">둘러보기</router-link></li>
-				</ul>
-			</nav>
+		<div>
+			<div class="header-container">
+				<nav>
+					<ul class="nav_links">
+						<router-link to="/" class="logo">
+							<span> 맛잘알 </span>
+						</router-link>
+						<li><router-link to="/">가게 찾기</router-link></li>
+						<li><router-link to="/lookaround">둘러보기</router-link></li>
+					</ul>
+				</nav>
 
-			<div class="my-info">
-				<div v-if="!isLoggedIn">
-					<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
-				</div>
-				<div v-else class="my-picture">
-					<img :src="profileImageUrl" alt="photo" @click="goUserPage()" />
+				<div class="my-info">
+					<div v-if="!isLoggedIn">
+						<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
+					</div>
+					<div v-else class="my-picture">
+						<img :src="profileImageUrl" alt="photo" @click="goUserPage()" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -69,21 +71,23 @@ export default {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	background-color: whitesmoke;
-	z-index: 3;
+	z-index: 100;
 }
 
 .header {
 	position: fixed;
 	width: 100%;
-	height: 60px;
+	top: 0;
+	left: 0;
+	background: #fffefc;
 }
 
 .header-container {
-	padding: 9px 6%;
+	padding: 9px 7%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	border-bottom: 1px solid #dee2e6;
 }
 
 .logo span {

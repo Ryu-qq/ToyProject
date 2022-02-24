@@ -83,7 +83,9 @@ export default {
 	box-sizing: border-box;
 }
 .container {
-	padding: 70px 80px;
+	display: flex;
+	flex-direction: column;
+	padding: 70px 0;
 }
 .highLight {
 	color: #000;

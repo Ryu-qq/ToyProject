@@ -8,9 +8,9 @@
 				<section>
 					<div class="mypage-info">
 						<div v-if="isMySelf">
-							<span> {{ username }} 님 환영합니다!</span>
+							<span> {{ username }} 님</span>
 						</div>
-						<div v-else class="UserInfoComponent">
+						<div v-else>
 							<span>{{ username }} 님</span>
 						</div>
 
@@ -23,6 +23,19 @@
 								<i class="fas fa-sign-out-alt"></i>
 							</button>
 						</div>
+
+						<div v-else>
+							<div>
+								<button
+									:class="[
+										followStatus === true ? 'followcancel-btn' : 'follow-btn',
+									]"
+									@click="getFollowInfo()"
+								>
+									{{ statusMsg }}
+								</button>
+							</div>
+						</div>
 					</div>
 
 					<ul class="mypage-tap">
@@ -30,10 +43,6 @@
 						<li>팔로워 {{ followerCnt }}</li>
 						<li>팔로잉 {{ followingCnt }}</li>
 					</ul>
-
-					<button class="setting-btn" @click="getFollowInfo()">
-						팔로우체크
-					</button>
 				</section>
 			</div>
 		</div>
@@ -46,9 +55,11 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
 	data() {
 		return {
-			FollowStatus: '',
+			followStatus: false,
+			statusMsg: '팔로우',
 		};
 	},
+
 	computed: {
 		...mapGetters(['user', 'token', 'postList', 'userInfo', 'follow']),
 
@@ -75,11 +86,6 @@ export default {
 				return this.userInfo.profileImageUrl;
 			}
 		},
-
-		// followStatusMsg(){
-		// 	if(this.user.following)
-		// },
-
 		postCnt() {
 			if (!this.postList) return 0;
 			return this.postList.length;
@@ -90,6 +96,9 @@ export default {
 		followingCnt() {
 			return this.userInfo.following.length;
 		},
+	},
+	created() {
+		this.isFollow();
 	},
 	methods: {
 		...mapMutations(['setToken', 'setUser', 'setUserInfo']),
@@ -108,6 +117,19 @@ export default {
 			};
 
 			this.$store.dispatch('fetchFollow', payLoad);
+			this.followStatus = !this.followStatus;
+		},
+
+		isFollow() {
+			for (var i = 0; i < this.user.follower.length; i++) {
+				console.log(i);
+				console.log(this.user.follower[i].toUserId);
+				console.log(this.userInfo.userId);
+				if (this.user.follower[i].toUserId === this.userInfo.userId) {
+					this.followStatus = true;
+					this.statusMsg = '팔로잉';
+				}
+			}
 		},
 	},
 };
@@ -169,16 +191,30 @@ export default {
 	text-decoration: none;
 }
 
-.setting-btn {
+.mypage-info a {
+	color: #000;
+	text-decoration: none;
+}
+.mypage-info .follow-btn {
+	margin: 0 4px;
+	border: 1px solid #fff;
+	border-radius: 10px;
+	text-decoration: none;
+}
+
+.mypage-info .followcancel-btn {
+	background-color: #0095f6;
+	margin: 0 26px;
+	border: 1px solid #fff;
+	border-radius: 10px;
+	text-decoration: none;
+}
+
+.post-btn .setting-btn {
 	margin: 0 4px;
 	border: 1px solid #fff;
 	border-radius: 10px;
 	background-color: #f8f8f8;
-	text-decoration: none;
-}
-
-.mypage-info a {
-	color: #000;
 	text-decoration: none;
 }
 

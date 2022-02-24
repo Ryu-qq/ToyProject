@@ -1,8 +1,10 @@
 <template>
 	<div>
-		<nav-bar @onOpenLoginModal="openLoginModal" @onLogout="logout"> </nav-bar>
+		<div>
+			<nav-bar @onOpenLoginModal="openLoginModal" @onLogout="logout"> </nav-bar>
 
-		<router-view></router-view>
+			<router-view></router-view>
+		</div>
 
 		<sign-in-modal
 			v-if="isLoginModalOpen"

@@ -9,14 +9,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FollowService {
 
     private final UserService userService;
     private final FollowRepository followRepository;
 
-    @Transactional
+//    public List<Follow> myFollowList(Long userSeq){
+//        return followRepository.myFollowList(userSeq);
+//
+//    }
+
     public Long getByToUserIdAndFromUserId(String toUserId, String fromUserId){
         
         User following = userService.getUser(toUserId);
@@ -35,6 +42,8 @@ public class FollowService {
         User follower = userService.getUser(fromUserId);
 
         FollowRequestDto follow = FollowRequestDto.builder()
+                .fromUser(fromUserId)
+                .toUser(toUserId)
                 .follower(follower)
                 .following(following)
                 .build();

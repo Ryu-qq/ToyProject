@@ -2,9 +2,11 @@ package com.ryu.mypptbe.api.controller;
 
 
 import com.ryu.mypptbe.api.dto.UserReponseDto;
+import com.ryu.mypptbe.api.dto.follow.FollowerResponseDto;
+import com.ryu.mypptbe.api.dto.follow.FollowingResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
+import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.post.Posts;
-import com.ryu.mypptbe.service.FollowService;
 import com.ryu.mypptbe.service.UserService;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.user.User;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,19 +38,8 @@ public class UserController {
 
         User user = userService.getUser(principal.getUsername());
 
-        List<Posts> result = user.getPosts();
-        List<PostResponseDto> collect = result.stream()
-                .map(o -> new PostResponseDto(o))
-                .collect(Collectors.toList());
-
         UserReponseDto userReponseDto = UserReponseDto.builder()
-                .userId(user.getUserId())
-                .username(user.getUsername())
-                .roleType(user.getRoleType())
-                .profileImageUrl(user.getProfileImageUrl())
-                .posts(collect)
-                .follower(user.getFromUser())
-                .following(user.getToUser())
+                .user(user)
                 .build();
 
         return ApiResponse.success("user", userReponseDto);

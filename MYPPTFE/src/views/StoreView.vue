@@ -74,7 +74,7 @@ export default {
 	align-content: space-between;
 	width: 100%;
 	height: 850px;
-	padding: 80px 6%;
+	padding: 120px 10%;
 }
 
 .search {
