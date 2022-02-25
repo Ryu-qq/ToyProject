@@ -17,7 +17,7 @@
 						<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
 					</div>
 					<div v-else class="my-picture">
-						<img :src="profileImageUrl" alt="photo" @click="goUserPage()" />
+						<img :src="profileImageUrl" @click="goUserPage()" />
 					</div>
 				</div>
 			</div>
@@ -38,7 +38,7 @@ export default {
 		...mapGetters(['token', 'user']),
 
 		isLoggedIn() {
-			return this.token != null;
+			return this.token == null ? false : true;
 		},
 		isAdmin() {
 			return this.user && this.user.roleType === 'ADMIN';

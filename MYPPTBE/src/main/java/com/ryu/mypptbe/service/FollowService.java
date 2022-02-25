@@ -1,15 +1,17 @@
 package com.ryu.mypptbe.service;
 
+import com.ryu.mypptbe.api.dto.follow.UserProfileResponseDto;
 import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,10 +21,7 @@ public class FollowService {
     private final UserService userService;
     private final FollowRepository followRepository;
 
-//    public List<Follow> myFollowList(Long userSeq){
-//        return followRepository.myFollowList(userSeq);
-//
-//    }
+
 
     public Long getByToUserIdAndFromUserId(String toUserId, String fromUserId){
         
@@ -56,4 +55,30 @@ public class FollowService {
         followRepository.deleteById(userId);
 
     }
+
+    public UserProfileResponseDto getUserInfo(String toUserId, String fromUserId){
+
+        User fromUser = userService.getUser(fromUserId);
+        Long UserSeq = fromUser.getUserSeq();
+        boolean follow;
+
+
+
+        int followerCnt = followRepository.findFollowerCountById(UserSeq);
+        int followingCnt = followRepository.findFollowingCountById(UserSeq);
+        Long followId = getByToUserIdAndFromUserId(toUserId, fromUserId);
+
+        if(followId >0) follow =true;
+        else follow =false;
+
+
+        return UserProfileResponseDto.builder()
+                .followerCnt(followerCnt)
+                .followingCnt(followingCnt)
+                .follow(follow)
+                .build();
+
+    }
+
+
 }

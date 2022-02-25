@@ -5,11 +5,13 @@ export default {
 		user: {},
 		token: {},
 		follow: {},
+		userInfo: {},
 	},
 	getters: {
 		user: state => state.user,
 		token: state => state.token,
 		follow: state => state.follow,
+		userInfo: state => state.userInfo,
 	},
 	actions: {
 		fetchUser({ commit }) {
@@ -20,6 +22,11 @@ export default {
 		fetchFollow({ commit }, data) {
 			accountApi.getFollow(data, res => {
 				commit('setFollow', res.follow);
+			});
+		},
+		fetchUserInfo({ commit }, data) {
+			accountApi.getUserInfo(data, res => {
+				commit('setUserInfo', res.userInfo);
 			});
 		},
 	},
@@ -34,6 +41,9 @@ export default {
 
 		setFollow(state, follow) {
 			state.follow = follow;
+		},
+		setUserInfo(state, userInfo) {
+			state.userInfo = userInfo;
 		},
 	},
 };

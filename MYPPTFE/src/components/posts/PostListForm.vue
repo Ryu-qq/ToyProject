@@ -1,11 +1,13 @@
 <template>
 	<div>
-		<div v-if="!postList.length" class="post-container">게시물이 없습니다.</div>
+		<div v-if="!userInfo.posts.length" class="post-container">
+			게시물이 없습니다.
+		</div>
 
 		<spinner v-if="isLoading"></spinner>
 		<div class="post-preview-container">
 			<div
-				v-for="(file, index) in postList"
+				v-for="(file, index) in userInfo.posts"
 				:key="index"
 				class="post-preview-wrapper"
 			>
@@ -23,7 +25,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-//import axios from 'axios';
 
 export default {
 	components: {
@@ -36,16 +37,10 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['token', 'user', 'postList', 'userInfo']),
-	},
-	created() {
-		this.fetchPostList();
+		...mapGetters(['token', 'user', 'userInfo']),
 	},
 
 	methods: {
-		async fetchPostList() {
-			await this.$store.dispatch('fetchPostList', this.$route.params.userId);
-		},
 		async goPost(endpoint) {
 			const payLoad = { endpoint: endpoint, userId: this.userInfo.userId };
 

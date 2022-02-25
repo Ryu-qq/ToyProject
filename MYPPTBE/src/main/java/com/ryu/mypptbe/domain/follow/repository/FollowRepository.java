@@ -11,7 +11,11 @@ import java.util.List;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     Follow findByToUserAndFromUser(User fromUser, User toUser);
 
-//    @Query(value = "select f from Follow where f.user.userSeq =:userSeq ")
-//    List<Follow> myFollowList(@Param("userSeq")Long userSeq);
+
+    @Query(value = "SELECT COUNT(*) FROM Follow WHERE TO_USER_SEQ = :UserSeq", nativeQuery = true)
+    int findFollowerCountById(long UserSeq);
+
+    @Query(value = "SELECT COUNT(*) FROM Follow WHERE FROM_USER_SEQ = :UserSeq", nativeQuery = true)
+    int findFollowingCountById(long UserSeq);
 
 }

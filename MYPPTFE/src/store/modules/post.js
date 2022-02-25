@@ -24,7 +24,6 @@ export default {
 		fetchPostList({ commit }, data) {
 			postsApi.getPostList(data, res => {
 				commit('setPostList', res.userInfo.posts);
-				commit('setUserInfo', res.userInfo);
 			});
 		},
 

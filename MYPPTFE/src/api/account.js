@@ -3,6 +3,7 @@ import req from './req-wrapper';
 const BE_URI = {
 	USER: '/users',
 	FOLLOW: '/follow',
+	USERINFO: '/userInfo',
 };
 
 export default {
@@ -17,5 +18,9 @@ export default {
 			{ fromUser: fromUserId, toUser: toUserId },
 			success,
 		);
+	},
+
+	getUserInfo(params, success) {
+		req.post(BE_URI.USERINFO, params, success);
 	},
 };

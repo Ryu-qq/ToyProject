@@ -2,44 +2,38 @@ package com.ryu.mypptbe.api.controller;
 
 
 import com.ryu.mypptbe.api.dto.UserReponseDto;
-import com.ryu.mypptbe.api.dto.follow.FollowerResponseDto;
-import com.ryu.mypptbe.api.dto.follow.FollowingResponseDto;
-import com.ryu.mypptbe.api.dto.post.PostResponseDto;
+import com.ryu.mypptbe.api.dto.follow.UserProfileResponseDto;
 import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.follow.Follow;
-import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.domain.user.repository.UserRepository;
-import com.ryu.mypptbe.service.PostService;
+import com.ryu.mypptbe.service.FollowService;
 import com.ryu.mypptbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/userinfo")
+@RequestMapping("/api/v1/userInfo")
 public class IndexController {
 
     private final  UserService userService;
+    private final  FollowService followService;
 
-    @GetMapping("/{userId}")
-    public ApiResponse< UserReponseDto> getPostList(@PathVariable String userId){
+    @PostMapping()
+    public ApiResponse< UserReponseDto> getPostList(
+            @RequestParam("toUserId") String toUserId,
+            @RequestParam("fromUserId") String fromUserId){
 
 
-        User user = userService.getUser(userId);
+        User user = userService.getUser(toUserId);
+        UserProfileResponseDto follow = followService.getUserInfo(toUserId, fromUserId);
 
         UserReponseDto userReponseDto = UserReponseDto.builder()
                 .user(user)
+                .userFollow(follow)
                 .build();
 
 

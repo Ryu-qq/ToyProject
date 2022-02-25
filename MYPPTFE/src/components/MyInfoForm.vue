@@ -28,7 +28,7 @@
 							<div>
 								<button
 									:class="[
-										followStatus === true ? 'followcancel-btn' : 'follow-btn',
+										isFollow === true ? 'followcancel-btn' : 'follow-btn',
 									]"
 									@click="getFollowInfo()"
 								>
@@ -61,7 +61,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(['user', 'token', 'postList', 'userInfo', 'follow']),
+		...mapGetters(['user', 'token', 'userInfo', 'follow']),
 
 		isMySelf() {
 			if (this.userInfo.userId == this.user.userId) {
@@ -91,15 +91,19 @@ export default {
 			return this.postList.length;
 		},
 		followerCnt() {
-			return this.userInfo.follower.length;
+			return this.userInfo.userFollow.followerCnt;
 		},
 		followingCnt() {
-			return this.userInfo.following.length;
+			return this.userInfo.userFollow.followingCnt;
+		},
+		isFollow() {
+			return this.userInfo.userFollow.follow;
 		},
 	},
 	created() {
-		this.isFollow();
+		this.fetchUserInfo();
 	},
+
 	methods: {
 		...mapMutations(['setToken', 'setUser', 'setUserInfo']),
 
@@ -120,16 +124,12 @@ export default {
 			this.followStatus = !this.followStatus;
 		},
 
-		isFollow() {
-			for (var i = 0; i < this.user.follower.length; i++) {
-				console.log(i);
-				console.log(this.user.follower[i].toUserId);
-				console.log(this.userInfo.userId);
-				if (this.user.follower[i].toUserId === this.userInfo.userId) {
-					this.followStatus = true;
-					this.statusMsg = '팔로잉';
-				}
-			}
+		async fetchUserInfo() {
+			const formData = new FormData();
+			formData.append('fromUserId', this.user.userId);
+			formData.append('toUserId', this.$route.params.userId);
+
+			await this.$store.dispatch('fetchUserInfo', formData);
 		},
 	},
 };
