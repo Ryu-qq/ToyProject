@@ -13,7 +13,7 @@
 				</nav>
 
 				<div class="my-info">
-					<div v-if="!isLoggedIn">
+					<div v-if="isLoggedIn">
 						<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
 					</div>
 					<div v-else class="my-picture">
@@ -38,7 +38,7 @@ export default {
 		...mapGetters(['token', 'user']),
 
 		isLoggedIn() {
-			return this.token == null ? false : true;
+			return !this.token;
 		},
 		isAdmin() {
 			return this.user && this.user.roleType === 'ADMIN';

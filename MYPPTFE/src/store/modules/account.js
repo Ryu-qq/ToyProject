@@ -1,4 +1,5 @@
-import accountApi from '../../api/account.js';
+import { loginUser } from '@/api/auth';
+import { getFollow, getUserInfo } from '@/api/account';
 
 export default {
 	state: {
@@ -14,20 +15,18 @@ export default {
 		userInfo: state => state.userInfo,
 	},
 	actions: {
-		fetchUser({ commit }) {
-			accountApi.getUser(res => {
-				commit('setUser', res.user);
-			});
+		async fetchUser({ commit }) {
+			const { data } = await loginUser();
+			console.log(data.body.user);
+			commit('setUser', data.body.user);
 		},
-		fetchFollow({ commit }, data) {
-			accountApi.getFollow(data, res => {
-				commit('setFollow', res.follow);
-			});
+		async fetchFollow({ commit }, params) {
+			const { data } = await getFollow(params);
+			commit('setFollow', data.body.follow);
 		},
-		fetchUserInfo({ commit }, data) {
-			accountApi.getUserInfo(data, res => {
-				commit('setUserInfo', res.userInfo);
-			});
+		async fetchUserInfo({ commit }, params) {
+			const { data } = await getUserInfo(params);
+			commit('setUserInfo', data.body.userInfo);
 		},
 	},
 	mutations: {

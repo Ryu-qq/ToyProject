@@ -7,13 +7,15 @@ import lombok.Builder;
 public class StoreSaveRequestDto {
 
     private Address address;
+    private String category;
     private double xPos;
     private double yPos;
 
 
     @Builder
-    StoreSaveRequestDto(Address address, double xPos, double yPos) {
+    StoreSaveRequestDto(Address address,String category, double xPos, double yPos) {
         this.address = address;
+        this.category =category;
         this.xPos = xPos;
         this.yPos =yPos;
     }
@@ -22,6 +24,7 @@ public class StoreSaveRequestDto {
 
         Store store = Store.builder()
                 .address(address)
+                .category(category)
                 .xPos(xPos)
                 .yPos(yPos)
                 .build();

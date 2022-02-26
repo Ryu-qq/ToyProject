@@ -1,6 +1,5 @@
 package com.ryu.mypptbe.api.dto.follow;
 
-import com.ryu.mypptbe.api.dto.UserReponseDto;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.user.User;
 import lombok.Builder;

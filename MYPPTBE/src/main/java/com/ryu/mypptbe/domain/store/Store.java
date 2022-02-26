@@ -21,7 +21,7 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeSeq;
 
-
+    private String category;
 
     @Embedded
     private Address address;
@@ -35,8 +35,9 @@ public class Store {
 
 
     @Builder
-    public Store( Address address, double xPos, double yPos){
+    public Store( Address address, String category, double xPos, double yPos){
         this.address = address;
+        this.category = category;
         this.xPos = xPos;
         this.yPos = yPos;
     }

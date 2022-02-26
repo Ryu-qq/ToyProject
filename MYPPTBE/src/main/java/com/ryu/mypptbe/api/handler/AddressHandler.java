@@ -24,7 +24,7 @@ public class AddressHandler {
 
 
 
-    public StoreSaveRequestDto getCoordination(Address address) throws Exception {
+    public StoreSaveRequestDto getCoordination(Address address, String category) throws Exception {
 
         String encodeAddress = "";  // 한글 주소는 encoding 해서 날려야 함
         try { encodeAddress = URLEncoder.encode( address.getStreet(), "UTF-8" ); }
@@ -66,6 +66,7 @@ public class AddressHandler {
 
         StoreSaveRequestDto store = StoreSaveRequestDto.builder()
                 .address(address)
+                .category(category)
                 .xPos(xPos)
                 .yPos(yPos)
                 .build();

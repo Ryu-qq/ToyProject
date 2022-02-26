@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
-public class UserReponseDto {
+public class UserResponseDto {
 
 
     private String userId;
@@ -40,7 +40,7 @@ public class UserReponseDto {
 
 
     @Builder
-    public UserReponseDto(User user, UserProfileResponseDto userFollow){
+    public UserResponseDto(User user, UserProfileResponseDto userFollow){
         this.userId=  user.getUserId();
         this.username =  user.getUsername();
         this.roleType =  user.getRoleType();

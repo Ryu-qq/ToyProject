@@ -18,6 +18,7 @@
 							<label for="file"><i class="fas fa-camera"></i></label>
 
 							<input
+								v-if="uploadReady"
 								id="file"
 								ref="files"
 								type="file"
@@ -51,6 +52,7 @@
 							<label for="file"><i class="fas fa-camera"></i></label>
 							<!-- <label for="file">추가 사진 등록</label> -->
 							<input
+								v-if="uploadReady"
 								id="file"
 								ref="files"
 								type="file"
@@ -73,12 +75,11 @@ export default {
 			filesPreview: [],
 			uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 			isTure: false,
+			uploadReady: true, // 파일 초기화를 위한 변수
 		};
 	},
 	methods: {
 		imageUpload() {
-			//console.log(this.$refs.files.files);
-
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
@@ -122,13 +123,21 @@ export default {
 				num = i;
 			}
 			this.uploadImageIndex = this.uploadImageIndex + num + 1;
-
-			//console.log(this.files);
 		},
 		fileDeleteButton(e) {
 			const name = e.target.getAttribute('name');
 			this.files = this.files.filter(data => data.number !== Number(name));
+
 			this.$store.dispatch('fetchImagedelete', name);
+			this.uploadImageIndex--;
+			this.clearImage();
+		},
+		clearImage() {
+			this.uploadReady = false;
+			// 렌더링 되고 마지막에 실행이 되도록 $nextTick()을 사용한다.
+			this.$nextTick(() => {
+				this.uploadReady = true;
+			});
 		},
 	},
 };

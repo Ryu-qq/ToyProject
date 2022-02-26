@@ -11,6 +11,7 @@ export default {
 					success(res.data.body);
 					break;
 				}
+
 				default:
 					fail(res.data.header.message);
 			}

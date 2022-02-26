@@ -1,22 +1,17 @@
-import req from './req-wrapper';
+import { post, userinfo } from './index';
 
-const BE_URI = {
-	POST: `/posts`,
-	POSTLIST: `/userinfo`,
-};
+function uploadPost(params) {
+	return post.post('', params);
+}
 
-export default {
-	uploadPost(params, success) {
-		req.post(BE_URI.POST, params, success);
-	},
+function getPostList(params) {
+	return userinfo.get(`'/${params}'`);
+}
 
-	getPostList(params, success) {
-		req.getList(BE_URI.POSTLIST + '/' + params, success);
-	},
+function getPost(params) {
+	const { endpoint } = params;
 
-	getPost(params, success) {
-		const { endpoint } = params;
+	return post.get(`'/${endpoint}'`);
+}
 
-		req.getPost(BE_URI.POST + '/' + endpoint, success);
-	},
-};
+export { uploadPost, getPostList, getPost };

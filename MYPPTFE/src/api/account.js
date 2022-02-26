@@ -1,26 +1,13 @@
-import req from './req-wrapper';
+import { follow, userinfo } from './index';
 
-const BE_URI = {
-	USER: '/users',
-	FOLLOW: '/follow',
-	USERINFO: '/userInfo',
-};
+// 팔로우 기능
+function getFollow(params) {
+	const { toUserId, fromUserId } = params;
+	return follow.post('', { fromUser: fromUserId, toUser: toUserId });
+}
 
-export default {
-	getUser(success) {
-		req.get(BE_URI.USER, success);
-	},
-	getFollow(params, success) {
-		const { toUserId, fromUserId } = params;
+function getUserInfo(params) {
+	return userinfo.post('', params);
+}
 
-		req.postFollow(
-			BE_URI.FOLLOW,
-			{ fromUser: fromUserId, toUser: toUserId },
-			success,
-		);
-	},
-
-	getUserInfo(params, success) {
-		req.post(BE_URI.USERINFO, params, success);
-	},
-};
+export { getFollow, getUserInfo };

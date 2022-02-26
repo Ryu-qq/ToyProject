@@ -50,6 +50,7 @@ public class PostController {
     public ResponseEntity uploadPost(
             @RequestParam("userId") String userId,
             @RequestParam("title") String title,
+            @RequestParam("category") String category,
             @RequestParam("contents") String contents,
             @RequestParam("postcode") String postcode,
             @RequestParam("street") String street,
@@ -67,7 +68,7 @@ public class PostController {
                 .detailStreet(detailStreet)
                 .build();
 
-        StoreSaveRequestDto getGps = addressHandler.getCoordination(address);
+        StoreSaveRequestDto getGps = addressHandler.getCoordination(address, category);
         Store newStore = storeService.saveStore(getGps);
 
 

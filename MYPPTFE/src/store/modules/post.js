@@ -1,4 +1,4 @@
-import postsApi from '../../api/posts.js';
+import { uploadPost, getPostList, getPost } from '@/api/posts';
 
 export default {
 	state: {
@@ -15,20 +15,18 @@ export default {
 		userInfo: state => state.userInfo,
 	},
 	actions: {
-		fetchPost({ commit }, data) {
-			postsApi.getPost(data, res => {
-				commit('setPost', res.post);
-			});
+		async fetchPost({ commit }, params) {
+			const { data } = await getPost(params);
+			commit('setPost', data.body.post);
 		},
 
-		fetchPostList({ commit }, data) {
-			postsApi.getPostList(data, res => {
-				commit('setPostList', res.userInfo.posts);
-			});
+		async fetchPostList({ commit }, params) {
+			const { data } = await getPostList(params);
+			commit('setPostList', data.body.userInfo.posts);
 		},
 
-		fetchPostUpload(postData) {
-			postsApi.uploadPost(postData);
+		async fetchPostUpload(postData) {
+			await uploadPost(postData);
 		},
 
 		fetchImageUpload({ commit }, data) {

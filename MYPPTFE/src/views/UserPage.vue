@@ -4,13 +4,13 @@
 
 		<div class="tappage">
 			<a @click="onClickTab(0)">
-				<span
-					><i class="fas fa-th fa-1x" style="color: #a6a6a6"> 게시물</i></span
+				<span :class="[selectedTab === tabs[0] ? 'tap-selected' : 'tap-none']"
+					><i class="fas fa-th fa-1x"> 게시물</i></span
 				>
 			</a>
 			<a @click="onClickTab(1)"
-				><span
-					><i class="fas fa-map fa-1x" style="color: #a6a6a6"> 지도</i></span
+				><span :class="[selectedTab === tabs[1] ? 'tap-selected' : 'tap-none']"
+					><i class="fas fa-map fa-1x"> 지도</i></span
 				>
 			</a>
 		</div>
@@ -119,5 +119,13 @@ export default {
 
 .post-container {
 	align-items: stretch;
+}
+
+.tap-selected {
+	color: rgb(59, 55, 55);
+}
+
+.tap-none {
+	color: #a6a6a6;
 }
 </style>

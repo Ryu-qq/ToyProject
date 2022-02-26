@@ -114,14 +114,13 @@ export default {
 			if (this.$route.path !== '/storeview') this.$router.push('/storeview');
 		},
 
-		getFollowInfo() {
+		async getFollowInfo() {
 			const payLoad = {
 				toUserId: this.userInfo.userId,
 				fromUserId: this.user.userId,
 			};
-
-			this.$store.dispatch('fetchFollow', payLoad);
-			this.followStatus = !this.followStatus;
+			console.log(1);
+			await this.$store.dispatch('fetchFollow', payLoad);
 		},
 
 		async fetchUserInfo() {
@@ -196,7 +195,7 @@ export default {
 	text-decoration: none;
 }
 .mypage-info .follow-btn {
-	margin: 0 4px;
+	margin: 0 31px;
 	border: 1px solid #fff;
 	border-radius: 10px;
 	text-decoration: none;
@@ -204,7 +203,7 @@ export default {
 
 .mypage-info .followcancel-btn {
 	background-color: #0095f6;
-	margin: 0 26px;
+	margin: 0 31px;
 	border: 1px solid #fff;
 	border-radius: 10px;
 	text-decoration: none;

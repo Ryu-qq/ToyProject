@@ -11,6 +11,12 @@
 						type="text"
 						placeholder="가게이름을 입력해주세요"
 					/>
+					<select v-model="form.category">
+						<option selected>카테고리</option>
+						<option v-for="(category, index) in categories" :key="index">
+							{{ category }}
+						</option>
+					</select>
 				</div>
 				<div class="address">
 					<div class="zipcode">
@@ -78,6 +84,11 @@ export default {
 			detailStreet: '',
 			images: [],
 			contents: '',
+			categories: ['한식', '중식', '일식', '양식', '분식', '포차', '기타'],
+			form: {
+				keyword: '',
+				category: '카테고리',
+			},
 		};
 	},
 	computed: {
@@ -114,6 +125,7 @@ export default {
 				}
 				formData.append('userId', this.user.userId);
 				formData.append('title', this.title);
+				formData.append('category', this.form.category);
 				formData.append('contents', this.contents);
 				formData.append('postcode', this.postcode);
 				formData.append('street', this.street);
@@ -214,13 +226,22 @@ export default {
 	justify-content: right;
 }
 input,
-select,
 textarea {
 	border: 0;
 	padding: 0;
 	margin: 0;
 	border-bottom: 1px solid #d1d4d6;
 	background: transparent;
+}
+
+select {
+	border: 0;
+	padding: 0;
+	margin-left: 10px;
+	background: #d1d4d6;
+	border-radius: 10px;
+	margin-right: 10px;
+	padding: 0 6px;
 }
 
 textarea {
