@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/userinfo/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll()
                     .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getKey())
                     .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getKey())
                     .anyRequest().authenticated()
@@ -161,13 +162,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowCredentials(true);
         corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
         corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
-        corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
 
         corsConfigSource.registerCorsConfiguration("/**", corsConfig);
         return corsConfigSource;
     }
 }
+
+
+

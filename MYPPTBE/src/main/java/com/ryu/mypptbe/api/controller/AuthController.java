@@ -2,6 +2,7 @@ package com.ryu.mypptbe.api.controller;
 
 
 import com.ryu.mypptbe.api.dto.AuthReqModel;
+import com.ryu.mypptbe.api.dto.RefreshTokenDto;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.config.AppProperties;
 import com.ryu.mypptbe.domain.user.repository.UserRefreshTokenRepository;
@@ -24,6 +25,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -85,12 +87,12 @@ public class AuthController {
         return ApiResponse.success("token", accessToken.getToken());
     }
 
-    @GetMapping("/refresh")
-    public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/refresh")
+    public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response, @RequestBody RefreshTokenDto refreshTokenDto ) {
         // access token 확인
         String accessToken = HeaderUtil.getAccessToken(request);
         AuthToken authToken = tokenProvider.convertAuthToken(accessToken);
-        if (!authToken.validate()) {
+        if (authToken.getToken().isEmpty()) {
             return ApiResponse.invalidAccessToken();
         }
 
@@ -103,15 +105,18 @@ public class AuthController {
         String userId = claims.getSubject();
         RoleType roleType = RoleType.of(claims.get("role", String.class));
 
-        // refresh token
-        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
-                .map(Cookie::getValue)
-                .orElse((null));
+//        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
+//                .map(Cookie::getValue)
+//                .orElse((null));
+
+       String refreshToken = refreshTokenDto.getRefreshToken();
+
+
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
-        if (authRefreshToken.validate()) {
-            return ApiResponse.invalidRefreshToken();
-        }
+//        if (authRefreshToken.validate()) {
+//            return ApiResponse.invalidRefreshToken();
+//        }
 
         // userId refresh token 으로 DB 확인
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);

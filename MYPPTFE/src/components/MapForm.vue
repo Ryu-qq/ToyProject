@@ -20,7 +20,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['postList']),
+		...mapGetters(['user']),
 	},
 	mounted() {
 		bus.$emit('start:spinner');
@@ -69,14 +69,14 @@ export default {
 			return this.map.setCenter(moveLatLon);
 		},
 		makeMaker() {
-			if (this.postList.length > 0) {
+			if (this.user.posts.length > 0) {
 				const position = [];
-				for (var i = 0; i < this.postList.length; i++) {
+				for (var i = 0; i < this.user.posts.length; i++) {
 					position.push({
-						title: this.postList[i].title,
+						title: this.user.posts[i].title,
 						latlng: new kakao.maps.LatLng(
-							this.postList[i].ypos,
-							this.postList[i].xpos,
+							this.user.posts[i].ypos,
+							this.user.posts[i].xpos,
 						),
 					});
 				}

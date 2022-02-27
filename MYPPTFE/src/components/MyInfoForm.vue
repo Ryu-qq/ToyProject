@@ -127,7 +127,6 @@ export default {
 			const formData = new FormData();
 			formData.append('fromUserId', this.user.userId);
 			formData.append('toUserId', this.$route.params.userId);
-
 			await this.$store.dispatch('fetchUserInfo', formData);
 		},
 	},

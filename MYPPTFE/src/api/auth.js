@@ -1,8 +1,8 @@
-import { user } from './index';
+import { auth } from './index';
 
 // 로그인 API
 function loginUser() {
-	return user.get();
+	return auth.get();
 }
 
 export { loginUser };

@@ -1,4 +1,4 @@
-import { uploadPost, getPostList, getPost } from '@/api/posts';
+import { uploadPost, getPost } from '@/api/posts';
 
 export default {
 	state: {
@@ -18,11 +18,6 @@ export default {
 		async fetchPost({ commit }, params) {
 			const { data } = await getPost(params);
 			commit('setPost', data.body.post);
-		},
-
-		async fetchPostList({ commit }, params) {
-			const { data } = await getPostList(params);
-			commit('setPostList', data.body.userInfo.posts);
 		},
 
 		async fetchPostUpload(postData) {

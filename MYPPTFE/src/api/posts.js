@@ -1,17 +1,11 @@
-import { post, userinfo } from './index';
+import { posts, multipart } from './index';
 
 function uploadPost(params) {
-	return post.post('', params);
-}
-
-function getPostList(params) {
-	return userinfo.get(`'/${params}'`);
+	return multipart.post('', params);
 }
 
 function getPost(params) {
-	const { endpoint } = params;
-
-	return post.get(`'/${endpoint}'`);
+	return posts.get(`${params}`);
 }
 
-export { uploadPost, getPostList, getPost };
+export { uploadPost, getPost };

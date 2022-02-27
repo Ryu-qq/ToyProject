@@ -71,7 +71,6 @@
 <script>
 import ImageUpload from '../common/ImageUpload.vue';
 import { mapGetters } from 'vuex';
-import axios from 'axios';
 export default {
 	components: {
 		ImageUpload,
@@ -130,16 +129,21 @@ export default {
 				formData.append('postcode', this.postcode);
 				formData.append('street', this.street);
 				formData.append('detailStreet', this.detailStreet);
-				const { data } = await axios.post(
-					'http://localhost:8080/api/v1/posts',
+				const { data } = await this.$store.dispatch(
+					'fetchPostUpload',
 					formData,
-					{
-						headers: {
-							'Content-Type': 'multipart/form-data',
-							Authorization: `Bearer ${this.token}`,
-						},
-					},
 				);
+
+				// const { data } = await axios.post(
+				// 	'http://localhost:8080/api/v1/posts',
+				// 	formData,
+				// 	{
+				// 		headers: {
+				// 			'Content-Type': 'multipart/form-data',
+				// 			Authorization: `Bearer ${this.token}`,
+				// 		},
+				// 	},
+				// );
 				console.log(data);
 				const userId = this.user.userId;
 				if (this.$route.path !== '/userinfo/' + userId) {

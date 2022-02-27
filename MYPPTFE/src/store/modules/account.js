@@ -15,9 +15,11 @@ export default {
 		userInfo: state => state.userInfo,
 	},
 	actions: {
+		async fetchToken({ commit }, params) {
+			commit('setToken', params);
+		},
 		async fetchUser({ commit }) {
 			const { data } = await loginUser();
-			console.log(data.body.user);
 			commit('setUser', data.body.user);
 		},
 		async fetchFollow({ commit }, params) {

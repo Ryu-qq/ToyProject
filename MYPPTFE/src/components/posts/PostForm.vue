@@ -3,12 +3,12 @@
 		<div class="photo-container">
 			<div class="post-preview-wrapper">
 				<i
-					v-if="post.image.length > 1 && photoIdx != 0"
+					v-if="postLength && photoIdx != 0"
 					class="fas fa-caret-left fa-2x"
 					@click="goLeft()"
 				></i>
 				<i
-					v-show="post.image.length > 1 && photoIdx != post.image.length - 1"
+					v-show="postLength && photoIdx != postLength - 1"
 					class="fas fa-caret-right fa-2x"
 					@click="goRight()"
 				></i>
@@ -60,6 +60,9 @@ export default {
 				this.post.address.detailStreet
 				//padding-top: calc(500 / 1000 * 100%);
 			);
+		},
+		postLength() {
+			return this.post.image.length;
 		},
 	},
 	methods: {
