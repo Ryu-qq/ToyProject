@@ -87,8 +87,8 @@ export default {
 			}
 		},
 		postCnt() {
-			if (!this.postList) return 0;
-			return this.postList.length;
+			if (!this.userInfo.posts) return 0;
+			return this.userInfo.posts.length;
 		},
 		followerCnt() {
 			return this.userInfo.userFollow.followerCnt;

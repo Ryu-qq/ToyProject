@@ -20,7 +20,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['user']),
+		...mapGetters(['userInfo']),
 	},
 	mounted() {
 		bus.$emit('start:spinner');
@@ -69,20 +69,19 @@ export default {
 			return this.map.setCenter(moveLatLon);
 		},
 		makeMaker() {
-			if (this.user.posts.length > 0) {
+			if (this.userInfo.posts.length > 0) {
 				const position = [];
-				for (var i = 0; i < this.user.posts.length; i++) {
+				for (var i = 0; i < this.userInfo.posts.length; i++) {
 					position.push({
-						title: this.user.posts[i].title,
+						title: this.userInfo.posts[i].title,
 						latlng: new kakao.maps.LatLng(
-							this.user.posts[i].ypos,
-							this.user.posts[i].xpos,
+							this.userInfo.posts[i].ypos,
+							this.userInfo.posts[i].xpos,
 						),
 					});
 				}
 
 				var markerPosition = position;
-				console.log(markerPosition);
 				var imageSrc =
 					'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
