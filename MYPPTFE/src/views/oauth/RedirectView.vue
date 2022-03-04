@@ -12,7 +12,7 @@ export default {
 			this.setToken(token);
 			this.fetchUser();
 		}
-		this.$router.replace('/storeview');
+		this.$router.replace('/map');
 	},
 
 	methods: {

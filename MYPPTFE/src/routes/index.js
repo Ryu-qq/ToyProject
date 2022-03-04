@@ -8,17 +8,17 @@ export const router = new VueRouter({
 	routes: [
 		{
 			path: '/',
-			redirect: '/storeview',
+			redirect: '/map',
 		},
 		{
-			path: '/storeview',
-			name: 'StoreView',
-			component: () => import('@/views/StoreView'),
+			path: '/map',
+			name: 'map',
+			component: () => import('@/views/MapView'),
 		},
 		{
-			path: '/lookaround',
-			name: 'LookAround',
-			component: () => import('@/views/LookAroundView'),
+			path: '/search',
+			name: 'search',
+			component: () => import('@/views/SearchView'),
 		},
 		{
 			path: '/userinfo/:userId',

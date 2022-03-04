@@ -1,5 +1,6 @@
 package com.ryu.mypptbe.api.dto.post;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.domain.BaseTimeEntity;
 import com.ryu.mypptbe.domain.images.Photo;
@@ -29,6 +30,7 @@ public class PostResponseDto {
 
 
     @Builder
+    @QueryProjection
     public PostResponseDto(Posts posts){
         this.postSeq = posts.getPostSeq();
         this.title = posts.getTitle();

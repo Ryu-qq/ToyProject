@@ -111,7 +111,7 @@ export default {
 			this.setToken(null);
 			this.setUser(null);
 			alert('로그아웃되었습니다.');
-			if (this.$route.path !== '/storeview') this.$router.push('/storeview');
+			if (this.$route.path !== '/map') this.$router.push('/map');
 		},
 
 		async getFollowInfo() {

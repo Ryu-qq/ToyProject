@@ -21,7 +21,7 @@ function createInstanceWithMultiPart(url) {
 	});
 	return setInterceptors(instance);
 }
-
+export const search = createInstanceWithAuth('search');
 export const auth = createInstanceWithAuth('users');
 export const posts = createInstanceWithAuth('posts');
 export const multipart = createInstanceWithMultiPart('posts');
