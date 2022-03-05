@@ -17,10 +17,15 @@
 
 			<button @click.self.prevent="doSearch">검색</button>
 		</div>
+		<button @click="logout()">
+			<i class="fas fa-sign-out-alt"></i>
+		</button>
 	</div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
 	data() {
 		return {
@@ -34,8 +39,17 @@ export default {
 		};
 	},
 	methods: {
+		...mapMutations(['setToken', 'setUser', 'setUserInfo']),
+
 		doSearch() {
 			this.$store.dispatch('fetchSearch', this.form);
+		},
+
+		logout() {
+			this.setToken(null);
+			this.setUser(null);
+			alert('로그아웃되었습니다.');
+			if (this.$route.path !== '/map') this.$router.push('/map');
 		},
 	},
 };

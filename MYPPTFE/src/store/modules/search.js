@@ -9,8 +9,14 @@ export default {
 	},
 	actions: {
 		async fetchSearch({ commit }, param) {
-			const { data } = getSearch(param);
-			commit('setSearch', data);
+			const { keyword, category } = param;
+			if (category === '카테고리') {
+				const { data } = getSearch({ keyword: keyword, category: '' });
+				commit('setSearch', data);
+			} else {
+				const { data } = getSearch(param);
+				commit('setSearch', data);
+			}
 		},
 	},
 	setSearch: {

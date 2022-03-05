@@ -1,23 +1,26 @@
 package com.ryu.mypptbe.api.controller;
 
-import com.ryu.mypptbe.api.dto.search.PostsSearchRequestDto;
-import com.ryu.mypptbe.api.dto.search.PostsSearchResponseDto;
+import com.ryu.mypptbe.api.dto.search.SearchRequestDto;
+import com.ryu.mypptbe.api.dto.search.SearchResponseDto;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
+import com.ryu.mypptbe.domain.search.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/search")
 public class SearchController {
 
-    private final PostsRepository postsRepository;
+    private final SearchRepository searchRepository;
     @PostMapping()
-    public Page<PostsSearchResponseDto> search(@RequestBody PostsSearchRequestDto requestDto, Pageable pageable){
+    public List<SearchResponseDto> search(@RequestBody SearchRequestDto requestDto){
 
-        return postsRepository.searchTest(requestDto, pageable);
+        return searchRepository.search(requestDto);
     }
 
 }

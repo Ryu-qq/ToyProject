@@ -39,7 +39,7 @@ export function setInterceptors(instance) {
 					const token = store.getters.token;
 
 					if (token) {
-						getRefreshToken();
+						getRefreshToken(token);
 					}
 					isTokenRefreshing = false;
 				}
@@ -51,12 +51,11 @@ export function setInterceptors(instance) {
 	return instance;
 }
 
-async function getRefreshToken() {
+async function getRefreshToken(token) {
 	const refreshToken = getCookie('refresh_token');
 	const config = {
 		headers: {
-			Authorization: `Bearer ${store.getters.token}`,
-			withCreadentials: true,
+			Authorization: `Bearer ${token}`,
 		},
 	};
 	const { data } = await axios.post(
@@ -64,17 +63,9 @@ async function getRefreshToken() {
 		{ refreshToken: refreshToken },
 		config,
 	);
+	console.log('refreshtoekn===' + data.body.token);
 	store.dispatch('fetchToken', data.body.token);
 }
-
-// function goredirectUrl(url) {
-// 	const config = {
-// 		headers: {
-// 			Authorization: `Bearer ${store.getters.token}`,
-// 		},
-// 	};
-// 	axios.post(`${url}`,, config);
-// }
 
 function getCookie(key) {
 	var result = null;

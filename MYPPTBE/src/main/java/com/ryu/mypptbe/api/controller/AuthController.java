@@ -109,17 +109,14 @@ public class AuthController {
 //                .map(Cookie::getValue)
 //                .orElse((null));
 
-       String refreshToken = refreshTokenDto.getRefreshToken();
-
-
-        AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
+        AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshTokenDto.getRefreshToken());
 
 //        if (authRefreshToken.validate()) {
 //            return ApiResponse.invalidRefreshToken();
 //        }
 
         // userId refresh token 으로 DB 확인
-        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshToken);
+        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshTokenDto.getRefreshToken());
         if (userRefreshToken == null) {
             return ApiResponse.invalidRefreshToken();
         }

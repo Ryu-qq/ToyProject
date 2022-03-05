@@ -1,11 +1,13 @@
 package com.ryu.mypptbe.api.dto.search;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostsSearchRequestDto {
+@AllArgsConstructor
+public class SearchRequestDto {
 
     private String keyword;
     private String category;

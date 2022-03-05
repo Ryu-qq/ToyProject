@@ -9,6 +9,7 @@ export default {
 	created() {
 		const token = this.$route.query.token;
 		if (token) {
+			console.log(token);
 			this.setToken(token);
 			this.fetchUser();
 		}

@@ -11,26 +11,16 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class PostsSearchResponseDto {
+public class SearchResponseDto {
 
-    private String userId;
-    private String username;
-    private String profileImageUrl;
     private Long postSeq;
     private String title;
     private String contents;
-    private String filePath;
 
     @QueryProjection
-    public PostsSearchResponseDto(String userId, String username, String profileImageUrl, Long postSeq, String title, String contents, String filePath) {
-        this.userId = userId;
-        this.username = username;
-        this.profileImageUrl = profileImageUrl;
+    public SearchResponseDto(Long postSeq, String title, String contents) {
         this.postSeq = postSeq;
         this.title = title;
         this.contents = contents;
-        this.filePath = filePath;
     }
-
-
 }
