@@ -5,6 +5,8 @@ import com.ryu.mypptbe.api.dto.search.SearchRequestDto;
 import com.ryu.mypptbe.api.dto.search.SearchPostResponseDto;
 import com.ryu.mypptbe.domain.search.SearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +20,9 @@ public class SearchService {
     private final SearchRepository searchRepository;
 
 
-    public  List<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto){
+    public Page<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto, Pageable pageable ){
 
-        List<SearchPostResponseDto> findPost = searchRepository.search(requestDto);
-
-        return findPost;
-
+        return searchRepository.searchPostsWithPhoto(requestDto, pageable);
 
     }
 }

@@ -119,7 +119,6 @@ export default {
 				toUserId: this.userInfo.userId,
 				fromUserId: this.user.userId,
 			};
-			console.log(1);
 			await this.$store.dispatch('fetchFollow', payLoad);
 		},
 

@@ -63,7 +63,6 @@ async function getRefreshToken(token) {
 		{ refreshToken: refreshToken },
 		config,
 	);
-	console.log('refreshtoekn===' + data.body.token);
 	store.dispatch('fetchToken', data.body.token);
 }
 

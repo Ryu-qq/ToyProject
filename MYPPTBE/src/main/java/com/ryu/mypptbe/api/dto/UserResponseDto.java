@@ -25,10 +25,6 @@ public class UserResponseDto {
     private UserProfileResponseDto userFollow;
 
 
-
-
-
-
     public List<PostResponseDto> getPostList(User user){
         List<Posts> result = user.getPosts();
         List<PostResponseDto> collect = result.stream()

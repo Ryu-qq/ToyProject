@@ -20,6 +20,10 @@ export default {
 			commit('setPost', data.body.post);
 		},
 
+		async fetchPostList({ commit }, params) {
+			commit('setPostList', params);
+		},
+
 		async fetchPostUpload(postData) {
 			await uploadPost(postData);
 		},

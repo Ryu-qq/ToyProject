@@ -7,6 +7,7 @@ import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.domain.images.Photo;
 import com.ryu.mypptbe.domain.post.Posts;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class SearchPostResponseDto {
 
@@ -29,21 +30,16 @@ public class SearchPostResponseDto {
     private double yPos;
     private List<PhotoResponseDto> image;
 
-
     @QueryProjection
-    public SearchPostResponseDto(Posts posts, double xPos, double yPos) {
-        this.postSeq = posts.getPostSeq();
-        this.title = posts.getTitle();
-        this.contents = posts.getContents();
-        this.userSeq = posts.getUser().getUserSeq();
-        this.userName = posts.getUser().getUsername();
-        this.profileUrl=posts.getUser().getProfileImageUrl();
+    public SearchPostResponseDto(Long postSeq, String title, String contents, Long userSeq, String userName, String profileUrl, double xPos, double yPos) {
+        this.postSeq = postSeq;
+        this.title = title;
+        this.contents = contents;
+        this.userSeq = userSeq;
+        this.userName = userName;
+        this.profileUrl = profileUrl;
         this.xPos = xPos;
         this.yPos = yPos;
-        this.image = posts.getPhotos().stream()
-                .map(photo -> new PhotoResponseDto(photo))
-                .collect(Collectors.toList());
     }
-
 
 }

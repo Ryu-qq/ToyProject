@@ -41,7 +41,7 @@ public class PostResponseDto {
         this.xPos = posts.getStore().getXPos();
         this.yPos = posts.getStore().getYPos();
         this.image = posts.getPhotos().stream()
-                        .map(photo -> new PhotoResponseDto(photo))
+                        .map(photo -> new PhotoResponseDto(postSeq,photo.getFilePath()))
                         .collect(Collectors.toList());
     }
 

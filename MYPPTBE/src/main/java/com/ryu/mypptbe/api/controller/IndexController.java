@@ -32,9 +32,6 @@ public class IndexController {
             @RequestParam("toUserId") String toUserId,
             @RequestParam("fromUserId") String fromUserId){
 
-
-
-
         User user = userService.getUser(toUserId);
         UserProfileResponseDto follow = followService.getUserInfo(toUserId, fromUserId);
 
