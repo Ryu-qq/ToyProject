@@ -27,9 +27,7 @@
 						<div v-else>
 							<div>
 								<button
-									:class="[
-										isFollow === true ? 'followcancel-btn' : 'follow-btn',
-									]"
+									:class="[isFollow > 0 ? 'followcancel-btn' : 'follow-btn']"
 									@click="getFollowInfo()"
 								>
 									{{ statusMsg }}
@@ -87,17 +85,17 @@ export default {
 			}
 		},
 		postCnt() {
-			if (!this.userInfo.posts) return 0;
-			return this.userInfo.posts.length;
+			if (!this.userInfo.userPostList.posts) return 0;
+			return this.userInfo.userPostList.length;
 		},
 		followerCnt() {
-			return this.userInfo.userFollow.followerCnt;
+			return this.userInfo.followerCnt;
 		},
 		followingCnt() {
-			return this.userInfo.userFollow.followingCnt;
+			return this.userInfo.followingCnt;
 		},
 		isFollow() {
-			return this.userInfo.userFollow.follow;
+			return this.userInfo.followSeq;
 		},
 	},
 	created() {

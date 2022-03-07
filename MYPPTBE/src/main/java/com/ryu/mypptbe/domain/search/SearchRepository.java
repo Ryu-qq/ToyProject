@@ -8,9 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.api.dto.photo.QPhotoResponseDto;
 import com.ryu.mypptbe.api.dto.search.*;
-import com.ryu.mypptbe.domain.images.QPhoto;
 import com.ryu.mypptbe.domain.post.Posts;
-import com.ryu.mypptbe.domain.user.QUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -23,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.querydsl.core.group.GroupBy.*;
 import static com.ryu.mypptbe.domain.images.QPhoto.*;
 import static com.ryu.mypptbe.domain.post.QPosts.posts;
 import static com.ryu.mypptbe.domain.store.QStore.store;
@@ -89,6 +86,7 @@ public class SearchRepository {
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
                 .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getPostSeq()));
+
 
 
         result.forEach(o -> o.setImage(photoFilePathMap.get(o.getPostSeq())));

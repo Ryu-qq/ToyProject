@@ -69,9 +69,9 @@ export default {
 			return this.map.setCenter(moveLatLon);
 		},
 		makeMaker() {
-			if (this.userInfo.posts.length > 0) {
+			if (this.userInfo.userPostList.length > 0) {
 				const position = [];
-				for (var i = 0; i < this.userInfo.posts.length; i++) {
+				for (var i = 0; i < this.userInfo.userPostList.length; i++) {
 					position.push({
 						title: this.userInfo.posts[i].title,
 						latlng: new kakao.maps.LatLng(

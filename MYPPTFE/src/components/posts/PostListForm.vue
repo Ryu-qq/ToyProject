@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<div v-if="!userInfo.posts.length" class="post-container">
+		<div v-if="!userInfo.userPostList.length" class="post-container">
 			게시물이 없습니다.
 		</div>
 
 		<spinner v-if="isLoading"></spinner>
 		<div class="post-preview-container">
 			<div
-				v-for="(file, index) in userInfo.posts"
+				v-for="(file, index) in userInfo.userPostList"
 				:key="index"
 				class="post-preview-wrapper"
 			>

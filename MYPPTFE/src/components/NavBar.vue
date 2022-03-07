@@ -7,8 +7,8 @@
 						<router-link to="/" class="logo">
 							<span> 맛잘알 </span>
 						</router-link>
-						<li><router-link to="/">가게 찾기</router-link></li>
-						<li><router-link to="/search">둘러보기</router-link></li>
+						<li><router-link to="/">지도 보기</router-link></li>
+						<li><router-link to="/search">후기 찾기</router-link></li>
 					</ul>
 				</nav>
 
