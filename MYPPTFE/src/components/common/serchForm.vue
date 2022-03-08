@@ -35,7 +35,12 @@ export default {
 	},
 	methods: {
 		doSearch() {
-			this.$store.dispatch('fetchSearch', this.form);
+			const name = this.$route.name;
+			if (name == 'map') {
+				console.log('ddddd');
+			} else if (name == 'search') {
+				this.$store.dispatch('fetchSearch', this.form);
+			}
 		},
 	},
 };

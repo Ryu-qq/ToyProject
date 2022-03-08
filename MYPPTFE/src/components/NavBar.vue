@@ -13,11 +13,11 @@
 				</nav>
 
 				<div class="my-info">
-					<div v-if="isLoggedIn" class="my-picture">
-						<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
+					<div v-if="!isLoggedIn()" class="my-picture">
+						<img :src="profileImageUrl" @click="goUserPage()" />
 					</div>
 					<div v-else>
-						<img :src="profileImageUrl" @click="goUserPage()" />
+						<a> <button @click="$emit('onOpenLoginModal')">로그인</button> </a>
 					</div>
 				</div>
 			</div>
@@ -37,9 +37,6 @@ export default {
 	computed: {
 		...mapGetters(['token', 'user']),
 
-		isLoggedIn() {
-			return this.user != null;
-		},
 		isAdmin() {
 			return this.user && this.user.roleType === 'ADMIN';
 		},
@@ -61,6 +58,9 @@ export default {
 			if (this.$route.path !== '/userinfo/' + userId) {
 				this.$router.push('/userinfo/' + userId);
 			}
+		},
+		isLoggedIn() {
+			return !this.user;
 		},
 	},
 };

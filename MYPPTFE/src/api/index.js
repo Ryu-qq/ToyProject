@@ -27,3 +27,4 @@ export const posts = createInstanceWithAuth('posts');
 export const multipart = createInstanceWithMultiPart('posts');
 export const userinfo = createInstanceWithAuth('userinfo');
 export const follow = createInstanceWithAuth('follow');
+export const map = createInstanceWithAuth('map');

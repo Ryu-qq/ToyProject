@@ -4,7 +4,6 @@
 			게시물이 없습니다.
 		</div>
 
-		<spinner v-if="isLoading"></spinner>
 		<div class="post-preview-container">
 			<div
 				v-for="(file, index) in userInfo.userPostList"
@@ -24,15 +23,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Spinner from '@/components/common/Spinner.vue';
 
 export default {
-	components: {
-		Spinner,
-	},
+	components: {},
 	data() {
 		return {
-			isLoading: false,
 			preview: '',
 		};
 	},
@@ -42,7 +37,6 @@ export default {
 
 	methods: {
 		async goPost(endpoint) {
-			console.log(1);
 			await this.$store.dispatch('fetchPost', endpoint);
 
 			this.$router.push('/post/' + endpoint);

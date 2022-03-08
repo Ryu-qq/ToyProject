@@ -14,7 +14,7 @@ public class UserFeedResponseDto {
 
     private Long followSeq;
     private Long toUserSeq;
-    private List<PostResponseDto> postResponseDto;
+    private List<PostResponseDto> feedList;
 
     @QueryProjection
     public UserFeedResponseDto(Long followSeq, Long toUserSeq) {

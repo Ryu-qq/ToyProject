@@ -21,18 +21,6 @@ public class UserResponseDto {
     private String username;
     private RoleType roleType;
     private String profileImageUrl;
-    //private List<PostResponseDto> posts;
-
-
-
-    public List<PostResponseDto> getPostList(User user){
-        List<Posts> result = user.getPosts();
-        List<PostResponseDto> collect = result.stream()
-                .map(o -> new PostResponseDto(o))
-                .collect(Collectors.toList());
-
-        return collect;
-    }
 
 
     @Builder
@@ -41,7 +29,6 @@ public class UserResponseDto {
         this.username =  user.getUsername();
         this.roleType =  user.getRoleType();
         this.profileImageUrl =  user.getProfileImageUrl();
-        //this.posts= getPostList(user);
 
     }
 

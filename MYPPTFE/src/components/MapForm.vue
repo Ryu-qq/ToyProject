@@ -20,7 +20,10 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['userInfo']),
+		...mapGetters(['userInfo', 'user']),
+	},
+	created() {
+		this.getFollowFeed();
 	},
 	mounted() {
 		bus.$emit('start:spinner');
@@ -103,6 +106,12 @@ export default {
 					marker.setMap(this.map);
 				}
 			}
+		},
+		async getFollowFeed() {
+			const payLoad = {
+				userId: this.user.userId,
+			};
+			await this.$store.dispatch('fetchFeedList', payLoad);
 		},
 	},
 };

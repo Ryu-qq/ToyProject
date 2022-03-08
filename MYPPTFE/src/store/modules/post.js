@@ -1,18 +1,16 @@
-import { uploadPost, getPost } from '@/api/posts';
+import { uploadPost, getPost, getFeedList } from '@/api/posts';
 
 export default {
 	state: {
-		postList: [],
+		feedList: [],
 		imageFiles: [],
-		userInfo: {},
 		post: {},
 	},
 
 	getters: {
 		post: state => state.post,
-		postList: state => state.postList,
+		feedList: state => state.feedList,
 		imageFiles: state => state.imageFiles,
-		userInfo: state => state.userInfo,
 	},
 	actions: {
 		async fetchPost({ commit }, params) {
@@ -20,8 +18,9 @@ export default {
 			commit('setPost', data.body.post);
 		},
 
-		async fetchPostList({ commit }, params) {
-			commit('setPostList', params);
+		async fetchFeedList({ commit }, params) {
+			const { data } = await getFeedList(params);
+			commit('setFeedList', data.feedList);
 		},
 
 		async fetchPostUpload(postData) {
@@ -37,14 +36,11 @@ export default {
 		},
 	},
 	mutations: {
-		setUserInfo(state, userInfo) {
-			state.userInfo = userInfo;
-		},
 		setPost(state, post) {
 			state.post = post;
 		},
-		setPostList(state, postList) {
-			state.postList = postList;
+		setFeedList(state, feedList) {
+			state.feedList = feedList;
 		},
 		setImageFiles(state, imageFiles) {
 			state.imageFiles = imageFiles;

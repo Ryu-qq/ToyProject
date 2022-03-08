@@ -8,15 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.api.dto.mypage.*;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.api.dto.photo.QPhotoResponseDto;
-import com.ryu.mypptbe.api.dto.post.QPostResponseDto;
-import com.ryu.mypptbe.api.dto.search.QSearchPostResponseDto;
-import com.ryu.mypptbe.api.dto.search.SearchPostResponseDto;
-import com.ryu.mypptbe.api.dto.search.SearchRequestDto;
-import com.ryu.mypptbe.domain.follow.QFollow;
-import com.ryu.mypptbe.domain.post.Posts;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

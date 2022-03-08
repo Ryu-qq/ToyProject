@@ -11,15 +11,15 @@ export default {
 		async fetchSearch({ commit }, param) {
 			const { keyword, category } = param;
 			if (category === '카테고리') {
-				const { data } = getSearch({ keyword: keyword, category: '' });
+				const { data } = await getSearch({ keyword: keyword, category: '' });
 				commit('setSearch', data);
 			} else {
-				const { data } = getSearch(param);
+				const { data } = await getSearch(param);
 				commit('setSearch', data);
 			}
 		},
 	},
-	setSearch: {
+	mutations: {
 		setSearch(state, searchList) {
 			state.searchList = searchList;
 		},

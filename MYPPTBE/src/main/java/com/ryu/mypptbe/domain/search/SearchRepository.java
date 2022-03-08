@@ -49,9 +49,11 @@ public class SearchRepository {
                         posts.contents,
                         user.userSeq,
                         user.username.as("userName"),
+                        user.userId,
                         user.profileImageUrl,
                         store.xPos,
-                        store.yPos
+                        store.yPos,
+                        store.address
                 ))
                 .distinct()
                 .from(posts)
