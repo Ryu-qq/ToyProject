@@ -2,8 +2,8 @@
 	<div class="container">
 		<serch-form></serch-form>
 
-		<spinner :loading="loadingStatus"></spinner>
 		<map-form class="map-container"></map-form>
+		<spinner :loading="loadingStatus"></spinner>
 	</div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 	},
 	data() {
 		return {
-			loadingStatus: true,
+			loadingStatus: false,
 			customMap: {},
 		};
 	},

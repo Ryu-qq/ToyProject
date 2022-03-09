@@ -34,10 +34,13 @@ export default {
 	computed: {
 		...mapGetters(['searchList']),
 	},
+
+	beforeDestroy() {
+		this.$store.dispatch('initSearchList');
+	},
 	methods: {
 		async goPost(endpoint) {
-			await this.$store.dispatch('fetchPost', endpoint);
-			this.$router.push('/post/' + endpoint);
+			this.$emit('onOpenPostModal', endpoint);
 		},
 		goUserPage(userId) {
 			if (this.$route.path !== '/userinfo/' + userId) {

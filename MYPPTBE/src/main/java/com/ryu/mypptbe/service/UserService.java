@@ -22,8 +22,5 @@ public class UserService {
         return userRepository.findByUserId(userId).get();
     }
 
-    public List<UserFeedResponseDto> getFollowFeed(String userId){
-        return userRepository.searchPostsWithPhoto(userId);
-    }
 
 }

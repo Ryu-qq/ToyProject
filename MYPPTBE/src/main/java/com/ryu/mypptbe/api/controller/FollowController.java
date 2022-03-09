@@ -32,16 +32,6 @@ public class FollowController {
         }else{
             followService.delete(findId);
         }
-//
-//        FollowerResponseDto responseDto1 = FollowerResponseDto.builder()
-//                .follow(follow)
-//                .build();
-//
-//        System.out.println("responseDto1 = " + responseDto1);
-//
-//        FollowingResponseDto responseDto = FollowingResponseDto.builder()
-//                .follow(follow)
-//                .build();
 
         return ApiResponse.success("follow", toUserId);
 

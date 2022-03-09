@@ -40,7 +40,7 @@ public class Posts extends BaseTimeEntity {
     @JoinColumn(name ="STORE_SEQ")
     private Store store;
 
-    @OneToMany(mappedBy = "posts")
+    @OneToMany(mappedBy = "posts", cascade = CascadeType.ALL)
     private List<Photo> photos = new ArrayList<>();
 
 
@@ -76,8 +76,7 @@ public class Posts extends BaseTimeEntity {
     }
 
 
-    public void update(String title, String contents) {
-        this.title = title;
+    public void update(String contents) {
         this.contents = contents;
     }
 

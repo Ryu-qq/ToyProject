@@ -21,8 +21,11 @@ public class SearchService {
 
 
     public Page<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto, Pageable pageable ){
-
-        return searchRepository.searchPostsWithPhoto(requestDto, pageable);
+        if(requestDto.getName().equals("map")){
+            return searchRepository.searchPostsInMap(requestDto, pageable);
+        }else{
+            return searchRepository.searchPostsWithPhoto(requestDto, pageable);
+        }
 
     }
 }

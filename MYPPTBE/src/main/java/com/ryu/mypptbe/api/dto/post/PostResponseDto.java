@@ -26,26 +26,28 @@ public class PostResponseDto {
     private Address address;
     private double xPos;
     private double yPos;
+    private Long userSeq;
+    private String userId;
+    private String userName;
+    private String profileImageUrl;
     private List<PhotoResponseDto> image;
-
-
 
     @Builder
     @QueryProjection
-    public PostResponseDto(Posts posts){
-        this.postSeq = posts.getPostSeq();
-        this.title = posts.getTitle();
-        this.contents = posts.getContents();
-        this.createdDate = posts.getCreatedDate();
-        this.modifiedDate = posts.getModifiedDate();
-        this.address = posts.getStore().getAddress();
-        this.xPos = posts.getStore().getXPos();
-        this.yPos = posts.getStore().getYPos();
-        this.image = posts.getPhotos().stream()
-                        .map(photo -> new PhotoResponseDto(postSeq,photo.getFilePath()))
-                        .collect(Collectors.toList());
+    public PostResponseDto(Long postSeq, String title, String contents, LocalDateTime createdDate, LocalDateTime modifiedDate, Address address, double xPos, double yPos,Long userSeq,  String userId, String userName, String profileImageUrl) {
+        this.postSeq = postSeq;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.address = address;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.userSeq = userSeq;
+        this.userId =userId;
+        this.userName =userName;
+        this.profileImageUrl = profileImageUrl;
     }
-
 
 
 }

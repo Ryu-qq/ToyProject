@@ -1,9 +1,11 @@
 package com.ryu.mypptbe.api.controller;
 
 
+import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
+import com.ryu.mypptbe.api.dto.post.PostsUpdateRequestDto;
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
 import com.ryu.mypptbe.api.handler.AddressHandler;
 import com.ryu.mypptbe.common.ApiResponse;
@@ -42,9 +44,6 @@ public class PostController {
     private final StoreService storeService;
     private final UserService userService;
     private final AddressHandler addressHandler;
-
-
-
 
     @PostMapping
     public ResponseEntity uploadPost(
@@ -94,18 +93,23 @@ public class PostController {
 
     }
 
+    @PutMapping("/{postSeq}")
+    public ApiResponse<Long> updatePost(@PathVariable Long postSeq, @RequestParam String contents){
+        Long updatePostSeq = postService.updatePost(postSeq, contents);
+        return ApiResponse.success("post", updatePostSeq);
+    }
+
 
 
     @GetMapping("/{postSeq}")
     public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
-
-
-        Posts findPost = postService.viewPost(postSeq);
-
-        PostResponseDto responseDto = PostResponseDto.builder()
-                .posts(findPost)
-                .build();
-
-        return ApiResponse.success("post", responseDto);
+        return ApiResponse.success("post", postService.viewPost(postSeq));
     }
+
+    @DeleteMapping("/{postSeq}")
+    public ApiResponse<Long> deletePost(@PathVariable Long postSeq ){
+        postService.deletePost(postSeq);
+        return ApiResponse.success("post", postSeq);
+    }
+
 }

@@ -57,9 +57,16 @@
 						v-model="contents"
 						type="text"
 						rows="5"
-						placeholder="가게의 후기를 남겨주세요"
+						placeholder="가게의 후기를 남겨주세요. 글자 수는 최대 200자 이내입니다."
 					/>
+					<p
+						v-if="!isContentsValid"
+						class="validation-text warning isContentTooLong"
+					>
+						글자 수는 최대 200자 이내입니다.
+					</p>
 				</div>
+
 				<div type="submit" class="bottom">
 					<button>저장하기</button>
 				</div>
@@ -92,13 +99,31 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters(['token', 'user']),
+
 		getImageList() {
 			return this.$store.getters['imageFiles'];
 		},
-		...mapGetters(['token', 'user']),
+
+		isContentsValid() {
+			return this.contents.length <= 200;
+		},
 	},
 
 	methods: {
+		isValid() {
+			if (
+				this.title.length < 0 ||
+				this.form.category == '카테고리' ||
+				this.postcode.length < 0 ||
+				this.street.length < 0 ||
+				this.getImageList.length < 0
+			)
+				return false;
+			else {
+				return true;
+			}
+		},
 		openDaumPostcode() {
 			new window.daum.Postcode({
 				oncomplete: data => {
@@ -115,6 +140,9 @@ export default {
 			}).open();
 		},
 		async submitForm() {
+			if (!this.isValid()) {
+				return;
+			}
 			try {
 				const formData = new FormData();
 				if (this.getImageList && this.getImageList.length > 0) {
@@ -131,22 +159,6 @@ export default {
 				formData.append('street', this.street);
 				formData.append('detailStreet', this.detailStreet);
 				await uploadPost(formData);
-				// const { data } = await this.$store.dispatch(
-				// 	'fetchPostUpload',
-				// 	formData,
-				// );
-
-				// const { data } = await axios.post(
-				// 	'http://localhost:8080/api/v1/posts',
-				// 	formData,
-				// 	{
-				// 		headers: {
-				// 			'Content-Type': 'multipart/form-data',
-				// 			Authorization: `Bearer ${this.token}`,
-				// 		},
-				// 	},
-				// );
-				//console.log(data);
 				const userId = this.user.userId;
 				if (this.$route.path !== '/userinfo/' + userId) {
 					this.$router.push('/userinfo/' + userId);
@@ -252,7 +264,7 @@ select {
 
 textarea {
 	width: 680px;
-	height: 200px;
+	height: 10%;
 	border: 1px solid #d1d4d6;
 }
 

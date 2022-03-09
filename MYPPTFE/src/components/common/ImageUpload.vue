@@ -4,7 +4,8 @@
 			<div v-if="!files.length" class="room-file-upload-example-container">
 				<div class="room-file-upload-example">
 					<div class="room-file-notice-item">
-						실사진 최소 3장 이상 등록하셔야 하며, 가로사진을 권장합니다.
+						실사진 최소 1장 이상 등록하셔야 하며 올릴 수 있는 사진의 최대수는
+						3장입니다. 가로사진을 권장합니다.
 					</div>
 
 					<div class="room-file-notice-item room-file-notice-item-red">

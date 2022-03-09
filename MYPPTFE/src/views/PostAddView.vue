@@ -23,7 +23,7 @@ export default {
 .container {
 	width: 100%;
 	height: 100%;
-	padding: 120px 0;
+	padding: 80px 0;
 	display: flex;
 	justify-content: center;
 }

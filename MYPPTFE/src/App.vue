@@ -34,4 +34,6 @@ export default {
 .page-leave-to {
 	opacity: 0;
 }
+
+@import './css/common.css';
 </style>

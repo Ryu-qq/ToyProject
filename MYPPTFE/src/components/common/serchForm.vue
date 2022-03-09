@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	data() {
 		return {
@@ -33,14 +35,26 @@ export default {
 			},
 		};
 	},
+	computed: {
+		...mapGetters(['user']),
+	},
 	methods: {
 		doSearch() {
 			const name = this.$route.name;
-			if (name == 'map') {
-				console.log('ddddd');
-			} else if (name == 'search') {
-				this.$store.dispatch('fetchSearch', this.form);
+			let userId;
+			if (!this.user) {
+				userId = 'guest';
+			} else {
+				userId = this.user.userId;
 			}
+
+			const param = {
+				name: name,
+				userId: userId,
+				keyword: this.form.keyword,
+				category: this.form.category,
+			};
+			this.$store.dispatch('fetchSearch', param);
 		},
 	},
 };

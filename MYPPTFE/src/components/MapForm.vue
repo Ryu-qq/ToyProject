@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import bus from '@/utils/bus.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -23,10 +22,9 @@ export default {
 		...mapGetters(['userInfo', 'user']),
 	},
 	created() {
-		this.getFollowFeed();
+		//this.getFollowFeed();
 	},
 	mounted() {
-		bus.$emit('start:spinner');
 		if (!('geolocation' in navigator)) {
 			return;
 		}
@@ -64,7 +62,6 @@ export default {
 
 			this.map = new kakao.maps.Map(container, this.options);
 			this.makeMaker();
-			bus.$emit('end:spinner');
 		},
 
 		setCurrentPos() {

@@ -4,10 +4,6 @@
 			<div class="modal-mask">
 				<div class="modal-wrapper">
 					<div class="modal-container">
-						<div class="modal-header">
-							<slot name="header"> default header </slot>
-						</div>
-
 						<div class="modal-body">
 							<slot name="body"> default body </slot>
 						</div>
@@ -47,21 +43,22 @@ export default {};
 }
 
 .modal-container {
-	width: 500px;
+	width: 400px;
 	margin: 0px auto;
-	padding: 20px 30px;
 	background-color: #fff;
-	border-radius: 2px;
+	border-radius: 10px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 	transition: all 0.3s ease;
 }
 
-.modal-header h4 {
-	margin-top: 0;
+.modal-body {
+	margin: 0;
+	padding: 0;
 }
 
-.modal-body {
-	margin: 20px 0;
+.modal-footer {
+	margin: 0;
+	padding: 0;
 }
 
 .modal-default-button {
@@ -82,15 +79,15 @@ export default {};
 	transform: scale(1.1);
 }
 
-.modal-footer button {
-	padding: 9px 25px;
+button {
+	padding: 3px 14px;
 	background-color: #fff;
-	border: 3px solid #f5f5f5;
+	border: 1px solid #f5f5f5;
 	border-radius: 10px;
 	cursor: pointer;
 }
 
-.modal-footer button:hover {
+button:hover {
 	background-color: #a6a6a6;
 }
 </style>

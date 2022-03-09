@@ -20,7 +20,6 @@ import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.ryu.mypptbe.domain.follow.QFollow.*;
 import static com.ryu.mypptbe.domain.images.QPhoto.photo;
 import static com.ryu.mypptbe.domain.post.QPosts.posts;
-import static com.ryu.mypptbe.domain.store.QStore.store;
 import static com.ryu.mypptbe.domain.user.QUser.user;
 
 @Repository

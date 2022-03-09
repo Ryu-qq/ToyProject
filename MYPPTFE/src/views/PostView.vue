@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<post-form></post-form>
+		<post-form @onClosePost="onCloseModal">></post-form>
 	</div>
 </template>
 
@@ -8,15 +8,19 @@
 import PostForm from '@/components/posts/PostForm.vue';
 export default {
 	components: { PostForm },
+	methods: {
+		onCloseModal() {
+			this.$emit('onCloseModal');
+		},
+	},
 };
 </script>
 
 <style scoped>
 * {
 	box-sizing: border-box;
-	padding: 80px 0;
 	display: flex;
 	width: 100%;
-	height: 850px;
+	height: 650px;
 }
 </style>

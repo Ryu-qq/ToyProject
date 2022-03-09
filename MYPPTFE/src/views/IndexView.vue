@@ -10,10 +10,6 @@
 			v-if="isLoginModalOpen"
 			@onCloseModal="isLoginModalOpen = false"
 		>
-			<div slot="header">
-				<h4 slot>로그인</h4>
-			</div>
-
 			<div slot="body">
 				<login-modal></login-modal>
 			</div>
@@ -23,8 +19,8 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import LoginModal from '@/components/common/LoginModal.vue';
-import SignInModal from '@/components/common/ModalView.vue';
+import LoginModal from '@/components/common/modal/LoginModal.vue';
+import SignInModal from '@/components/common/modal/ModalView.vue';
 
 import { mapGetters, mapMutations } from 'vuex';
 
@@ -51,12 +47,6 @@ export default {
 			this.setUser(null);
 			alert('로그아웃되었습니다.');
 			if (this.$route.path !== '/store') this.$router.push('/store');
-		},
-		startSpinner() {
-			this.loadingStatus = true;
-		},
-		endSpinner() {
-			this.loadingStatus = false;
 		},
 	},
 };

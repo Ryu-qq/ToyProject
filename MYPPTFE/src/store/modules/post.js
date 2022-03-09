@@ -1,4 +1,4 @@
-import { uploadPost, getPost, getFeedList } from '@/api/posts';
+import { getPost, getFeedList, editPost } from '@/api/posts';
 
 export default {
 	state: {
@@ -23,8 +23,9 @@ export default {
 			commit('setFeedList', data.feedList);
 		},
 
-		async fetchPostUpload(postData) {
-			await uploadPost(postData);
+		async fetchEditPost({ commit }, params) {
+			const { data } = await editPost(params);
+			commit('setPost', data.body.post);
 		},
 
 		fetchImageUpload({ commit }, data) {
@@ -44,11 +45,6 @@ export default {
 		},
 		setImageFiles(state, imageFiles) {
 			state.imageFiles = imageFiles;
-		},
-		deleteImageFiles(state, imageFiles) {
-			state.imageFiles = state.imageFiles.filter(
-				data => data.number !== Number(imageFiles),
-			);
 		},
 	},
 };

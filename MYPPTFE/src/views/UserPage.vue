@@ -16,11 +16,21 @@
 		</div>
 
 		<div v-show="selectedTab === tabs[0]" class="mypage-postlist">
-			<post-list-form></post-list-form>
+			<post-list-form @onOpenPostModal="openPostModal"></post-list-form>
 		</div>
 		<div v-show="selectedTab === tabs[1]" class="mypage-mapview">
 			<map-form></map-form>
 		</div>
+
+		<modal-view
+			v-if="isModalOpen"
+			class="post-modal"
+			@onCloseModal="onCloseModal"
+		>
+			<div slot="body">
+				<post-view @onCloseModal="onCloseModal"></post-view>
+			</div>
+		</modal-view>
 	</div>
 </template>
 
@@ -29,13 +39,17 @@ import { mapMutations, mapGetters } from 'vuex';
 import MyInfoForm from '../components/MyInfoForm.vue';
 import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
+import PostView from '@/views/PostView.vue';
+import ModalView from '@/components/common/modal/PostModal.vue';
 
 export default {
-	components: { MyInfoForm, PostListForm, MapForm },
+	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },
 	data() {
 		return {
 			tabs: [PostListForm, MapForm],
 			selectedTab: '',
+			isModalOpen: false,
+			endpoint: '',
 		};
 	},
 
@@ -67,12 +81,20 @@ export default {
 		onClickTab(i) {
 			this.selectedTab = this.tabs[i];
 		},
+		onCloseModal() {
+			this.isModalOpen = false;
+		},
 
 		logout() {
 			this.setToken(null);
 			this.setUser(null);
 			alert('로그아웃되었습니다.');
 			if (this.$route.path !== '/store') this.$router.push('/store');
+		},
+		async openPostModal(endpoint) {
+			this.endpoint = endpoint;
+			await this.$store.dispatch('fetchPost', endpoint);
+			this.isModalOpen = true;
 		},
 	},
 };
@@ -127,5 +149,9 @@ export default {
 
 .tap-none {
 	color: #a6a6a6;
+}
+
+.post-modal {
+	width: 800px;
 }
 </style>

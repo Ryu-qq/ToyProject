@@ -37,9 +37,7 @@ export default {
 
 	methods: {
 		async goPost(endpoint) {
-			await this.$store.dispatch('fetchPost', endpoint);
-
-			this.$router.push('/post/' + endpoint);
+			this.$emit('onOpenPostModal', endpoint);
 		},
 	},
 };

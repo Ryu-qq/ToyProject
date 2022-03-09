@@ -20,8 +20,6 @@ import java.util.List;
 @RequestMapping("/api/v1/userinfo")
 public class UserInfoController {
 
-    private final  UserService userService;
-    private final  FollowService followService;
     private final UserInfoRepository userInfoRepository;
 
 

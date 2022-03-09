@@ -1,6 +1,8 @@
 package com.ryu.mypptbe.service;
 
+import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
+import com.ryu.mypptbe.api.dto.post.PostsUpdateRequestDto;
 import com.ryu.mypptbe.api.handler.PhotoHandler;
 import com.ryu.mypptbe.domain.images.Photo;
 import com.ryu.mypptbe.domain.images.repository.PhotoRepository;
@@ -41,13 +43,23 @@ public class PostService {
 
     }
 
-    public List<Posts> myPostList(Long userSeq) {
-        return postsRepository.myPostList(userSeq);
+    @Transactional
+    public Long updatePost(Long postSeq, String contents) {
+        Posts posts = postsRepository.findById(postSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + postSeq));
+
+        posts.update(contents);
+        return postSeq;
     }
 
-    public Posts viewPost(Long PostSeq){
-        return postsRepository.findById(PostSeq).get();
-
+    @Transactional
+    public void deletePost(Long postSeq){
+        postsRepository.deleteById(postSeq);
     }
+
+    public PostResponseDto viewPost(Long PostSeq){
+        return postsRepository.getPost(PostSeq);
+    }
+
 
 }
