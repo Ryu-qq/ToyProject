@@ -1,4 +1,4 @@
-import { posts, multipart, map } from './index';
+import { posts, multipart } from './index';
 
 function uploadPost(params) {
 	return multipart.post('', params);
@@ -17,9 +17,4 @@ function deletePost(params) {
 	return posts.delete(`${params}`);
 }
 
-function getFeedList(params) {
-	const { userId } = params;
-	return map.get(`?userId=${userId}`);
-}
-
-export { uploadPost, getPost, getFeedList, deletePost, editPost };
+export { uploadPost, getPost, deletePost, editPost };

@@ -22,8 +22,10 @@ public class SearchService {
 
     public Page<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto, Pageable pageable ){
         if(requestDto.getName().equals("map")){
+            //맵에서 내가 팔로잉한 사람 게시물 가져오기
             return searchRepository.searchPostsInMap(requestDto, pageable);
         }else{
+            //후기찾기에서 게시물 다 가져오기
             return searchRepository.searchPostsWithPhoto(requestDto, pageable);
         }
 

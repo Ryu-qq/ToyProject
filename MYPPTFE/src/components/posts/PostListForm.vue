@@ -32,7 +32,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['token', 'user', 'userInfo']),
+		...mapGetters(['userInfo']),
 	},
 
 	methods: {

@@ -32,6 +32,7 @@ public class PostResponseDto {
     private String profileImageUrl;
     private List<PhotoResponseDto> image;
 
+
     @Builder
     @QueryProjection
     public PostResponseDto(Long postSeq, String title, String contents, LocalDateTime createdDate, LocalDateTime modifiedDate, Address address, double xPos, double yPos,Long userSeq,  String userId, String userName, String profileImageUrl) {

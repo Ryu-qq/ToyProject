@@ -41,6 +41,7 @@ import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
+import { getUserInfo } from '@/api/account';
 
 export default {
 	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },
@@ -50,29 +51,22 @@ export default {
 			selectedTab: '',
 			isModalOpen: false,
 			endpoint: '',
+			postItems: [],
+			user: {},
 		};
 	},
 
 	computed: {
-		...mapGetters(['token', 'user']),
+		...mapGetters(['token', 'userInfo']),
 
 		isLoggedIn() {
 			return this.token != null;
-		},
-
-		username() {
-			if (!this.user) return '';
-			return this.user.username;
-		},
-
-		profileImageUrl() {
-			if (!this.user) return '';
-			return this.user.profileImageUrl;
 		},
 	},
 
 	created() {
 		this.selectedTab = this.tabs[0];
+		//this.fetchUserInfo();
 	},
 
 	methods: {
@@ -89,8 +83,18 @@ export default {
 			this.setToken(null);
 			this.setUser(null);
 			alert('로그아웃되었습니다.');
-			if (this.$route.path !== '/store') this.$router.push('/store');
+			if (this.$route.path !== '/map') this.$router.push('/map');
 		},
+
+		async fetchUserInfo() {
+			const formData = new FormData();
+			formData.append('fromUserId', this.user.userId);
+			formData.append('toUserId', this.$route.params.userId);
+			const { data } = await getUserInfo(formData);
+			this.postItems = data.body.userInfo.userPostList;
+			this.user = data.body.userInfo;
+		},
+
 		async openPostModal(endpoint) {
 			this.endpoint = endpoint;
 			await this.$store.dispatch('fetchPost', endpoint);

@@ -38,8 +38,8 @@
 
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
-						<li>팔로워 {{ followerCnt }}</li>
-						<li>팔로잉 {{ followingCnt }}</li>
+						<li class="follow">팔로워 {{ followerCnt }}</li>
+						<li class="follow">팔로잉 {{ followingCnt }}</li>
 					</ul>
 				</section>
 			</div>
@@ -54,7 +54,7 @@ export default {
 	data() {
 		return {
 			followStatus: false,
-			statusMsg: '팔로우',
+			statusMsg: '팔로잉',
 		};
 	},
 
@@ -85,21 +85,22 @@ export default {
 			}
 		},
 		postCnt() {
-			if (!this.userInfo.userPostList.posts) return 0;
-			return this.userInfo.userPostList.length;
+			return this.userInfo.postCnt;
 		},
 		followerCnt() {
-			return this.userInfo.followerCnt;
+			return this.follow.followerCnt;
 		},
 		followingCnt() {
-			return this.userInfo.followingCnt;
+			return this.follow.followingCnt;
 		},
 		isFollow() {
-			return this.userInfo.followSeq;
+			return this.follow.followStatus;
 		},
 	},
+
 	created() {
 		this.fetchUserInfo();
+		//this.getFollowInfo();
 	},
 
 	methods: {
@@ -211,6 +212,10 @@ export default {
 	border-radius: 10px;
 	background-color: #f8f8f8;
 	text-decoration: none;
+}
+
+.follow {
+	cursor: pointer;
 }
 
 section {

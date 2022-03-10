@@ -129,7 +129,11 @@ export default {
 
 		goUserPage(userId) {
 			if (!this.isEditMode) {
-				this.$router.push('/userinfo/' + userId);
+				if (this.user.userId == userId) {
+					this.$router.go(this.$router.currentRoute);
+				} else {
+					this.$router.push('/userinfo/' + userId);
+				}
 			}
 		},
 		openEditModal() {

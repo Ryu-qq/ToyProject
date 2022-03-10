@@ -13,7 +13,7 @@
 				</nav>
 
 				<div class="my-info">
-					<div v-if="!isLoggedIn()" class="my-picture">
+					<div v-if="isLoggedIn" class="my-picture">
 						<img :src="profileImageUrl" @click="goUserPage()" />
 					</div>
 					<div v-else>
@@ -48,6 +48,9 @@ export default {
 			if (!this.user) return '';
 			return this.user.profileImageUrl;
 		},
+		isLoggedIn() {
+			return this.token != null;
+		},
 	},
 
 	methods: {
@@ -58,9 +61,6 @@ export default {
 			if (this.$route.path !== '/userinfo/' + userId) {
 				this.$router.push('/userinfo/' + userId);
 			}
-		},
-		isLoggedIn() {
-			return !this.user;
 		},
 	},
 };

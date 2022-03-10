@@ -12,18 +12,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "USER_REFRESH_TOKEN")
 public class UserRefreshToken {
     @JsonIgnore
     @Id
-    @Column(name = "REFRESH_TOKEN_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long refreshTokenSeq;
 
-    @Column(name = "USER_ID", length = 64, unique = true)
     private String userId;
 
-    @Column(name = "REFRESH_TOKEN", length = 256)
     private String refreshToken;
 
     public UserRefreshToken(

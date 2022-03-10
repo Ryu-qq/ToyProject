@@ -1,7 +1,7 @@
 package com.ryu.mypptbe.api.controller;
 
 
-import com.ryu.mypptbe.api.dto.UserResponseDto;
+import com.ryu.mypptbe.api.dto.user.UserResponseDto;
 import com.ryu.mypptbe.service.UserService;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.user.User;

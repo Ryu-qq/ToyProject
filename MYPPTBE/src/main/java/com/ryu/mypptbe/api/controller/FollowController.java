@@ -1,10 +1,8 @@
 package com.ryu.mypptbe.api.controller;
 
 import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
-import com.ryu.mypptbe.api.dto.follow.FollowerResponseDto;
-import com.ryu.mypptbe.api.dto.follow.FollowingResponseDto;
+import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
 import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,28 +16,9 @@ public class FollowController {
 
 
     @PostMapping("/follow")
-    public ApiResponse<String> followUser(@RequestBody FollowRequestDto requestDto){
+    public ApiResponse<FollowResponseDto> follow(@RequestBody FollowRequestDto requestDto){
 
-        //팔로잉
-        String toUserId = requestDto.getToUser();
-        //팔로워
-        String fromUserId = requestDto.getFromUser();
-        Long findId = followService.getByToUserIdAndFromUserId(toUserId, fromUserId);
-
-
-        if(findId <0){
-            followService.save(toUserId, fromUserId);
-        }else{
-            followService.delete(findId);
-        }
-
-        return ApiResponse.success("follow", toUserId);
-
+        return ApiResponse.success("follow", followService.getByToUserIdAndFromUserId(requestDto));
     }
 
-    @DeleteMapping("/follow")
-    public void unFollowUser(@RequestBody FollowRequestDto requestDto){
-        Long findId = followService.getByToUserIdAndFromUserId(requestDto.getToUser(), requestDto.getFromUser());
-        followService.delete(findId);
-    }
 }

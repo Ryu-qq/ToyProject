@@ -16,12 +16,15 @@
 			</select>
 
 			<button @click.self.prevent="doSearch">검색</button>
+			<button @click="logout()">
+				<i class="fas fa-sign-out-alt"></i>
+			</button>
 		</div>
 	</div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
 	data() {
@@ -33,28 +36,47 @@ export default {
 				keyword: '',
 				category: '카테고리',
 			},
+			searchList: [],
 		};
 	},
 	computed: {
-		...mapGetters(['user']),
+		...mapGetters(['user', 'token']),
 	},
 	methods: {
-		doSearch() {
+		async doSearch() {
 			const name = this.$route.name;
 			let userId;
-			if (!this.user) {
-				userId = 'guest';
-			} else {
-				userId = this.user.userId;
+			let param = {};
+
+			userId = !this.user ? '' : this.user.userId;
+
+			if (name == 'map') {
+				param = {
+					name: name,
+					userId: userId,
+					keyword: this.form.keyword,
+					category: this.form.category,
+				};
+				await this.$store.dispatch('fetchMapList', param);
+				this.$emit('search');
+				return;
 			}
 
-			const param = {
+			param = {
 				name: name,
 				userId: userId,
 				keyword: this.form.keyword,
 				category: this.form.category,
 			};
-			this.$store.dispatch('fetchSearch', param);
+			await this.$store.dispatch('fetchSearch', param);
+		},
+		...mapMutations(['setToken', 'setUser']),
+
+		logout() {
+			this.setToken(null);
+			this.setUser(null);
+			alert('로그아웃되었습니다.');
+			if (this.$route.path !== '/map') this.$router.push('/map');
 		},
 	},
 };

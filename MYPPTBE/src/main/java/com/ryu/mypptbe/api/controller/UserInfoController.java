@@ -33,6 +33,8 @@ public class UserInfoController {
 
         userInfoResponseDto.setUserPostList(userPostList);
 
+
+
         return ApiResponse.success("userInfo", userInfoResponseDto);
 
 

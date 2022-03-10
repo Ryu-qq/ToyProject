@@ -1,21 +1,15 @@
 package com.ryu.mypptbe.api.controller;
 
 
-import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
-import com.ryu.mypptbe.api.dto.post.PostsUpdateRequestDto;
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
 import com.ryu.mypptbe.api.handler.AddressHandler;
 import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.post.Posts;
-import com.ryu.mypptbe.domain.post.repository.PostsRepository;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
-import com.ryu.mypptbe.domain.store.repository.StoreRepository;
 import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import com.ryu.mypptbe.service.PostService;
 import com.ryu.mypptbe.service.StoreService;
 import com.ryu.mypptbe.service.UserService;
@@ -45,8 +39,14 @@ public class PostController {
     private final UserService userService;
     private final AddressHandler addressHandler;
 
+
+    @GetMapping("/{postSeq}")
+    public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
+        return ApiResponse.success("post", postService.viewPost(postSeq));
+    }
+
     @PostMapping
-    public ResponseEntity uploadPost(
+    public ApiResponse<Long> uploadPost(
             @RequestParam("userId") String userId,
             @RequestParam("title") String title,
             @RequestParam("category") String category,
@@ -60,16 +60,16 @@ public class PostController {
 
         User user = userService.getUser(userId);
 
-
+        //주소
         Address address =Address.builder()
                 .postcode(postcode)
                 .street(street)
                 .detailStreet(detailStreet)
                 .build();
 
-        StoreSaveRequestDto getGps = addressHandler.getCoordination(address, category);
-        Store newStore = storeService.saveStore(getGps);
-
+        //가게
+        StoreSaveRequestDto saveStore = addressHandler.getCoordination(address, category);
+        Store newStore = storeService.saveStore(saveStore);
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .user(user)
@@ -78,18 +78,7 @@ public class PostController {
                 .contents(contents)
                 .build();
 
-        Long newPostId = postService.uploadPost(requestDto, files).getPostSeq();
-
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(PostController.class).slash(newPostId);
-        URI createdUri = linkTo(PostController.class).slash(newPostId).toUri();
-
-
-        EntityModel eventResource = EntityModel.of(requestDto);
-        eventResource.add(selfLinkBuilder.withSelfRel());
-        eventResource.add(linkTo(PostController.class).withRel("query-events"));
-        eventResource.add(selfLinkBuilder.withRel("update-event"));
-
-        return ResponseEntity.created(createdUri).body(eventResource);
+        return ApiResponse.success("post", postService.uploadPost(requestDto, files));
 
     }
 
@@ -97,13 +86,6 @@ public class PostController {
     public ApiResponse<Long> updatePost(@PathVariable Long postSeq, @RequestParam String contents){
         Long updatePostSeq = postService.updatePost(postSeq, contents);
         return ApiResponse.success("post", updatePostSeq);
-    }
-
-
-
-    @GetMapping("/{postSeq}")
-    public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
-        return ApiResponse.success("post", postService.viewPost(postSeq));
     }
 
     @DeleteMapping("/{postSeq}")

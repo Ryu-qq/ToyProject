@@ -1,9 +1,8 @@
 <template>
 	<div class="container">
-		<serch-form></serch-form>
-
-		<map-form class="map-container"></map-form>
+		<serch-form :search="sendEvent"></serch-form>
 		<spinner :loading="loadingStatus"></spinner>
+		<map-form class="map-container"></map-form>
 	</div>
 </template>
 
@@ -16,8 +15,8 @@ import bus from '@/utils/bus.js';
 export default {
 	components: {
 		MapForm,
-		Spinner,
 		serchForm,
+		Spinner,
 	},
 	data() {
 		return {
@@ -25,7 +24,6 @@ export default {
 			customMap: {},
 		};
 	},
-
 	created() {
 		bus.$on('start:spinner', this.startSpinner);
 		bus.$on('end:spinner', this.endSpinner);
@@ -41,6 +39,10 @@ export default {
 		},
 		endSpinner() {
 			this.loadingStatus = false;
+		},
+
+		sendEvent() {
+			console.log('event다');
 		},
 	},
 };

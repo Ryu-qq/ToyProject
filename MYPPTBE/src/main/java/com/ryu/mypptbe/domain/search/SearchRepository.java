@@ -106,7 +106,7 @@ public class SearchRepository {
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchCount);
     }
 
-    public List<UserFeedResponseDto> getFollow(String userId, Pageable pageable) {
+    public List<UserFeedResponseDto> getFollow(String userId) {
         return queryFactory
                 .select(new QUserFeedResponseDto(
                         follow.followSeq,
@@ -114,13 +114,10 @@ public class SearchRepository {
                 ))
                 .from(follow)
                 .where(userIdEq(userId))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    public List<SearchPostResponseDto> getFollowPost(List<Long> toUserId, Pageable pageable) {
-
+    public List<SearchPostResponseDto> getFollowPost(List<Long> toUserId, SearchRequestDto requestDto, Pageable pageable) {
 
 
         return queryFactory
@@ -139,7 +136,13 @@ public class SearchRepository {
                 .from(posts)
                 .leftJoin(posts.store, store)
                 .leftJoin(posts.user, user)
-                .where(userSeqEq(toUserId))
+                .where(
+                        userSeqEq(toUserId),
+                        keywordEq(requestDto.getKeyword()),
+                        categoryEq(requestDto.getCategory())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -147,25 +150,21 @@ public class SearchRepository {
 
         String userId = requestDto.getUserId();
 
-        if(userId.equals("guest")){
-            userId = "";
-        }
-
         //팔로잉하는사람들 가져오기
-        List<UserFeedResponseDto> userList = getFollow(userId, pageable);
+        List<UserFeedResponseDto> userList = getFollow(userId);
 
         List<Long> toUserId = userList.stream()
                 .map(o -> o.getToUserSeq())
                 .collect(Collectors.toList());
 
-
-        List<SearchPostResponseDto> result = getFollowPost(toUserId, pageable);
+        //팔로잉하는사람들 아이디로 그 사람들 포스트 가져오기
+        List<SearchPostResponseDto> result = getFollowPost(toUserId ,requestDto, pageable);
 
         List<Long> postId = result.stream()
                 .map(o -> o.getPostSeq())
                 .collect(Collectors.toList());
 
-
+        //포스트별 사진 가져오기
         List<PhotoResponseDto> photoFilePath = queryFactory
                 .select(new QPhotoResponseDto(
                         photo.posts.postSeq,

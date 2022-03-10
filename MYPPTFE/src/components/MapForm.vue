@@ -16,14 +16,25 @@ export default {
 	data() {
 		return {
 			map: null,
+			markerList: [],
 		};
 	},
+
 	computed: {
-		...mapGetters(['userInfo', 'user']),
+		...mapGetters(['mapList', 'userInfo', 'follow']),
 	},
-	created() {
-		//this.getFollowFeed();
+	watch: {
+		mapList() {
+			// console.log(this.map);
+			// stores가 변경되면 marker를 다시 그림
+			this.makeMaker();
+		},
+		userInfo() {
+			this.makeMaker();
+		},
+		follow() {},
 	},
+
 	mounted() {
 		if (!('geolocation' in navigator)) {
 			return;
@@ -69,46 +80,35 @@ export default {
 			return this.map.setCenter(moveLatLon);
 		},
 		makeMaker() {
-			if (this.userInfo.userPostList.length > 0) {
-				const position = [];
-				for (var i = 0; i < this.userInfo.userPostList.length; i++) {
-					position.push({
-						title: this.userInfo.posts[i].title,
-						latlng: new kakao.maps.LatLng(
-							this.userInfo.posts[i].ypos,
-							this.userInfo.posts[i].xpos,
-						),
-					});
-				}
+			this.initMarkers();
+			const result =
+				this.$route.name == 'map'
+					? this.mapList.content
+					: this.userInfo.userPostList;
+			if (result.length > 0) {
+				for (var i = 0; i < result.length; i++) {
+					var imageSrc =
+						'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
-				var markerPosition = position;
-				var imageSrc =
-					'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-
-				for (var j = 0; j < markerPosition.length; j++) {
-					// 마커 이미지의 이미지 크기 입니다
 					var imageSize = new kakao.maps.Size(24, 35);
-
-					// 마커 이미지를 생성합니다
 					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-					// 마커를 생성합니다
 					var marker = new kakao.maps.Marker({
 						map: this.map, // 마커를 표시할 지도
-
-						title: markerPosition[j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-						position: markerPosition[j].latlng, // 마커를 표시할 위치
+						title: result[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+						position: new kakao.maps.LatLng(result[i].ypos, result[i].xpos), // 마커를 표시할 위치
 						image: markerImage, // 마커 이미지
 					});
+
 					marker.setMap(this.map);
+					this.markerList.push(marker);
 				}
 			}
 		},
-		async getFollowFeed() {
-			const payLoad = {
-				userId: this.user.userId,
-			};
-			await this.$store.dispatch('fetchFeedList', payLoad);
+		initMarkers() {
+			this.markerList.forEach(marker => {
+				marker.setMap(null);
+			});
 		},
 	},
 };

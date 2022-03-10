@@ -61,9 +61,6 @@ public class AddressHandler {
         double xPos = Double.parseDouble(obj.getString("x"));
         double yPos = Double.parseDouble(obj.getString("y"));
 
-        System.out.println("yPos = " + yPos);
-        System.out.println("xPos = " + xPos);
-
         StoreSaveRequestDto store = StoreSaveRequestDto.builder()
                 .address(address)
                 .category(category)

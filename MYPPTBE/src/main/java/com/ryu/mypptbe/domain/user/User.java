@@ -17,32 +17,25 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Table(name ="USER")
+@Table(name ="USERS")
 @Entity
 public class User extends BaseTimeEntity {
 
     @JsonIgnore
     @Id
-    @Column(name = "USER_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long userSeq;
 
-    @Column(name = "USER_ID", length = 64, unique = true)
     private String userId;
 
-    @Column(name = "USERNAME", length = 100)
     private String username;
 
-    @Column(name = "EMAIL", length = 512, unique = true)
     private String email;
 
-    @Column(name = "PROFILE_IMAGE_URL", length = 512)
     private String profileImageUrl;
 
-    @Column(name = "PROVIDER_TYPE", length = 20)
     private String providerType;
 
-    @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 

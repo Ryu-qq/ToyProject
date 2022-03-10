@@ -15,7 +15,6 @@
 						<img :src="review.profileUrl" @click="goUserPage(review.userId)" />
 					</div>
 				</div>
-
 				<div class="top-line"></div>
 
 				<h6>{{ review.address.street }}</h6>
@@ -35,9 +34,6 @@ export default {
 		...mapGetters(['searchList']),
 	},
 
-	beforeDestroy() {
-		this.$store.dispatch('initSearchList');
-	},
 	methods: {
 		async goPost(endpoint) {
 			this.$emit('onOpenPostModal', endpoint);

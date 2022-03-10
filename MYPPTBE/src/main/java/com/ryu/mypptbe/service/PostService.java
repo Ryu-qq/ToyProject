@@ -2,7 +2,6 @@ package com.ryu.mypptbe.service;
 
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
-import com.ryu.mypptbe.api.dto.post.PostsUpdateRequestDto;
 import com.ryu.mypptbe.api.handler.PhotoHandler;
 import com.ryu.mypptbe.domain.images.Photo;
 import com.ryu.mypptbe.domain.images.repository.PhotoRepository;
@@ -26,8 +25,13 @@ public class PostService {
     private final PhotoHandler photoHandler;
 
 
+    public PostResponseDto viewPost(Long PostSeq){
+        return postsRepository.getPost(PostSeq);
+    }
+
+
     @Transactional
-    public Posts uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
+    public Long uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
 
         Posts posts = requestDto.toEntity();
         List<Photo> photoList = photoHandler.parseImageInfo(files);
@@ -38,8 +42,7 @@ public class PostService {
                 posts.addPhoto(photoRepository.save(photo));
         }
 
-
-        return postsRepository.save(posts);
+        return postsRepository.save(posts).getPostSeq();
 
     }
 
@@ -57,9 +60,6 @@ public class PostService {
         postsRepository.deleteById(postSeq);
     }
 
-    public PostResponseDto viewPost(Long PostSeq){
-        return postsRepository.getPost(PostSeq);
-    }
 
 
 }

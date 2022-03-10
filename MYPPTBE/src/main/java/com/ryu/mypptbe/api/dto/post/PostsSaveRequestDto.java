@@ -21,7 +21,6 @@ public class PostsSaveRequestDto {
     private Store store;
 
 
-
     @Builder
     public PostsSaveRequestDto(String title, String contents, User user, Store store) {
         this.title = title;
