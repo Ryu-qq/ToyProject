@@ -1,15 +1,10 @@
 package com.ryu.mypptbe.domain.post.repository;
 
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryu.mypptbe.api.dto.mypage.QUserInfoResponseDto;
-import com.ryu.mypptbe.api.dto.mypage.UserPostResponseDto;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.api.dto.photo.QPhotoResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.QPostResponseDto;
-import com.ryu.mypptbe.domain.user.QUser;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -37,7 +32,7 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository{
     public PostResponseDto findPost(Long PostSeq) {
         return queryFactory
                 .select(new QPostResponseDto(
-                        posts.postSeq,
+                        posts.id,
                         posts.title,
                         posts.contents,
                         posts.createdDate,
@@ -45,7 +40,7 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository{
                         store.address,
                         store.xPos,
                         store.yPos,
-                        user.userSeq,
+                        user.id,
                         user.userId,
                         user.username.as("userName"),
                         user.profileImageUrl
@@ -53,7 +48,7 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository{
                 .from(posts)
                 .leftJoin(posts.user, user)
                 .leftJoin(posts.store, store)
-                .where(posts.postSeq.eq(PostSeq))
+                .where(posts.id.eq(PostSeq))
                 .fetchOne();
     }
 
@@ -67,11 +62,11 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository{
 
         List<PhotoResponseDto> photoFilePath = queryFactory
                 .select(new QPhotoResponseDto(
-                        photo.posts.postSeq,
+                        photo.posts.id,
                         photo.filePath
                 ))
                 .from(photo)
-                .where(photo.posts.postSeq.eq(postId))
+                .where(photo.posts.id.eq(postId))
                 .fetch();
 
         result.setImage(photoFilePath);

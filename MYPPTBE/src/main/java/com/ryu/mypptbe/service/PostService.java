@@ -42,7 +42,7 @@ public class PostService {
                 posts.addPhoto(photoRepository.save(photo));
         }
 
-        return postsRepository.save(posts).getPostSeq();
+        return postsRepository.save(posts).getId();
 
     }
 

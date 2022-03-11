@@ -5,41 +5,50 @@
 			<button class="custom_typecontrol" @click="setCurrentPos()">
 				<i id="icon" class="fas fa-crosshairs fa-3x"></i>
 			</button>
+			<spinner :loading="loadingStatus"></spinner>
 		</div>
 	</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import Spinner from '@/components/common/Spinner.vue';
 
 export default {
+	components: { Spinner },
+	props: {
+		postitems: {
+			type: Array,
+			default: function () {
+				return { postitems: [] };
+			},
+		},
+	},
 	data() {
 		return {
+			loadingStatus: false,
 			map: null,
 			markerList: [],
 		};
 	},
 
 	computed: {
-		...mapGetters(['mapList', 'userInfo', 'follow']),
+		...mapGetters(['mapList', 'follow']),
 	},
 	watch: {
 		mapList() {
-			// console.log(this.map);
-			// stores가 변경되면 marker를 다시 그림
 			this.makeMaker();
 		},
 		userInfo() {
 			this.makeMaker();
 		},
-		follow() {},
 	},
 
 	mounted() {
 		if (!('geolocation' in navigator)) {
 			return;
 		}
-
+		this.loadingStatus = true;
 		navigator.geolocation.getCurrentPosition(
 			pos => {
 				this.gps_lat = pos.coords.latitude;
@@ -72,6 +81,7 @@ export default {
 			};
 
 			this.map = new kakao.maps.Map(container, this.options);
+
 			this.makeMaker();
 		},
 
@@ -82,10 +92,8 @@ export default {
 		makeMaker() {
 			this.initMarkers();
 			const result =
-				this.$route.name == 'map'
-					? this.mapList.content
-					: this.userInfo.userPostList;
-			if (result.length > 0) {
+				this.$route.name == 'map' ? this.mapList.content : this.postitems;
+			if (result) {
 				for (var i = 0; i < result.length; i++) {
 					var imageSrc =
 						'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
@@ -101,6 +109,7 @@ export default {
 					});
 
 					marker.setMap(this.map);
+					this.loadingStatus = false;
 					this.markerList.push(marker);
 				}
 			}

@@ -1,6 +1,11 @@
 <template>
 	<div class="container">
-		<my-info-form></my-info-form>
+		<my-info-form
+			:users="users"
+			:follow="follow"
+			:postitems="postItems"
+			@doFollow="doFollow"
+		></my-info-form>
 
 		<div class="tappage">
 			<a @click="onClickTab(0)">
@@ -15,11 +20,14 @@
 			</a>
 		</div>
 
-		<div v-show="selectedTab === tabs[0]" class="mypage-postlist">
-			<post-list-form @onOpenPostModal="openPostModal"></post-list-form>
+		<div v-if="selectedTab === tabs[0]" class="mypage-postlist">
+			<post-list-form
+				:postitems="postItems"
+				@onOpenPostModal="openPostModal"
+			></post-list-form>
 		</div>
-		<div v-show="selectedTab === tabs[1]" class="mypage-mapview">
-			<map-form></map-form>
+		<div v-else class="mypage-mapview">
+			<map-form :postitems="postItems"></map-form>
 		</div>
 
 		<modal-view
@@ -41,7 +49,7 @@ import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
-import { getUserInfo } from '@/api/account';
+import { getUserInfo, doFollow } from '@/api/account';
 
 export default {
 	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },
@@ -52,12 +60,14 @@ export default {
 			isModalOpen: false,
 			endpoint: '',
 			postItems: [],
-			user: {},
+			users: {},
+			follow: {},
+			postcnt: '',
 		};
 	},
 
 	computed: {
-		...mapGetters(['token', 'userInfo']),
+		...mapGetters(['token', 'user']),
 
 		isLoggedIn() {
 			return this.token != null;
@@ -66,7 +76,7 @@ export default {
 
 	created() {
 		this.selectedTab = this.tabs[0];
-		//this.fetchUserInfo();
+		this.fetchUserInfo();
 	},
 
 	methods: {
@@ -92,13 +102,20 @@ export default {
 			formData.append('toUserId', this.$route.params.userId);
 			const { data } = await getUserInfo(formData);
 			this.postItems = data.body.userInfo.userPostList;
-			this.user = data.body.userInfo;
+			this.users = data.body.userInfo.userInfo;
+			this.follow = data.body.userInfo.followInfo;
+			this.postcnt = data.body.userInfo.postCnt;
 		},
 
 		async openPostModal(endpoint) {
 			this.endpoint = endpoint;
 			await this.$store.dispatch('fetchPost', endpoint);
 			this.isModalOpen = true;
+		},
+
+		async doFollow(payload) {
+			const { data } = await doFollow(payload);
+			this.follow = data.body.followInfo;
 		},
 	},
 };

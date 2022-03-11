@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<div v-if="!userInfo.userPostList.length" class="post-container">
+		<div v-if="postitems.length < 1" class="post-container">
 			게시물이 없습니다.
 		</div>
 
 		<div class="post-preview-container">
 			<div
-				v-for="(file, index) in userInfo.userPostList"
+				v-for="(file, index) in postitems"
 				:key="index"
 				class="post-preview-wrapper"
 			>
@@ -22,17 +22,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-	components: {},
+	props: {
+		postitems: {
+			type: Array,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			preview: '',
 		};
-	},
-	computed: {
-		...mapGetters(['userInfo']),
 	},
 
 	methods: {

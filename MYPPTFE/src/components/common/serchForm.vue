@@ -16,9 +16,6 @@
 			</select>
 
 			<button @click.self.prevent="doSearch">검색</button>
-			<button @click="logout()">
-				<i class="fas fa-sign-out-alt"></i>
-			</button>
 		</div>
 	</div>
 </template>
@@ -71,13 +68,6 @@ export default {
 			await this.$store.dispatch('fetchSearch', param);
 		},
 		...mapMutations(['setToken', 'setUser']),
-
-		logout() {
-			this.setToken(null);
-			this.setUser(null);
-			alert('로그아웃되었습니다.');
-			if (this.$route.path !== '/map') this.$router.push('/map');
-		},
 	},
 };
 </script>

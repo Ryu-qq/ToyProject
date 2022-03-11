@@ -6,7 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
-import com.ryu.mypptbe.api.dto.mypage.*;
+import com.ryu.mypptbe.api.dto.userInfo.*;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.api.dto.photo.QPhotoResponseDto;
 import com.ryu.mypptbe.api.dto.user.UserResponseDto;
@@ -37,34 +37,34 @@ public class UserInfoRepository {
     }
 
 
-    public UserInfoResponseDto searchUserPost(String toUserId, String fromUser){
+    public UserInfoResponseDto searchUserPost(String toUserId, String fromUserId){
         //from이 나 to가 상대방
         return queryFactory
                 .select(new QUserInfoResponseDto(
                         Projections.fields(UserResponseDto.class,
+                                user.id,
                                 user.userId,
                                 user.username,
                                 user.profileImageUrl,
                                 user.roleType),
-
                         Projections.fields(FollowResponseDto.class,
                                 ExpressionUtils.as(
-                                        JPAExpressions.select(count(follow.followSeq))
+                                        JPAExpressions.select(count(follow.id))
                                                 .from(follow)
-                                                .where(follow.toUser.userSeq.eq(user.userSeq)),
+                                                .where(follow.toUser.id.eq(user.id)),
                                         "followerCnt"),
                                 ExpressionUtils.as(
-                                        JPAExpressions.select(count(follow.followSeq))
+                                        JPAExpressions.select(count(follow.id))
                                                 .from(follow)
-                                                .where(follow.fromUser.userSeq.eq(user.userSeq)),
+                                                .where(follow.fromUser.id.eq(user.id)),
                                         "followingCnt"),
                                 ExpressionUtils.as(
-                                        JPAExpressions.select(follow.followSeq)
+                                        JPAExpressions.select(follow.id)
                                                 .from(follow)
-                                                .where(follow.fromUser.userId.in(fromUser)),
+                                                .where(follow.fromUser.userId.in(fromUserId),
+                                                        follow.toUser.userId.in(toUserId)),
                                         "followSeq")
-                        ),
-                        posts.count()))
+                        )))
                 .from(user)
                 .leftJoin(user.posts, posts)
                 .where(user.userId.in(toUserId))
@@ -77,7 +77,7 @@ public class UserInfoRepository {
 
         return queryFactory
                 .select (new QUserPostResponseDto(
-                        posts.postSeq,
+                        posts.id,
                         posts.title,
                         posts.contents,
                         store.address,
@@ -102,11 +102,11 @@ public class UserInfoRepository {
 
         List<PhotoResponseDto> photoFilePath = queryFactory
                 .select(new QPhotoResponseDto(
-                        photo.posts.postSeq,
+                        photo.posts.id,
                         photo.filePath
                 ))
                 .from(photo)
-                .where(photo.posts.postSeq.in(postId))
+                .where(photo.posts.id.in(postId))
                 .fetch();
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()

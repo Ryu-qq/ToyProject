@@ -9,7 +9,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long>, FollowRepositoryCustom {
-    Follow findByToUserAndFromUser(User fromUser, User toUser);
-
 
 }

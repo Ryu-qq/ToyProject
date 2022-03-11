@@ -6,6 +6,7 @@ import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.domain.user.User;
+import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,49 +15,42 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FollowService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
 
 
     public FollowResponseDto getByToUserIdAndFromUserId(FollowRequestDto requestDto){
 
-        //팔로잉
-        User following = userService.getUser(requestDto.getToUser());
-        //팔로워
-        User follower = userService.getUser(requestDto.getFromUser());
+        Follow follow = followRepository.isFollow(requestDto.getFromUser(), requestDto.getToUser());
 
-        Follow follow = followRepository.findByToUserAndFromUser(following, follower);
+        User follower = userRepository.getById(requestDto.getFromUser());
+        User following = userRepository.getById(requestDto.getToUser());
 
         if(follow != null){
-            return delete(following, follow.getFollowSeq());
+            return delete(following,follower, follow.getId());
         }
         else{
-            return save(following, follower);
+            return save(follower, following);
         }
     }
 
     @Transactional
-    public FollowResponseDto save(User following, User follower){
+    public FollowResponseDto save(User follower, User following){
 
-        FollowRequestDto follow = FollowRequestDto.builder()
+        FollowRequestDto requestDto = FollowRequestDto.builder()
                 .follower(follower)
                 .following(following)
                 .build();
 
-        Long followSeq = followRepository.save(follow.toEntity()).getFollowSeq();
-        FollowResponseDto responseDto =followRepository.getCountFollow(following);
-       //responseDto.setFollowSeq(followSeq);
-        //responseDto.setUserId(following.getUserId());
-        return responseDto;
+        followRepository.save(requestDto.toEntity());
+        return  followRepository.getCountFollow(following,follower);
     }
 
     @Transactional
-    public FollowResponseDto delete(User following, Long userId){
-        followRepository.deleteById(userId);
-        FollowResponseDto responseDto =followRepository.getCountFollow(following);
-        //responseDto.setUserId(following.getUserId());
-        return responseDto;
+    public FollowResponseDto delete(User following, User follower, Long followId){
+        followRepository.deleteById(followId);
+        return followRepository.getCountFollow(following,follower);
     }
 
 

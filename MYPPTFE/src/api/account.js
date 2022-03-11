@@ -1,13 +1,12 @@
 import { follow, userinfo } from './index';
 
 // 팔로우 기능
-function getFollow(params) {
-	const { toUserId, fromUserId } = params;
-	return follow.post('', { fromUser: fromUserId, toUser: toUserId });
+function doFollow(payload) {
+	return follow.post('', payload);
 }
 
-function getUserInfo(params) {
-	return userinfo.post('', params);
+function getUserInfo(payload) {
+	return userinfo.post('', payload);
 }
 
-export { getFollow, getUserInfo };
+export { doFollow, getUserInfo };

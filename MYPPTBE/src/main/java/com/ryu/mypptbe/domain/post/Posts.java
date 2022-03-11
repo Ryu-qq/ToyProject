@@ -20,24 +20,24 @@ import java.util.List;
 public class Posts extends BaseTimeEntity {
 
     @Id
-    @Column(name = "POST_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postSeq;
+    @Column(name = "post_id")
+    @GeneratedValue
+    private Long id;
 
-    @Column(name ="POST_TITLE",length = 500, nullable = false)
+    @Column(name ="post_titie",length = 500, nullable = false)
     private String title;
 
-    @Column(name ="POST_CONTENT", columnDefinition = "TEXT", nullable = false)
+    @Column(name ="post_contents", columnDefinition = "TEXT", nullable = false)
     private String contents;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_SEQ")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="STORE_SEQ")
+    @JoinColumn(name ="store_id")
     private Store store;
 
     @OneToMany(mappedBy = "posts", cascade = CascadeType.ALL)

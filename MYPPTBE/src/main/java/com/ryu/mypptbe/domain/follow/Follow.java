@@ -16,17 +16,17 @@ import javax.persistence.*;
 public class Follow {
 
     @Id
-    @Column(name = "Follow_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long followSeq;
+    @Column(name = "follow_id")
+    @GeneratedValue
+    private Long id;
 
     @JsonIgnore
-    @JoinColumn(name="FROM_USER_SEQ")
+    @JoinColumn(name="from_user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User fromUser;
 
     @JsonIgnore
-    @JoinColumn(name="TO_USER_SEQ")
+    @JoinColumn(name="to_user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 

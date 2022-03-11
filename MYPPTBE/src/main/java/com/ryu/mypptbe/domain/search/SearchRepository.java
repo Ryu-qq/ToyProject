@@ -48,10 +48,10 @@ public class SearchRepository {
 
         return queryFactory
                 .select (new QSearchPostResponseDto(
-                        posts.postSeq,
+                        posts.id,
                         posts.title,
                         posts.contents,
-                        user.userSeq,
+                        user.id,
                         user.username.as("userName"),
                         user.userId,
                         user.profileImageUrl,
@@ -83,11 +83,11 @@ public class SearchRepository {
 
         List<PhotoResponseDto> photoFilePath = queryFactory
                 .select(new QPhotoResponseDto(
-                        photo.posts.postSeq,
+                        photo.posts.id,
                         photo.filePath
                 ))
                 .from(photo)
-                .where(photo.posts.postSeq.in(postId))
+                .where(photo.posts.id.in(postId))
                 .fetch();
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
@@ -109,8 +109,8 @@ public class SearchRepository {
     public List<UserFeedResponseDto> getFollow(String userId) {
         return queryFactory
                 .select(new QUserFeedResponseDto(
-                        follow.followSeq,
-                        follow.toUser.userSeq
+                        follow.id,
+                        follow.toUser.id
                 ))
                 .from(follow)
                 .where(userIdEq(userId))
@@ -122,10 +122,10 @@ public class SearchRepository {
 
         return queryFactory
                 .select (new QSearchPostResponseDto(
-                        posts.postSeq,
+                        posts.id,
                         posts.title,
                         posts.contents,
-                        user.userSeq,
+                        user.id,
                         user.username.as("userName"),
                         user.userId,
                         user.profileImageUrl,
@@ -167,11 +167,11 @@ public class SearchRepository {
         //포스트별 사진 가져오기
         List<PhotoResponseDto> photoFilePath = queryFactory
                 .select(new QPhotoResponseDto(
-                        photo.posts.postSeq,
+                        photo.posts.id,
                         photo.filePath
                 ))
                 .from(photo)
-                .where(photo.posts.postSeq.in(postId))
+                .where(photo.posts.id.in(postId))
                 .fetch();
 
 
@@ -197,7 +197,7 @@ public class SearchRepository {
     }
 
     private BooleanExpression userSeqEq(List<Long> userId) {
-        return userId.size() >0  ? posts.user.userSeq.in(userId) : null;
+        return userId.size() >0  ? posts.user.id.in(userId) : null;
     }
 
 

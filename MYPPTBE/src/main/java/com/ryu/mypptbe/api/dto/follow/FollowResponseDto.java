@@ -13,21 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FollowResponseDto {
 
-    private String userId;
     private Long followerCnt;
     private Long followingCnt;
     private Long followSeq;
 
 
-    public FollowResponseDto(Long followerCnt, Long followingCnt, Long followSeq) {
-        this.followerCnt = followerCnt;
-        this.followingCnt = followingCnt;
-        this.followSeq = followSeq;
-    }
-
     @Builder
-    public FollowResponseDto(String userId,  Long followerCnt, Long followingCnt, Long followSeq) {
-        this.userId = userId;
+    public FollowResponseDto( Long followerCnt, Long followingCnt, Long followSeq) {
         this.followerCnt = followerCnt;
         this.followingCnt = followingCnt;
         this.followSeq = followSeq;

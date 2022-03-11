@@ -1,4 +1,4 @@
-package com.ryu.mypptbe.api.dto.mypage;
+package com.ryu.mypptbe.api.dto.userInfo;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;

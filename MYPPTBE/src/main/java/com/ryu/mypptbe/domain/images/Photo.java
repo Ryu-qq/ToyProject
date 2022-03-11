@@ -16,9 +16,9 @@ import javax.persistence.*;
 public class Photo {
 
     @Id
-    @Column(name = "PHOTO_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long photoSeq;
+    @Column(name = "photo_id")
+    @GeneratedValue
+    private Long id;
 
     @JsonIgnore
     private String uploadImageName;
@@ -30,7 +30,7 @@ public class Photo {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_SEQ")
+    @JoinColumn(name = "post_id")
     private Posts posts;
 
 

@@ -3,32 +3,33 @@
 		<div class="mypage-container">
 			<div class="mypage-header">
 				<div class="mypage-content">
-					<img class="my-picture" :src="profileImageUrl" alt="photo" />
+					<img class="my-picture" :src="users.profileImageUrl" alt="photo" />
 				</div>
 				<section>
 					<div class="mypage-info">
-						<div v-if="isMySelf">
-							<span> {{ username }} 님</span>
-						</div>
-						<div v-else>
-							<span>{{ username }} 님</span>
+						<div>
+							<span>{{ users.username }} 님</span>
 						</div>
 
-						<div v-if="isMySelf">
+						<div v-if="users.userId == user.userId">
 							<button class="setting-btn">프로필 편집</button>
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>
 							<button @click="logout()">
-								<i class="fas fa-sign-out-alt"></i>
+								<i class="fas fa-sign-out-alt" @click="logout()"></i>
 							</button>
 						</div>
 
 						<div v-else>
 							<div>
 								<button
-									:class="[isFollow > 0 ? 'followcancel-btn' : 'follow-btn']"
-									@click="getFollowInfo()"
+									:class="[
+										!follow || follow.followSeq > 0
+											? 'followcancel-btn'
+											: 'follow-btn',
+									]"
+									@click="doFollow()"
 								>
 									{{ statusMsg }}
 								</button>
@@ -38,8 +39,12 @@
 
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
-						<li class="follow">팔로워 {{ followerCnt }}</li>
-						<li class="follow">팔로잉 {{ followingCnt }}</li>
+						<li class="follow" @click="fetchFollowInfo()">
+							팔로워 {{ follow.followerCnt }}
+						</li>
+						<li class="follow" @click="fetchFollowInfo()">
+							팔로잉 {{ follow.followingCnt }}
+						</li>
 					</ul>
 				</section>
 			</div>
@@ -48,59 +53,35 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 
 export default {
+	props: {
+		users: {
+			type: Object,
+			required: true,
+		},
+		follow: {
+			type: Object,
+			required: true,
+		},
+		postitems: {
+			type: Array,
+			required: true,
+		},
+	},
 	data() {
 		return {
-			followStatus: false,
 			statusMsg: '팔로잉',
 		};
 	},
 
 	computed: {
-		...mapGetters(['user', 'token', 'userInfo', 'follow']),
+		...mapGetters(['user']),
 
-		isMySelf() {
-			if (this.userInfo.userId == this.user.userId) {
-				return true;
-			} else {
-				return false;
-			}
-		},
-
-		username() {
-			if (this.isMySelf) {
-				return this.user.username;
-			} else {
-				return this.userInfo.username;
-			}
-		},
-
-		profileImageUrl() {
-			if (this.isMySelf) {
-				return this.user.profileImageUrl;
-			} else {
-				return this.userInfo.profileImageUrl;
-			}
-		},
 		postCnt() {
-			return this.userInfo.postCnt;
+			return this.postitems.length;
 		},
-		followerCnt() {
-			return this.follow.followerCnt;
-		},
-		followingCnt() {
-			return this.follow.followingCnt;
-		},
-		isFollow() {
-			return this.follow.followStatus;
-		},
-	},
-
-	created() {
-		this.fetchUserInfo();
-		//this.getFollowInfo();
 	},
 
 	methods: {
@@ -113,19 +94,16 @@ export default {
 			if (this.$route.path !== '/map') this.$router.push('/map');
 		},
 
-		async getFollowInfo() {
-			const payLoad = {
-				toUserId: this.userInfo.userId,
-				fromUserId: this.user.userId,
-			};
-			await this.$store.dispatch('fetchFollow', payLoad);
+		//팔로우 팔로잉 리스트 뽑아오는거
+		async fetchFollowInfo() {
+			await this.$store.dispatch('fetchFollow', this.user.userId);
 		},
 
-		async fetchUserInfo() {
-			const formData = new FormData();
-			formData.append('fromUserId', this.user.userId);
-			formData.append('toUserId', this.$route.params.userId);
-			await this.$store.dispatch('fetchUserInfo', formData);
+		doFollow() {
+			this.$emit('doFollow', {
+				toUser: this.users.id,
+				fromUser: this.user.id,
+			});
 		},
 	},
 };

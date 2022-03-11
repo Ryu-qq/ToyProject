@@ -15,8 +15,9 @@ import javax.persistence.*;
 public class UserRefreshToken {
     @JsonIgnore
     @Id
+    @Column(name = "UserRefreshToken_id")
     @GeneratedValue
-    private Long refreshTokenSeq;
+    private Long id;
 
     private String userId;
 

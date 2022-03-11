@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class UserResponseDto {
 
 
+    private Long id;
     private String userId;
     private String username;
     private RoleType roleType;
@@ -19,6 +20,7 @@ public class UserResponseDto {
 
     @Builder
     public UserResponseDto(User user){
+        this.id = user.getId();
         this.userId=  user.getUserId();
         this.username =  user.getUsername();
         this.roleType =  user.getRoleType();

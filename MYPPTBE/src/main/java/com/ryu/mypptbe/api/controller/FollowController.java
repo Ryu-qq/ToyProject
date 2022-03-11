@@ -18,7 +18,7 @@ public class FollowController {
     @PostMapping("/follow")
     public ApiResponse<FollowResponseDto> follow(@RequestBody FollowRequestDto requestDto){
 
-        return ApiResponse.success("follow", followService.getByToUserIdAndFromUserId(requestDto));
+        return ApiResponse.success("followInfo", followService.getByToUserIdAndFromUserId(requestDto));
     }
 
 }

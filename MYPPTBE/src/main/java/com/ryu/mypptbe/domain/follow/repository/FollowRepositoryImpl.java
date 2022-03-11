@@ -2,10 +2,12 @@ package com.ryu.mypptbe.domain.follow.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
 import com.ryu.mypptbe.api.dto.follow.QFollowResponseDto;
+import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.QFollow;
 import com.ryu.mypptbe.domain.user.User;
 import org.springframework.stereotype.Repository;
@@ -29,29 +31,41 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom{
     }
 
     @Override
-    public FollowResponseDto getCountFollow(User following) {
+    public FollowResponseDto getCountFollow(User following, User follower) {
         return queryFactory
-                .select( new QFollowResponseDto(
+                .select( Projections.fields(FollowResponseDto.class,
                         ExpressionUtils.as(
-                                //내가 팔로잉 하는사람을 팔로우 하는 사람들
-                                JPAExpressions.select(count(follow.followSeq))
+                                JPAExpressions.select(count(follow.id))
                                         .from(follow)
-                                        .where(follow.toUser.userSeq.eq(following.getUserSeq())),
+                                        .where(follow.toUser.id.eq(following.getId())),
                                 "followerCnt"),
                         ExpressionUtils.as(
-                                //내가 팔로잉 하는사람이 팔로우 하는 사람들
-                                JPAExpressions.select(count(follow.followSeq))
+                                JPAExpressions.select(count(follow.id))
                                         .from(follow)
-                                        .where(follow.fromUser.userSeq.eq(following.getUserSeq())),
-                                "followingCnt")
+                                        .where(follow.fromUser.id.eq(following.getId())),
+                                "followingCnt"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(follow.id)
+                                        .from(follow)
+                                        .where(follow.toUser.id.in(following.getId()),
+                                                follow.fromUser.id.in(follower.getId())),
+                                "followSeq")
                         )
-
                 ).from(follow)
                 .distinct()
                 .fetchOne();
 
 
 
+    }
+
+    @Override
+    public Follow isFollow(Long fromUserId, Long toUserId) {
+        return queryFactory
+                .selectFrom(follow)
+                .where(follow.fromUser.id.eq(fromUserId),
+                        follow.toUser.id.eq(toUserId))
+                .fetchOne();
     }
 
 

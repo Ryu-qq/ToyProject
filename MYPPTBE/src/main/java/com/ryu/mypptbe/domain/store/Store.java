@@ -17,9 +17,10 @@ import java.util.List;
 public class Store {
 
     @Id
-    @Column(name = "STORE_SEQ")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storeSeq;
+    @Column(name = "store_id")
+    @JsonIgnore
+    @GeneratedValue
+    private Long id;
 
     private String category;
 

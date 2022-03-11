@@ -23,8 +23,9 @@ public class User extends BaseTimeEntity {
 
     @JsonIgnore
     @Id
+    @Column(name = "user_id")
     @GeneratedValue
-    private Long userSeq;
+    private Long id;
 
     private String userId;
 
