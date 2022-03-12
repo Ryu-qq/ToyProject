@@ -21,7 +21,7 @@ export const router = new VueRouter({
 			component: () => import('@/views/SearchView'),
 		},
 		{
-			path: '/userinfo/:userId',
+			path: '/user/:userId',
 			name: 'UserPage',
 			component: () => import('@/views/UserPage'),
 		},

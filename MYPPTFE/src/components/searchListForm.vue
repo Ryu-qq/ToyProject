@@ -36,8 +36,8 @@ export default {
 			this.$emit('onOpenPostModal', endpoint);
 		},
 		goUserPage(userId) {
-			if (this.$route.path !== '/userinfo/' + userId) {
-				this.$router.push('/userinfo/' + userId);
+			if (this.$route.path !== '/user/' + userId) {
+				this.$router.push('/user/' + userId);
 			}
 		},
 	},

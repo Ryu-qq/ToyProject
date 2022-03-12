@@ -2,7 +2,7 @@
 	<div class="container">
 		<serch-form @doSearch="doSearch"></serch-form>
 		<spinner :loading="loadingStatus"></spinner>
-		<map-form class="map-container" :search="search"></map-form>
+		<map-form class="map-container" :postitems="postitems"></map-form>
 	</div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
 	data() {
 		return {
 			loadingStatus: false,
-			search: [],
+			postitems: [],
 		};
 	},
 	created() {
@@ -44,7 +44,7 @@ export default {
 
 		async doSearch(payload) {
 			const data = await getSearch(payload);
-			this.search = data.data.content;
+			this.postitems = data.data.content;
 		},
 	},
 };

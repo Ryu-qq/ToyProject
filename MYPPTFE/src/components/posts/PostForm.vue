@@ -128,10 +128,10 @@ export default {
 
 		goUserPage(userId) {
 			if (!this.isEditMode) {
-				if (this.user.userId == userId) {
+				if (!this.user && this.user.userId == userId) {
 					this.$router.go(this.$router.currentRoute);
 				} else {
-					this.$router.push('/userinfo/' + userId);
+					this.$router.push('/user/' + userId);
 				}
 			}
 		},
@@ -148,8 +148,10 @@ export default {
 			this.isModalOpen = false;
 		},
 		isMySelf() {
-			if (this.post.userId == this.user.userId) {
-				return true;
+			if (this.user) {
+				if (this.post.userId == this.user.userId) {
+					return true;
+				}
 			}
 		},
 		isValid() {

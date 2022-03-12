@@ -49,8 +49,8 @@ import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
-import { doFollow } from '@/api/account';
-import { getUserInfo } from '@/api/auth';
+import { doFollow } from '@/api/follow';
+import { getUserInfo } from '@/api/user';
 
 export default {
 	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },
@@ -98,10 +98,10 @@ export default {
 		},
 
 		async fetchUserInfo() {
-			const formData = new FormData();
-			formData.append('fromUserId', this.user.userId);
-			formData.append('toUserId', this.$route.params.userId);
-			const { data } = await getUserInfo(formData);
+			//const formData = new FormData();
+			//formData.append('fromUserId', this.user.userId);
+			//formData.append('toUserId', this.$route.params.userId);
+			const { data } = await getUserInfo(this.$route.params.userId);
 			this.postItems = data.body.userInfo.userPostList;
 			this.users = data.body.userInfo.userInfo;
 			this.follow = data.body.userInfo.followInfo;

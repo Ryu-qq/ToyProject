@@ -160,8 +160,8 @@ export default {
 				formData.append('detailStreet', this.detailStreet);
 				await uploadPost(formData);
 				const userId = this.user.userId;
-				if (this.$route.path !== '/userinfo/' + userId) {
-					this.$router.push('/userinfo/' + userId);
+				if (this.$route.path !== '/user/' + userId) {
+					this.$router.push('/user/' + userId);
 				}
 			} catch (error) {
 				console.log(error);

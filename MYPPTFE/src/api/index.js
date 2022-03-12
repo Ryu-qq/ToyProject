@@ -22,7 +22,7 @@ function createInstanceWithMultiPart(url) {
 	return setInterceptors(instance);
 }
 export const search = createInstanceWithAuth('search');
-export const users = createInstanceWithAuth('users');
+export const user = createInstanceWithAuth('user');
 export const posts = createInstanceWithAuth('posts');
 export const multipart = createInstanceWithMultiPart('posts');
 export const follow = createInstanceWithAuth('follow');

@@ -1,4 +1,4 @@
-import { loginUser } from '@/api/auth';
+import { loginUser } from '@/api/user';
 
 export default {
 	state: {

@@ -49,7 +49,8 @@ export default {
 			return this.user.profileImageUrl;
 		},
 		isLoggedIn() {
-			return this.token != null;
+			if (!this.token) return false;
+			return true;
 		},
 	},
 
@@ -58,8 +59,8 @@ export default {
 
 		goUserPage() {
 			const userId = this.user.userId;
-			if (this.$route.path !== '/userinfo/' + userId) {
-				this.$router.push('/userinfo/' + userId);
+			if (this.$route.path !== '/user/' + userId) {
+				this.$router.push('/user/' + userId);
 			}
 		},
 	},

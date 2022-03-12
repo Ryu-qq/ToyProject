@@ -4,32 +4,31 @@ package com.ryu.mypptbe.api.controller;
 import com.ryu.mypptbe.api.dto.user.UserResponseDto;
 import com.ryu.mypptbe.api.dto.userInfo.UserInfoResponseDto;
 import com.ryu.mypptbe.api.dto.userInfo.UserPostResponseDto;
+import com.ryu.mypptbe.domain.user.repository.UserRepository;
+import com.ryu.mypptbe.oauth.service.CustomUserDetailsService;
 import com.ryu.mypptbe.service.UserService;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.domain.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 
 
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("/login")
-    public ApiResponse<UserResponseDto> getUser() {
+    public ApiResponse<UserResponseDto> getUser(Authentication authentication) {
 
-        org.springframework.security.core.userdetails.User principal =
-
-                (org.springframework.security.core.userdetails.User)
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        User user = userService.getUser(principal.getUsername());
+        User user = userService.getUser(authentication.getName());
         UserResponseDto userResponseDto = UserResponseDto.builder()
                 .user(user)
                 .build();
@@ -38,20 +37,21 @@ public class UserController {
 
     }
 
-    @PostMapping("/userInfo")
-    public ApiResponse<UserInfoResponseDto> getPostList(
-            @RequestParam("toUserId") String toUserId,
-            @RequestParam("fromUserId") String fromUserId){
+    @GetMapping("/{userId}")
+    public ApiResponse<UserInfoResponseDto> getPostList(@PathVariable String userId, Authentication authentication){
 
-        UserInfoResponseDto userInfoResponseDto = userInfoRepository.searchUserPost(toUserId, fromUserId);
-        List<UserPostResponseDto> userPostList = userInfoRepository.searchPostsWithPhoto(toUserId);
+        String name = "";
+
+        if(authentication !=null){
+            name = authentication.getName();
+        }
+
+        UserInfoResponseDto userInfoResponseDto = userRepository.searchUserPost(userId,name);
+        List<UserPostResponseDto> userPostList = userRepository.searchPostsWithPhoto(userId);
 
         userInfoResponseDto.setUserPostList(userPostList);
 
-
-
         return ApiResponse.success("userInfo", userInfoResponseDto);
-
 
     }
 }

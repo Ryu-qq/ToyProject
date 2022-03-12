@@ -27,12 +27,9 @@ public class FollowService {
         User follower = userRepository.getById(requestDto.getFromUser());
         User following = userRepository.getById(requestDto.getToUser());
 
-        if(follow != null){
-            return delete(following,follower, follow.getId());
-        }
-        else{
-            return save(follower, following);
-        }
+        FollowResponseDto responseDto = follow !=null ? delete(following,follower, follow.getId()) : save(follower, following);
+
+        return responseDto;
     }
 
     @Transactional
