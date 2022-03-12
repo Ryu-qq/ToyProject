@@ -16,8 +16,8 @@ import java.util.List;
 public class SearchController {
 
     private final SearchService searchService;
-    @PostMapping()
-    public Page<SearchPostResponseDto> search(@RequestBody SearchRequestDto requestDto, Pageable pageable){
+    @GetMapping
+    public Page<SearchPostResponseDto> search(@ModelAttribute SearchRequestDto requestDto, Pageable pageable){
 
         return searchService.getSearchList(requestDto, pageable);
     }

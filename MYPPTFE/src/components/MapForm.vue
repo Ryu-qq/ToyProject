@@ -11,17 +11,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
 
 export default {
 	components: { Spinner },
 	props: {
-		postitems: {
+		search: {
 			type: Array,
-			default: function () {
-				return { postitems: [] };
-			},
+			required: true,
 		},
 	},
 	data() {
@@ -32,14 +29,8 @@ export default {
 		};
 	},
 
-	computed: {
-		...mapGetters(['mapList', 'follow']),
-	},
 	watch: {
-		mapList() {
-			this.makeMaker();
-		},
-		userInfo() {
+		search() {
 			this.makeMaker();
 		},
 	},
@@ -48,7 +39,7 @@ export default {
 		if (!('geolocation' in navigator)) {
 			return;
 		}
-		this.loadingStatus = true;
+		//this.loadingStatus = true;
 		navigator.geolocation.getCurrentPosition(
 			pos => {
 				this.gps_lat = pos.coords.latitude;
@@ -91,10 +82,8 @@ export default {
 		},
 		makeMaker() {
 			this.initMarkers();
-			const result =
-				this.$route.name == 'map' ? this.mapList.content : this.postitems;
-			if (result) {
-				for (var i = 0; i < result.length; i++) {
+			if (this.search) {
+				for (var i = 0; i < this.search.length; i++) {
 					var imageSrc =
 						'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
@@ -103,8 +92,11 @@ export default {
 
 					var marker = new kakao.maps.Marker({
 						map: this.map, // 마커를 표시할 지도
-						title: result[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-						position: new kakao.maps.LatLng(result[i].ypos, result[i].xpos), // 마커를 표시할 위치
+						title: this.search[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+						position: new kakao.maps.LatLng(
+							this.search[i].ypos,
+							this.search[i].xpos,
+						), // 마커를 표시할 위치
 						image: markerImage, // 마커 이미지
 					});
 

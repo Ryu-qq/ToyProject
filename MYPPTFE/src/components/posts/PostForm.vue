@@ -106,7 +106,6 @@ export default {
 				this.post.address.street +
 				' ' +
 				this.post.address.detailStreet
-				//padding-top: calc(500 / 1000 * 100%);
 			);
 		},
 		postLength() {

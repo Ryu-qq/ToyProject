@@ -49,15 +49,8 @@ public class AuthController {
         String userId = claims.getSubject();
         RoleType roleType = RoleType.of(claims.get("role", String.class));
 
-//        String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
-//                .map(Cookie::getValue)
-//                .orElse((null));
-
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshTokenDto.getRefreshToken());
 
-//        if (authRefreshToken.validate()) {
-//            return ApiResponse.invalidRefreshToken();
-//        }
 
         // userId refresh token 으로 DB 확인
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(userId, refreshTokenDto.getRefreshToken());

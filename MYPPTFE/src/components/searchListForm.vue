@@ -1,10 +1,6 @@
 <template>
 	<div class="search-container">
-		<div
-			v-for="(review, index) in searchList.content"
-			:key="index"
-			class="review-wrapper"
-		>
+		<div v-for="(review, index) in search" :key="index" class="review-wrapper">
 			<div class="review-photo">
 				<img :src="require(`/assets/${review.image[0].filePath}`)" />
 			</div>
@@ -27,11 +23,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-	computed: {
-		...mapGetters(['searchList']),
+	props: {
+		search: {
+			type: Array,
+			required: true,
+		},
 	},
 
 	methods: {

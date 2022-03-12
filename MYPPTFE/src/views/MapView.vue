@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
-		<serch-form :search="sendEvent"></serch-form>
+		<serch-form @doSearch="doSearch"></serch-form>
 		<spinner :loading="loadingStatus"></spinner>
-		<map-form class="map-container"></map-form>
+		<map-form class="map-container" :search="search"></map-form>
 	</div>
 </template>
 
@@ -11,6 +11,7 @@ import serchForm from '@/components/common/serchForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
 import bus from '@/utils/bus.js';
+import { getSearch } from '@/api/search';
 
 export default {
 	components: {
@@ -21,7 +22,7 @@ export default {
 	data() {
 		return {
 			loadingStatus: false,
-			customMap: {},
+			search: [],
 		};
 	},
 	created() {
@@ -41,8 +42,9 @@ export default {
 			this.loadingStatus = false;
 		},
 
-		sendEvent() {
-			console.log('event다');
+		async doSearch(payload) {
+			const data = await getSearch(payload);
+			this.search = data.data.content;
 		},
 	},
 };

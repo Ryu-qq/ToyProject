@@ -4,7 +4,6 @@ export default {
 	state: {
 		user: {},
 		token: {},
-		follow: {},
 	},
 	getters: {
 		user: state => state.user,
@@ -21,12 +20,6 @@ export default {
 			const { data } = await loginUser();
 			commit('setUser', data.body.user);
 		},
-		//팔로우 한 사람의 정보 및 포스트 받아오기
-		// async fetchFollow({ commit }, params) {
-		// 	const { data } = await getFollow(params);
-		// 	commit('setFollow', data.body.follow);
-		// },
-		//유저페이지 정보 가져오기
 	},
 	mutations: {
 		setToken(state, token) {
@@ -35,10 +28,6 @@ export default {
 
 		setUser(state, user) {
 			state.user = user;
-		},
-
-		setFollow(state, follow) {
-			state.follow = follow;
 		},
 	},
 };

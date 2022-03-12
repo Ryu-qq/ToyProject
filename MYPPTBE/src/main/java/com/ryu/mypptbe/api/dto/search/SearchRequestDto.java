@@ -1,8 +1,6 @@
 package com.ryu.mypptbe.api.dto.search;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor

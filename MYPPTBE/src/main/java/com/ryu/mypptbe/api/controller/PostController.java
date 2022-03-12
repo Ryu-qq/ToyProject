@@ -15,14 +15,10 @@ import com.ryu.mypptbe.service.StoreService;
 import com.ryu.mypptbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.net.URI;
 import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -42,10 +38,10 @@ public class PostController {
 
     @GetMapping("/{postSeq}")
     public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
-        return ApiResponse.success("post", postService.viewPost(postSeq));
+        return ApiResponse.success("post", postService.getPost(postSeq));
     }
 
-    @PostMapping
+    @PostMapping()
     public ApiResponse<Long> uploadPost(
             @RequestParam("userId") String userId,
             @RequestParam("title") String title,
@@ -68,8 +64,8 @@ public class PostController {
                 .build();
 
         //가게
-        StoreSaveRequestDto saveStore = addressHandler.getCoordination(address, category);
-        Store newStore = storeService.saveStore(saveStore);
+        StoreSaveRequestDto store = addressHandler.getCoordination(address, category);
+        Store newStore = storeService.saveStore(store);
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .user(user)

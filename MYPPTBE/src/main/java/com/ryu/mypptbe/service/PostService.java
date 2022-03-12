@@ -25,7 +25,7 @@ public class PostService {
     private final PhotoHandler photoHandler;
 
 
-    public PostResponseDto viewPost(Long PostSeq){
+    public PostResponseDto getPost(Long PostSeq){
         return postsRepository.getPost(PostSeq);
     }
 

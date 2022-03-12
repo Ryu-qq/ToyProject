@@ -110,7 +110,7 @@ public class UserInfoRepository {
                 .fetch();
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
-                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getPostSeq()));
+                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getId()));
 
 
         result.forEach(o -> o.setImage(photoFilePathMap.get(o.getPostSeq())));

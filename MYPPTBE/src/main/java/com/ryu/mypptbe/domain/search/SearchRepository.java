@@ -91,7 +91,7 @@ public class SearchRepository {
                 .fetch();
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
-                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getPostSeq()));
+                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getId()));
 
 
 
@@ -149,7 +149,6 @@ public class SearchRepository {
     public Page<SearchPostResponseDto> searchPostsInMap(SearchRequestDto requestDto,  Pageable pageable){
 
         String userId = requestDto.getUserId();
-
         //팔로잉하는사람들 가져오기
         List<UserFeedResponseDto> userList = getFollow(userId);
 
@@ -176,7 +175,7 @@ public class SearchRepository {
 
 
         Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
-                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getPostSeq()));
+                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getId()));
 
 
         result.forEach(o -> o.setImage(photoFilePathMap.get(o.getPostSeq())));

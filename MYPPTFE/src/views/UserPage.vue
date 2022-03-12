@@ -49,7 +49,8 @@ import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
-import { getUserInfo, doFollow } from '@/api/account';
+import { doFollow } from '@/api/account';
+import { getUserInfo } from '@/api/auth';
 
 export default {
 	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },

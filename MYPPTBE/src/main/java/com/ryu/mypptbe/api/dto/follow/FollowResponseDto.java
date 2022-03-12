@@ -15,14 +15,14 @@ public class FollowResponseDto {
 
     private Long followerCnt;
     private Long followingCnt;
-    private Long followSeq;
+    private Long id;
 
 
     @Builder
-    public FollowResponseDto( Long followerCnt, Long followingCnt, Long followSeq) {
+    public FollowResponseDto( Long followerCnt, Long followingCnt, Long id) {
         this.followerCnt = followerCnt;
         this.followingCnt = followingCnt;
-        this.followSeq = followSeq;
+        this.id = id;
     }
 
     @QueryProjection

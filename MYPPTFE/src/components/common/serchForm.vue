@@ -21,53 +21,26 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-
 export default {
 	data() {
 		return {
-			loadingStatus: true,
-			customMap: {},
 			categories: ['한식', '중식', '일식', '양식', '분식', '포차', '기타'],
 			form: {
 				keyword: '',
 				category: '카테고리',
 			},
-			searchList: [],
 		};
 	},
-	computed: {
-		...mapGetters(['user', 'token']),
-	},
 	methods: {
-		async doSearch() {
-			const name = this.$route.name;
-			let userId;
-			let param = {};
+		doSearch() {
+			let cond = this.form.category == '카테고리' ? '' : this.form.category;
 
-			userId = !this.user ? '' : this.user.userId;
-
-			if (name == 'map') {
-				param = {
-					name: name,
-					userId: userId,
-					keyword: this.form.keyword,
-					category: this.form.category,
-				};
-				await this.$store.dispatch('fetchMapList', param);
-				this.$emit('search');
-				return;
-			}
-
-			param = {
-				name: name,
-				userId: userId,
+			this.$emit('doSearch', {
 				keyword: this.form.keyword,
-				category: this.form.category,
-			};
-			await this.$store.dispatch('fetchSearch', param);
+				category: cond,
+				path: this.$route.name,
+			});
 		},
-		...mapMutations(['setToken', 'setUser']),
 	},
 };
 </script>

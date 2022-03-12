@@ -1,7 +1,10 @@
 <template>
 	<div class="container">
-		<serch-form></serch-form>
-		<search-list @onOpenPostModal="openPostModal"></search-list>
+		<serch-form @doSearch="doSearch"></serch-form>
+		<search-list
+			:search="search"
+			@onOpenPostModal="openPostModal"
+		></search-list>
 		<spinner :loading="loadingStatus"></spinner>
 
 		<modal-view
@@ -23,6 +26,7 @@ import Spinner from '@/components/common/Spinner.vue';
 import bus from '@/utils/bus.js';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
+import { getSearch } from '@/api/search';
 
 export default {
 	components: { serchForm, searchList, Spinner, PostView, ModalView },
@@ -30,6 +34,8 @@ export default {
 		return {
 			loadingStatus: false,
 			isModalOpen: false,
+			search: [],
+			pageable: {},
 		};
 	},
 	created() {
@@ -42,6 +48,11 @@ export default {
 		bus.$off('end:spinner', this.endSpinner);
 	},
 	methods: {
+		async doSearch(payload) {
+			const data = await getSearch(payload);
+			this.search = data.data.content;
+		},
+
 		startSpinner() {
 			this.loadingStatus = true;
 		},

@@ -19,9 +19,8 @@ public class SearchService {
 
     private final SearchRepository searchRepository;
 
-
     public Page<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto, Pageable pageable ){
-        if(requestDto.getName().equals("map")){
+        if(requestDto.getUserId() !=null){
             //맵에서 내가 팔로잉한 사람 게시물 가져오기
             return searchRepository.searchPostsInMap(requestDto, pageable);
         }else{

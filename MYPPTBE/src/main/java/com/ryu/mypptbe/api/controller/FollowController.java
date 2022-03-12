@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/follow")
 public class FollowController {
 
     private final FollowService followService;
 
 
-    @PostMapping("/follow")
+    @PostMapping
     public ApiResponse<FollowResponseDto> follow(@RequestBody FollowRequestDto requestDto){
 
         return ApiResponse.success("followInfo", followService.getByToUserIdAndFromUserId(requestDto));

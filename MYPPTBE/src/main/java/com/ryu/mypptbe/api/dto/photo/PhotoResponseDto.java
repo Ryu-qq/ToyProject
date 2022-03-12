@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PhotoResponseDto {
-    private Long postSeq;
+    private Long id;
     private String filePath;
 
     @Builder
     @QueryProjection
-    public PhotoResponseDto(Long postSeq, String filePath) {
-        this.postSeq = postSeq;
+    public PhotoResponseDto(Long id, String filePath) {
+        this.id = id;
         this.filePath = filePath;
     }
 
