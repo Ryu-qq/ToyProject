@@ -4,9 +4,8 @@
 			v-model="form.keyword"
 			class="search-input"
 			type="text"
-			placeholder="검색어를 입력하세요"
+			placeholder="상호명을 입력해주세요"
 		/>
-
 		<div class="search-input-options">
 			<select v-model="form.category" class="search-select">
 				<option selected>카테고리</option>

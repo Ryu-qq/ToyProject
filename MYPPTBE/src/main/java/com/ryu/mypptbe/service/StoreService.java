@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 
 @Service
@@ -16,10 +17,13 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public Store saveStore(StoreSaveRequestDto storeSaveRequestDto){
-        return storeRepository.save(storeSaveRequestDto.toEntity());
+    public Store saveStore(StoreSaveRequestDto requestDto){
+        Store store = Optional.ofNullable(
+                storeRepository.findByAddressAndCategory(requestDto.getAddress(), requestDto.getCategory())
+        ).orElseGet(() -> storeRepository.save(requestDto.toEntity()));
+
+        return store;
+
     }
-
-
 
 }

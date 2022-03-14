@@ -1,16 +1,11 @@
 package com.ryu.mypptbe.domain.search;
 
-import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.api.dto.photo.PhotoResponseDto;
 import com.ryu.mypptbe.api.dto.photo.QPhotoResponseDto;
-import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.search.*;
-import com.ryu.mypptbe.api.dto.user.QUserFeedResponseDto;
-import com.ryu.mypptbe.api.dto.user.UserFeedResponseDto;
 import com.ryu.mypptbe.domain.post.Posts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -106,9 +101,9 @@ public class SearchRepository {
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchCount);
     }
 
-    public List<UserFeedResponseDto> getFollow(String userId) {
+    public List<SearchFollowResponseDto> getFollow(String userId) {
         return queryFactory
-                .select(new QUserFeedResponseDto(
+                .select(new QSearchFollowResponseDto(
                         follow.id,
                         follow.toUser.id
                 ))
@@ -150,10 +145,10 @@ public class SearchRepository {
 
         String userId = requestDto.getUserId();
         //팔로잉하는사람들 가져오기
-        List<UserFeedResponseDto> userList = getFollow(userId);
+        List<SearchFollowResponseDto> userList = getFollow(userId);
 
         List<Long> toUserId = userList.stream()
-                .map(o -> o.getToUserSeq())
+                .map(o -> o.getToUserId())
                 .collect(Collectors.toList());
 
         //팔로잉하는사람들 아이디로 그 사람들 포스트 가져오기

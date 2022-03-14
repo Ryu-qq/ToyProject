@@ -18,7 +18,10 @@ export default {
 
 		async fetchEditPost({ commit }, params) {
 			const { data } = await editPost(params);
-			commit('setPost', data.body.post);
+			if (data.body.post) {
+				const payload = params.get('contents');
+				commit('setPostContents', payload);
+			}
 		},
 
 		fetchImageUpload({ commit }, data) {
@@ -31,6 +34,9 @@ export default {
 		},
 		setImageFiles(state, imageFiles) {
 			state.imageFiles = imageFiles;
+		},
+		setPostContents(state, payload) {
+			state.post.contents = payload;
 		},
 	},
 };

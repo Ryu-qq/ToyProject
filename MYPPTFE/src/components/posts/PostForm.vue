@@ -25,7 +25,7 @@
 
 				<span>{{ post.userName }}</span>
 				<i
-					v-if="isMySelf()"
+					v-if="isMySelf() && !isEditMode"
 					class="fas fa-solid fa-bars"
 					@click="openEditModal()"
 				></i>
@@ -36,7 +36,7 @@
 			</div>
 			<div class="store-address">
 				<label> {{ getAddress }}</label>
-				<i class="fas fa-map fa-1x"></i>
+				<i class="fas fa-map fa-1x" @click="openMap()"></i>
 			</div>
 			<div class="line"></div>
 			<div class="store-contents">
@@ -46,13 +46,13 @@
 						v-model="post.contents"
 						type="text"
 						rows="5"
-						placeholder="가게의 후기를 남겨주세요. 글자 수는 최대 200자 이내입니다."
+						placeholder="가게의 후기를 남겨주세요. 글자 수는 최대 120자 이내입니다."
 					/>
 					<p
 						v-if="!isContentsValid"
 						class="validation-text warning isContentTooLong"
 					>
-						가게의 후기를 남겨주셔야 합니다. 글자 수는 최대 200자 이내입니다.
+						가게의 후기를 남겨주셔야 합니다. 글자 수는 최대 120자 이내입니다.
 					</p>
 				</div>
 
@@ -62,34 +62,49 @@
 					</label>
 				</div>
 			</div>
-			<button v-if="isValid()" class="edt-btn" @click="fetchEditPost()">
-				수정하기
-			</button>
+			<div v-if="isValid()">
+				<button class="edt-btn" @click="fetchEditPost()">수정하기</button>
+				<button class="cancel-btn" @click="cancel()">취소하기</button>
+			</div>
 		</div>
 		<modal-view v-if="isModalOpen" @onCloseModal="isModalOpen = false">
 			<div slot="body">
-				<modal-post-edit
-					@onDeletePost="deletePost"
+				<post-edit
+					@onDeletePost="deleteConfirm"
 					@onEditPost="EditPost"
-				></modal-post-edit>
+				></post-edit>
+			</div>
+		</modal-view>
+		<modal-view
+			v-if="isDeleteModalOpen"
+			@onCloseModal="isDeleteModalOpen = false"
+		>
+			<div slot="body" class="delete-body">
+				<span>정말 지우시겠습니까?</span>
+			</div>
+			<div slot="footer" class="delete-footer">
+				<button class="del-btn" @click="deletePost()">삭제하기</button>
+				<button @click="canceldelete()">취소하기</button>
 			</div>
 		</modal-view>
 	</div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
 import ModalView from '@/components/common/modal/ModalView.vue';
-import ModalPostEdit from '@/components/common/modal/PostEditModal.vue';
+import PostEdit from '@/components/common/modal/PostEditModal.vue';
 import { deletePost } from '@/api/posts';
 
 export default {
-	components: { ModalView, ModalPostEdit },
+	components: { ModalView, PostEdit },
 	data() {
 		return {
 			photoIdx: 0,
 			showLeft: '',
 			showRight: '',
 			isModalOpen: false,
+			isDeleteModalOpen: false,
 			isEditMode: false,
 		};
 	},
@@ -112,7 +127,7 @@ export default {
 			return this.post.image.length;
 		},
 		isContentsValid() {
-			return this.post.contents.length <= 200 && this.post.contents.length > 0;
+			return this.post.contents.length <= 120 && this.post.contents.length > 0;
 		},
 	},
 	methods: {
@@ -138,15 +153,31 @@ export default {
 		openEditModal() {
 			this.isModalOpen = true;
 		},
-		deletePost() {
-			deletePost(this.post.postSeq);
+		deleteConfirm() {
+			this.isDeleteModalOpen = true;
+		},
+
+		async deletePost() {
+			console.log('1');
+			await deletePost(this.post.postSeq);
+			this.isDeleteModalOpen = false;
 			this.isModalOpen = false;
 			this.$emit('onClosePost');
+			this.$emit('refresh');
 		},
 		EditPost() {
 			this.isEditMode = true;
 			this.isModalOpen = false;
 		},
+
+		fetchEditPost() {
+			const formData = new FormData();
+			formData.append('postSeq', this.post.postSeq);
+			formData.append('contents', this.post.contents);
+			this.$store.dispatch('fetchEditPost', formData);
+			this.isEditMode = false;
+		},
+
 		isMySelf() {
 			if (this.user) {
 				if (this.post.userId == this.user.userId) {
@@ -161,12 +192,12 @@ export default {
 				return false;
 			}
 		},
-		fetchEditPost() {
-			const formData = new FormData();
-			formData.append('postSeq', this.post.postSeq);
-			formData.append('contents', this.post.contents);
-			this.$store.dispatch('fetchEditPost', formData);
-			this.isEditMode = false;
+
+		canceldelete() {
+			this.isDeleteModalOpen = false;
+		},
+		cancel() {
+			this.isModalOpen = false;
 		},
 	},
 };
@@ -280,9 +311,30 @@ export default {
 
 .edt-btn {
 	position: absolute;
+	right: 80px;
+	bottom: 0;
+	margin-right: 4px;
+}
+
+.cancel-btn {
+	position: absolute;
 	right: 0;
 	bottom: 0;
 	margin-right: 4px;
+}
+
+.delete-body {
+	height: 50px;
+	text-align: center;
+	padding-top: 13px;
+}
+
+.delete-footer .del-btn {
+	color: #fd0000;
+}
+
+.delete-footer button:hover {
+	background-color: #a6a6a6;
 }
 
 span {

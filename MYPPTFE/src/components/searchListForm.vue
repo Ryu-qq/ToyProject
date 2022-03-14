@@ -15,9 +15,8 @@
 
 				<h6>{{ review.address.street }}</h6>
 				<div class="line"></div>
-				<h6>{{ review.contents }}</h6>
+				<h6 class="text-area">{{ review.contents }}</h6>
 			</div>
-			<h6 class="review-writer">by {{ review.userName }}</h6>
 		</div>
 	</div>
 </template>
@@ -54,10 +53,10 @@ export default {
 	display: grid;
 	padding: 0;
 	margin: 0;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
-	grid-template-columns: repeat(auto-fill, minmax(36%, auto));
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
 
+	overflow: auto;
 	row-gap: 28px;
 	column-gap: 28px;
 	width: 100%;
@@ -74,23 +73,21 @@ export default {
 	display: flex;
 	position: relative;
 	flex-direction: column;
+	width: 50%;
 }
 
 .review-header {
 	display: flex;
 }
-.review-writer {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-}
+
 .my-picture {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 	margin-left: 15px;
-	width: 20%;
-	height: 75%;
+	width: 38px;
+	height: 38px;
+	padding-top: px;
 }
 
 .my-picture img {
@@ -111,6 +108,11 @@ export default {
 .line {
 	border-top: 1px solid #473535;
 	margin-bottom: 10px;
+}
+.text-area {
+	overflow: hidden;
+	margin: 0%;
+	padding: 0%;
 }
 
 img {

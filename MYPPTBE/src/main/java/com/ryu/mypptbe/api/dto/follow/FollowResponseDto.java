@@ -31,4 +31,5 @@ public class FollowResponseDto {
         this.followingCnt = followingCnt;
     }
 
+
 }

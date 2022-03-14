@@ -57,7 +57,7 @@
 						v-model="contents"
 						type="text"
 						rows="5"
-						placeholder="가게의 후기를 남겨주세요. 글자 수는 최대 200자 이내입니다."
+						placeholder="가게의 후기를 남겨주세요. 글자 수는 최대 120자 이내입니다."
 					/>
 					<p
 						v-if="!isContentsValid"
@@ -106,7 +106,7 @@ export default {
 		},
 
 		isContentsValid() {
-			return this.contents.length <= 200;
+			return this.contents.length <= 120;
 		},
 	},
 

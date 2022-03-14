@@ -12,7 +12,6 @@
 						</div>
 
 						<div v-if="isLogin">
-							<button class="setting-btn">프로필 편집</button>
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>

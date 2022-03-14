@@ -3,7 +3,10 @@ package com.ryu.mypptbe.api.dto.store;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import lombok.Builder;
+import lombok.Data;
 
+
+@Data
 public class StoreSaveRequestDto {
 
     private Address address;
