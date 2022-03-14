@@ -19,4 +19,10 @@
 <img width="400" alt="후기 등록화면" src="https://user-images.githubusercontent.com/56243159/158101095-0fc82143-6565-4b42-a9ef-88ca0fba3c41.png">  
 
 * 게시물 화면  
-<img width="400" alt="리뷰화면" src="https://user-images.githubusercontent.com/56243159/158101100-d7adddee-8855-44bd-9555-a5c5696a3f45.png">
+<img width="400" alt="리뷰화면" src="https://user-images.githubusercontent.com/56243159/158101100-d7adddee-8855-44bd-9555-a5c5696a3f45.png">  
+  
+    
+    
+관리자 화면 프로토 타입  
+---------
+개발중..
