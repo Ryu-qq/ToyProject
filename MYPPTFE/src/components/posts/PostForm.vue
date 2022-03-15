@@ -226,6 +226,7 @@ export default {
 
 .post-preview-wrapper {
 	position: relative;
+	overflow: hidden;
 }
 
 .review-container {

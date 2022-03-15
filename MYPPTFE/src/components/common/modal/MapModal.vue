@@ -89,20 +89,23 @@ export default {
 		},
 		goRightR() {
 			const leng = this.postitems.length;
+			this.photoIdx = 0;
 			if (leng && this.reviewIdx < leng - 1) this.reviewIdx++;
 		},
 
 		goLeftR() {
 			const leng = this.postitems.length;
+			this.photoIdx = 0;
 			if (leng && this.reviewIdx > 0) this.reviewIdx--;
 		},
 		goRightP() {
-			const leng = this.postitems.length;
+			const leng = this.postitems[this.reviewIdx].image.length;
+
 			if (leng && this.photoIdx < leng - 1) this.photoIdx++;
 		},
 
 		goLeftP() {
-			const leng = this.postitems.length;
+			const leng = this.postitems[this.reviewIdx].image.length;
 			if (leng && this.photoIdx > 0) this.photoIdx--;
 		},
 	},
@@ -230,6 +233,7 @@ i:hover {
 }
 
 .photo {
+	max-height: 480px;
 	width: 100%;
 	position: relative;
 }

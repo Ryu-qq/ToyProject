@@ -151,6 +151,14 @@ export default {
 						formData.append('files', imageForm.file);
 					}
 				}
+				const payload = {
+					usrId: this.user.userId,
+					title: this.title,
+					category: this.form.category,
+					contents: this.components,
+				};
+				formData.append('payload', payload);
+
 				formData.append('userId', this.user.userId);
 				formData.append('title', this.title);
 				formData.append('category', this.form.category);
