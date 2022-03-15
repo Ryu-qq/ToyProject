@@ -6,7 +6,7 @@
 			</div>
 			<div class="review-text">
 				<div class="review-header">
-					<h1 @click="goPost(`${review.postSeq}`)">{{ review.title }}</h1>
+					<h2 @click="goPost(`${review.postSeq}`)">{{ review.title }}</h2>
 					<div class="my-picture">
 						<img :src="review.profileUrl" @click="goUserPage(review.userId)" />
 					</div>
@@ -85,8 +85,8 @@ export default {
 	justify-content: flex-end;
 	align-items: center;
 	margin-left: 15px;
-	width: 38px;
-	height: 38px;
+	width: 30px;
+	height: 30px;
 	padding-top: px;
 }
 

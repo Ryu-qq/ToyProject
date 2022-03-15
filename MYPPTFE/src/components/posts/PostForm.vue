@@ -1,17 +1,17 @@
 <template>
 	<div class="post-container">
 		<div class="photo-container">
+			<i
+				v-if="postLength && photoIdx != 0"
+				class="fas fa-caret-left fa-2x"
+				@click="goLeft()"
+			></i>
+			<i
+				v-if="postLength && photoIdx != postLength - 1"
+				class="fas fa-caret-right fa-2x"
+				@click="goRight()"
+			></i>
 			<div class="post-preview-wrapper">
-				<i
-					v-if="postLength && photoIdx != 0"
-					class="fas fa-caret-left fa-2x"
-					@click="goLeft()"
-				></i>
-				<i
-					v-show="postLength && photoIdx != postLength - 1"
-					class="fas fa-caret-right fa-2x"
-					@click="goRight()"
-				></i>
 				<img :src="require(`/assets/${post.image[photoIdx].filePath}`)" />
 			</div>
 		</div>
@@ -36,7 +36,7 @@
 			</div>
 			<div class="store-address">
 				<label> {{ getAddress }}</label>
-				<i class="fas fa-map fa-1x" @click="openMap()"></i>
+				<i class="fas fa-map fa-1x"></i>
 			</div>
 			<div class="line"></div>
 			<div class="store-contents">
@@ -219,7 +219,8 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	position: relative;
-	width: 65%;
+	max-width: 50%;
+	height: 100%;
 	background: #000;
 }
 
@@ -238,14 +239,14 @@ export default {
 
 .fa-caret-left {
 	left: 0;
-	margin-top: 33%;
+	position: absolute;
 
 	cursor: pointer;
 }
 
 .fa-caret-right {
 	right: 0;
-	margin-top: 33%;
+	position: absolute;
 	cursor: pointer;
 }
 
@@ -301,12 +302,6 @@ export default {
 	color: #a6a6a6;
 	margin-left: 15px;
 	margin-top: 3px;
-}
-
-.fa-map:hover {
-	cursor: pointer;
-	transform: translate(0, -3px);
-	color: #000;
 }
 
 .edt-btn {

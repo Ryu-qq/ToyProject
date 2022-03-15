@@ -24,7 +24,6 @@ public class PostService {
     private final PhotoRepository photoRepository;
     private final PhotoHandler photoHandler;
 
-
     public PostResponseDto getPost(Long PostSeq){
         return postsRepository.getPost(PostSeq);
     }
@@ -35,7 +34,6 @@ public class PostService {
 
         Posts posts = requestDto.toEntity();
         List<Photo> photoList = photoHandler.parseImageInfo(files);
-
         if(!photoList.isEmpty()){
             for(Photo photo : photoList)
                 // 파일을 DB에 저장

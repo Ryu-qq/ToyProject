@@ -5,27 +5,36 @@
 			<button class="custom_typecontrol" @click="setCurrentPos()">
 				<i id="icon" class="fas fa-crosshairs fa-3x"></i>
 			</button>
-			<spinner :loading="loadingStatus"></spinner>
+			<map-modal
+				v-if="isModalOpen"
+				class="post-modal"
+				:postitems="overlap"
+				@onCloseModal="onCloseModal"
+			>
+			</map-modal>
 		</div>
 	</div>
 </template>
 
 <script>
-import Spinner from '@/components/common/Spinner.vue';
+import MapModal from '@/components/common/modal/MapModal.vue';
 
 export default {
-	components: { Spinner },
+	components: { MapModal },
+
 	props: {
 		postitems: {
 			type: Array,
-			required: true,
+			default: () => ({}),
 		},
 	},
 	data() {
 		return {
-			loadingStatus: false,
 			map: null,
 			markerList: [],
+			selectedMarker: null,
+			overlap: [],
+			isModalOpen: false,
 		};
 	},
 
@@ -36,23 +45,9 @@ export default {
 	},
 
 	mounted() {
-		if (!('geolocation' in navigator)) {
-			return;
-		}
-		//this.loadingStatus = true;
-		navigator.geolocation.getCurrentPosition(
-			pos => {
-				this.gps_lat = pos.coords.latitude;
-				this.gps_lng = pos.coords.longitude;
-
-				window.kakao && window.kakao.maps
-					? this.initMap()
-					: this.addKakaoMapScript();
-			},
-			err => {
-				console.log(err.message);
-			},
-		);
+		window.kakao && window.kakao.maps
+			? this.initMap()
+			: this.addKakaoMapScript();
 	},
 	methods: {
 		addKakaoMapScript() {
@@ -90,18 +85,52 @@ export default {
 					var imageSize = new kakao.maps.Size(24, 35);
 					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
+					const latlng = new kakao.maps.LatLng(
+						this.postitems[i].ypos,
+						this.postitems[i].xpos,
+					);
+
 					var marker = new kakao.maps.Marker({
 						map: this.map, // 마커를 표시할 지도
-						title: this.postitems[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-						position: new kakao.maps.LatLng(
-							this.postitems[i].ypos,
-							this.postitems[i].xpos,
-						), // 마커를 표시할 위치
+						position: latlng, // 마커를 표시할 위치
 						image: markerImage, // 마커 이미지
+						title: this.postitems[i].title,
 					});
 
+					//커스텀 오버레이
+					var content = `<div class="custom_overlay" style="background: #f5f5f5; border-radius: 6px; margin-bottom: 25px;" >
+										${this.postitems[i].title}
+									</div>`;
+
+					var customOverlay = new kakao.maps.CustomOverlay({
+						clickable: true,
+						content: content,
+						position: latlng,
+						xAnchor: 0.5,
+						yAnchor: 1.25,
+						zIndex: 3,
+					});
+
+					//마커 클릭시 모달창 표시
+					kakao.maps.event.addListener(
+						marker,
+						'click',
+						this.markerClickListener(this.map, marker, this.postitems),
+					);
+					//마커 이동시 customOverlay 표시
+					kakao.maps.event.addListener(
+						marker,
+						'mouseout',
+						this.markerOutListener(this.map, customOverlay),
+					);
+					//마커 이동시 customOverlay 표시
+					kakao.maps.event.addListener(
+						marker,
+						'mouseover',
+						this.markerOverListener(this.map, marker, customOverlay),
+					);
+
 					marker.setMap(this.map);
-					this.loadingStatus = false;
 					this.markerList.push(marker);
 				}
 			}
@@ -110,6 +139,42 @@ export default {
 			this.markerList.forEach(marker => {
 				marker.setMap(null);
 			});
+			this.markerList = [];
+		},
+
+		markerClickListener(map, marker, posts) {
+			return () => {
+				this.panTo(map, marker.getPosition());
+				posts.filter(p => {
+					if (p.title == marker.getTitle()) {
+						this.overlap.push(p);
+					}
+				});
+				if (this.overlap) {
+					this.isModalOpen = true;
+				}
+			};
+		},
+		markerOverListener(map, marker, customOverlay) {
+			return () => {
+				customOverlay.setMap(map); // 지도에 올림
+				customOverlay.setVisible(true); // 지도에서 보이게 함
+			};
+		},
+		markerOutListener(map, customOverlay) {
+			return () => {
+				customOverlay.setMap(null); // 지도에서 보이지 않게 함
+
+				customOverlay.setVisible(null); // 지도에서 보이지 않게 함
+			};
+		},
+		panTo(map, latlng) {
+			map.panTo(latlng);
+		},
+		onCloseModal() {
+			this.overlap = [];
+
+			this.isModalOpen = false;
 		},
 	},
 };
@@ -151,5 +216,14 @@ export default {
 
 .map_wrap .custom_typecontrol:hover {
 	transform: translate(0, -3px);
+}
+
+.customoverlay {
+	position: relative;
+	bottom: 85px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	border-bottom: 2px solid #ddd;
+	float: left;
 }
 </style>

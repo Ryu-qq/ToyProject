@@ -30,7 +30,7 @@
 			<map-form :postitems="postItems"></map-form>
 		</div>
 
-		<modal-view
+		<post-modal
 			v-if="isModalOpen"
 			class="post-modal"
 			@onCloseModal="onCloseModal"
@@ -38,7 +38,7 @@
 			<div slot="body">
 				<post-view @onCloseModal="onCloseModal"></post-view>
 			</div>
-		</modal-view>
+		</post-modal>
 	</div>
 </template>
 
@@ -48,12 +48,12 @@ import MyInfoForm from '../components/MyInfoForm.vue';
 import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import PostView from '@/views/PostView.vue';
-import ModalView from '@/components/common/modal/PostModal.vue';
+import PostModal from '@/components/common/modal/PostModal.vue';
 import { doFollow } from '@/api/follow';
 import { getUserInfo } from '@/api/user';
 
 export default {
-	components: { MyInfoForm, PostListForm, MapForm, PostView, ModalView },
+	components: { MyInfoForm, PostListForm, MapForm, PostView, PostModal },
 	data() {
 		return {
 			tabs: [PostListForm, MapForm],

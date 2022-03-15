@@ -5,7 +5,7 @@
 			:search="search"
 			@onOpenPostModal="openPostModal"
 		></search-list>
-		<spinner :loading="loadingStatus"></spinner>
+		<spinner :loading="loadingStatus" class="spinner"></spinner>
 
 		<modal-view
 			v-if="isModalOpen"
@@ -23,7 +23,6 @@
 import serchForm from '@/components/common/serchForm.vue';
 import searchList from '@/components/searchListForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
-import bus from '@/utils/bus.js';
 import PostView from '@/views/PostView.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
 import { getSearch } from '@/api/search';
@@ -39,27 +38,14 @@ export default {
 		};
 	},
 
-	created() {
-		bus.$on('start:spinner', this.startSpinner);
-		bus.$on('end:spinner', this.endSpinner);
-	},
-
-	beforeDestroy() {
-		bus.$off('start:spinner', this.startSpinner);
-		bus.$off('end:spinner', this.endSpinner);
-	},
 	methods: {
 		async doSearch(payload) {
+			this.loadingStatus = true;
 			const data = await getSearch(payload);
 			this.search = data.data.content;
-		},
-
-		startSpinner() {
-			this.loadingStatus = true;
-		},
-		endSpinner() {
 			this.loadingStatus = false;
 		},
+
 		async openPostModal(endpoint) {
 			this.endpoint = endpoint;
 			await this.$store.dispatch('fetchPost', endpoint);
@@ -78,5 +64,9 @@ export default {
 	display: flex;
 	flex-direction: column;
 	padding: 70px 0;
+}
+
+.spinner {
+	margin-top: -10%;
 }
 </style>

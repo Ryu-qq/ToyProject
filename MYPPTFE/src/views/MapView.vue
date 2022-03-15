@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<serch-form @doSearch="doSearch"></serch-form>
-		<spinner :loading="loadingStatus"></spinner>
+		<spinner :loading="loadingStatus" class="spinner"></spinner>
 		<map-form class="map-container" :postitems="postitems"></map-form>
 	</div>
 </template>
@@ -10,7 +10,6 @@
 import serchForm from '@/components/common/serchForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
-import bus from '@/utils/bus.js';
 import { getSearch } from '@/api/search';
 
 export default {
@@ -25,26 +24,12 @@ export default {
 			postitems: [],
 		};
 	},
-	created() {
-		bus.$on('start:spinner', this.startSpinner);
-		bus.$on('end:spinner', this.endSpinner);
-	},
-
-	beforeDestroy() {
-		bus.$off('start:spinner', this.startSpinner);
-		bus.$off('end:spinner', this.endSpinner);
-	},
 	methods: {
-		startSpinner() {
-			this.loadingStatus = true;
-		},
-		endSpinner() {
-			this.loadingStatus = false;
-		},
-
 		async doSearch(payload) {
+			this.loadingStatus = true;
 			const data = await getSearch(payload);
 			this.postitems = data.data.content;
+			this.loadingStatus = false;
 		},
 	},
 };
@@ -62,5 +47,9 @@ export default {
 
 .map-container {
 	height: 100%;
+}
+
+.spinner {
+	margin-top: -10%;
 }
 </style>
