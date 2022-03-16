@@ -1,6 +1,7 @@
 package com.ryu.mypptbe.api.handler;
 
 
+import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
@@ -20,14 +21,18 @@ import java.nio.charset.Charset;
 @Component
 @RequiredArgsConstructor
 public class AddressHandler {
-    private final StoreService storeService;
+
+    public StoreSaveRequestDto getCoordination(PostsSaveRequestDto requestDto) throws Exception {
 
 
-
-    public StoreSaveRequestDto getCoordination(Address address, String category) throws Exception {
+        Address address =Address.builder()
+                .postcode(requestDto.getPostcode())
+                .street(requestDto.getStreet())
+                .detailStreet(requestDto.getDetailStreet())
+                .build();
 
         String encodeAddress = "";  // 한글 주소는 encoding 해서 날려야 함
-        try { encodeAddress = URLEncoder.encode( address.getStreet(), "UTF-8" ); }
+        try { encodeAddress = URLEncoder.encode(requestDto.getStreet(), "UTF-8" ); }
         catch ( UnsupportedEncodingException e ) { e.printStackTrace(); }
 
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="
@@ -63,7 +68,7 @@ public class AddressHandler {
 
         StoreSaveRequestDto store = StoreSaveRequestDto.builder()
                 .address(address)
-                .category(category)
+                .category(requestDto.getCategory())
                 .xPos(xPos)
                 .yPos(yPos)
                 .build();

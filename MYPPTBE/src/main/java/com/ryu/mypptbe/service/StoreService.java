@@ -12,9 +12,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StoreService {
 
     private final StoreRepository storeRepository;
+
 
     @Transactional
     public Store saveStore(StoreSaveRequestDto requestDto){
@@ -23,7 +25,6 @@ public class StoreService {
         ).orElseGet(() -> storeRepository.save(requestDto.toEntity()));
 
         return store;
-
     }
 
 }

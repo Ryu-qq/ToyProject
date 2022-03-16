@@ -1,6 +1,8 @@
 package com.ryu.mypptbe.api.controller;
 
 
+import com.ryu.mypptbe.api.dto.photo.TestDto;
+import com.ryu.mypptbe.api.dto.photo.TestDto2;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
@@ -15,10 +17,12 @@ import com.ryu.mypptbe.service.StoreService;
 import com.ryu.mypptbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -31,10 +35,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class PostController {
 
     private final PostService postService;
-    private final StoreService storeService;
-    private final UserService userService;
-    private final AddressHandler addressHandler;
-
 
     @GetMapping("/{postSeq}")
     public ApiResponse<PostResponseDto> viewPost(@PathVariable Long postSeq){
@@ -42,39 +42,8 @@ public class PostController {
     }
 
     @PostMapping()
-    public ApiResponse<Long> uploadPost(
-            @RequestParam("userId") String userId,
-            @RequestParam("title") String title,
-            @RequestParam("category") String category,
-            @RequestParam("contents") String contents,
-            @RequestParam("postcode") String postcode,
-            @RequestParam("street") String street,
-            @RequestParam("detailStreet") String detailStreet,
-            @RequestPart("files") List<MultipartFile> files
-                            ) throws Exception {
-
-
-        User user = userService.getUser(userId);
-
-        //주소
-        Address address =Address.builder()
-                .postcode(postcode)
-                .street(street)
-                .detailStreet(detailStreet)
-                .build();
-
-        //가게
-        StoreSaveRequestDto store = addressHandler.getCoordination(address, category);
-        Store newStore = storeService.saveStore(store);
-
-        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
-                .user(user)
-                .store(newStore)
-                .title(title)
-                .contents(contents)
-                .build();
-
-        return ApiResponse.success("post", postService.uploadPost(requestDto, files));
+    public  ApiResponse<Long> uploadPost(@ModelAttribute PostsSaveRequestDto requestDto) throws Exception {
+        return ApiResponse.success("post", postService.uploadPost(requestDto));
 
     }
 

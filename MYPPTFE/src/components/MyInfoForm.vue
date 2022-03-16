@@ -11,7 +11,7 @@
 							<span>{{ users.username }} 님</span>
 						</div>
 
-						<div v-if="isLogin">
+						<div v-if="isLogin && isMySelf">
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>
@@ -89,7 +89,7 @@ export default {
 		},
 		postitems: {
 			type: Array,
-			default: () => ({}),
+			default: () => [],
 		},
 		followlist: {
 			type: Array,
@@ -113,8 +113,14 @@ export default {
 		isLogin() {
 			return this.user;
 		},
+		isMySelf() {
+			return this.user
+				? this.user.userId == this.users.userId
+					? true
+					: false
+				: false;
+		},
 	},
-	created() {},
 
 	methods: {
 		...mapMutations(['setToken', 'setUser']),

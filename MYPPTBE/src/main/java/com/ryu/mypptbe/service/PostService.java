@@ -2,11 +2,15 @@ package com.ryu.mypptbe.service;
 
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
+import com.ryu.mypptbe.api.handler.AddressHandler;
 import com.ryu.mypptbe.api.handler.PhotoHandler;
 import com.ryu.mypptbe.domain.images.Photo;
 import com.ryu.mypptbe.domain.images.repository.PhotoRepository;
 import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.post.repository.PostsRepository;
+import com.ryu.mypptbe.domain.store.Store;
+import com.ryu.mypptbe.domain.user.User;
+import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,10 @@ public class PostService {
     private final PostsRepository postsRepository;
     private final PhotoRepository photoRepository;
     private final PhotoHandler photoHandler;
+    private final UserService userService;
+    private final StoreService storeService;
+    private final AddressHandler addressHandler;
+
 
     public PostResponseDto getPost(Long PostSeq){
         return postsRepository.getPost(PostSeq);
@@ -30,10 +38,16 @@ public class PostService {
 
 
     @Transactional
-    public Long uploadPost(PostsSaveRequestDto requestDto,  List<MultipartFile> files ) throws Exception {
+    public Long uploadPost(PostsSaveRequestDto requestDto ) throws Exception {
+
+        User user = userService.getUser(requestDto.getUserId());
+        Store newStore = storeService.saveStore(addressHandler.getCoordination(requestDto));
+
+        requestDto.setStore(newStore);
+        requestDto.setUser(user);
 
         Posts posts = requestDto.toEntity();
-        List<Photo> photoList = photoHandler.parseImageInfo(files);
+        List<Photo> photoList = photoHandler.parseImageInfo(requestDto.getFiles());
         if(!photoList.isEmpty()){
             for(Photo photo : photoList)
                 // 파일을 DB에 저장

@@ -133,7 +133,11 @@ export default {
 			return this.isEditMode && this.isContentsValid ? true : false;
 		},
 		isMySelf() {
-			return this.user.userId == this.post.userId ? true : false;
+			return this.user
+				? this.user.userId == this.post.userId
+					? true
+					: false
+				: false;
 		},
 	},
 	methods: {
@@ -149,11 +153,7 @@ export default {
 
 		goUserPage(userId) {
 			if (!this.isEditMode) {
-				if (!this.user && this.user.userId == userId) {
-					this.$router.go(this.$router.currentRoute);
-				} else {
-					this.$router.push('/user/' + userId);
-				}
+				this.$router.push('/user/' + userId);
 			}
 		},
 		openEditModal() {
@@ -186,15 +186,6 @@ export default {
 			this.$store.dispatch('fetchEditPost', formData);
 			this.isEditMode = false;
 		},
-
-		// isMySelf() {
-		// 	if (this.user) {
-		// 		if (this.post.userId == this.user.userId) {
-		// 			return true;
-		// 		}
-		// 	}
-		// 	return false;
-		// },
 
 		canceldelete() {
 			this.isDeleteModalOpen = false;

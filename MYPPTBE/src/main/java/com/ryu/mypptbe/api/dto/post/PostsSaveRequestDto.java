@@ -5,16 +5,27 @@ import com.ryu.mypptbe.domain.post.Posts;
 import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.junit.experimental.theories.DataPoints;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @NoArgsConstructor
-@Getter
+@Data
+@AllArgsConstructor
 public class PostsSaveRequestDto {
+
     private String title;
     private String contents;
+    private String UserId;
+    private String postcode;
+    private String street;
+    private String detailStreet;
+    private String category;
+    private List<MultipartFile> files;
+
     @JsonIgnore
     private User user;
     @JsonIgnore

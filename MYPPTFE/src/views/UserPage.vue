@@ -133,9 +133,6 @@ export default {
 		},
 
 		async fetchUserInfo() {
-			//const formData = new FormData();
-			//formData.append('fromUserId', this.user.userId);
-			//formData.append('toUserId', this.$route.params.userId);
 			const { data } = await getUserInfo(this.$route.params.userId);
 			this.postItems = data.body.userInfo.userPostList;
 			this.users = data.body.userInfo.userInfo;

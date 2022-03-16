@@ -91,7 +91,6 @@ public class PhotoHandler {
                         .build();
 
                 Photo photo = requestDto.toEntity();
-                System.out.println("absolutePath+ File.separator+ path + File.separator + new_file_name = " + absolutePath+ File.separator+ path + File.separator + new_file_name);
                 // 생성 후 리스트에 추가
                 fileList.add(photo);
                 // 업로드 한 파일 데이터를 지정한 파일에 저장
