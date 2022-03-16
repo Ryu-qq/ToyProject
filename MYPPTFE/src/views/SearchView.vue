@@ -1,6 +1,12 @@
 <template>
 	<div class="container">
+		<div class="search-header">
+			<p>사람들이 남긴 후기를 찾아보세요.</p>
+		</div>
 		<serch-form @doSearch="doSearch"></serch-form>
+		<div v-show="searchCnt < 1 && isSearch" class="search-msg">
+			<p>검색 결과가 없습니다. 다시 입력해 주세요.</p>
+		</div>
 		<search-list
 			:search="search"
 			@onOpenPostModal="openPostModal"
@@ -31,6 +37,7 @@ export default {
 	components: { serchForm, searchList, Spinner, PostView, ModalView },
 	data() {
 		return {
+			isSearch: false,
 			loadingStatus: false,
 			isModalOpen: false,
 			search: [],
@@ -38,11 +45,19 @@ export default {
 		};
 	},
 
+	computed: {
+		searchCnt() {
+			return this.search ? this.search.length : 0;
+		},
+	},
+
 	methods: {
 		async doSearch(payload) {
+			this.isSearch = false;
 			this.loadingStatus = true;
 			const data = await getSearch(payload);
 			this.search = data.data.content;
+			this.isSearch = true;
 			this.loadingStatus = false;
 		},
 
@@ -68,5 +83,27 @@ export default {
 
 .spinner {
 	margin-top: -10%;
+}
+.search-header {
+	display: flex;
+	flex-direction: column;
+}
+.search-result {
+	display: flex;
+}
+
+.search-msg {
+	display: flex;
+	text-align: center;
+	margin-top: 10%;
+}
+
+.search-msg p {
+	width: 100%;
+	text-align: center;
+}
+
+h3 {
+	color: #858282;
 }
 </style>

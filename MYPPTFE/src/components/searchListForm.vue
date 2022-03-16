@@ -6,7 +6,7 @@
 			</div>
 			<div class="review-text">
 				<div class="review-header">
-					<h2 @click="goPost(`${review.postSeq}`)">{{ review.title }}</h2>
+					<p @click="goPost(`${review.postSeq}`)">{{ review.title }}</p>
 					<div class="my-picture">
 						<img :src="review.profileUrl" @click="goUserPage(review.userId)" />
 					</div>
@@ -26,7 +26,7 @@ export default {
 	props: {
 		search: {
 			type: Array,
-			required: true,
+			default: () => ({}),
 		},
 	},
 
@@ -120,15 +120,16 @@ img {
 	height: 100%;
 }
 
-h1 {
-	cursor: pointer;
-	margin-bottom: 3px;
-}
-h1:hover {
-	transform: translate(0, -3px);
-	color: #a6a6a6;
-}
 h6 {
 	margin-bottom: 15px;
+}
+p {
+	font-size: 1.4rem;
+	cursor: pointer;
+}
+
+p:hover {
+	transform: translate(0, -3px);
+	color: #a6a6a6;
 }
 </style>

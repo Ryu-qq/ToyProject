@@ -25,7 +25,7 @@
 
 				<span>{{ post.userName }}</span>
 				<i
-					v-if="isMySelf() && !isEditMode"
+					v-if="isMySelf && !isEditMode"
 					class="fas fa-solid fa-bars"
 					@click="openEditModal()"
 				></i>
@@ -62,7 +62,7 @@
 					</label>
 				</div>
 			</div>
-			<div v-if="isValid()">
+			<div v-if="isValid">
 				<button class="edt-btn" @click="fetchEditPost()">수정하기</button>
 				<button class="cancel-btn" @click="cancel()">취소하기</button>
 			</div>
@@ -129,6 +129,12 @@ export default {
 		isContentsValid() {
 			return this.post.contents.length <= 120 && this.post.contents.length > 0;
 		},
+		isValid() {
+			return this.isEditMode && this.isContentsValid ? true : false;
+		},
+		isMySelf() {
+			return this.user.userId == this.post.userId ? true : false;
+		},
 	},
 	methods: {
 		goRight() {
@@ -165,6 +171,9 @@ export default {
 			this.$emit('onClosePost');
 			this.$emit('refresh');
 		},
+		async fetchRepostPost() {
+			console.log(1);
+		},
 		EditPost() {
 			this.isEditMode = true;
 			this.isModalOpen = false;
@@ -178,20 +187,14 @@ export default {
 			this.isEditMode = false;
 		},
 
-		isMySelf() {
-			if (this.user) {
-				if (this.post.userId == this.user.userId) {
-					return true;
-				}
-			}
-		},
-		isValid() {
-			if (this.isEditMode && this.isContentsValid) {
-				return true;
-			} else {
-				return false;
-			}
-		},
+		// isMySelf() {
+		// 	if (this.user) {
+		// 		if (this.post.userId == this.user.userId) {
+		// 			return true;
+		// 		}
+		// 	}
+		// 	return false;
+		// },
 
 		canceldelete() {
 			this.isDeleteModalOpen = false;
@@ -331,6 +334,12 @@ export default {
 
 .delete-footer button:hover {
 	background-color: #a6a6a6;
+}
+
+.fa-bell-on {
+	color: #000;
+	position: absolute;
+	right: 10px;
 }
 
 span {

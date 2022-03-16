@@ -1,18 +1,11 @@
 package com.ryu.mypptbe.api.dto.follow;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.user.User;
-import com.ryu.mypptbe.domain.user.repository.UserRepository;
-import com.ryu.mypptbe.service.UserService;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import javax.persistence.EntityManager;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class FollowRequestDto {
 
@@ -20,6 +13,13 @@ public class FollowRequestDto {
     private Long toUser;
     private User following;
     private User follower;
+    private String type;
+    private String userId;
+
+    public FollowRequestDto(String userId, String type) {
+        this.userId = userId;
+        this.type = type;
+    }
 
     @Builder
     public FollowRequestDto(Long fromUser, Long toUser, User following, User follower ){

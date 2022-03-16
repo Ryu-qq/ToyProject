@@ -15,7 +15,7 @@
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>
-							<button @click="logout()">
+							<button @click="$emit('logout')">
 								<i class="fas fa-sign-out-alt" @click="logout()"></i>
 							</button>
 						</div>
@@ -38,23 +38,46 @@
 
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
-						<li class="follow" @click="fetchFollowInfo()">
+						<li class="follow" @click="fetchFollower()">
 							팔로워 {{ follow.followerCnt }}
 						</li>
-						<li class="follow" @click="fetchFollowInfo()">
+						<li class="follow" @click="fetchFollow()">
 							팔로잉 {{ follow.followingCnt }}
 						</li>
 					</ul>
 				</section>
 			</div>
 		</div>
+		<modal-view v-if="followModalOpen" @onCloseModal="followModalOpen = false">
+			<div slot="body" class="modal-body">
+				<div class="header">
+					<p>{{ followMsg }}</p>
+				</div>
+				<ul
+					v-for="(member, index) in followlist"
+					:key="index"
+					class="follow-wrapper"
+				>
+					<li>
+						<img
+							:src="member.profileImageUrl"
+							@click="goUserPage(member.userId)"
+						/>
+						<p>{{ member.username }}</p>
+						<div class="line"></div>
+					</li>
+				</ul>
+			</div>
+		</modal-view>
 	</div>
 </template>
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
+import ModalView from '@/components/common/modal/ModalView.vue';
 
 export default {
+	components: { ModalView },
 	props: {
 		users: {
 			type: Object,
@@ -66,12 +89,18 @@ export default {
 		},
 		postitems: {
 			type: Array,
-			required: true,
+			default: () => ({}),
+		},
+		followlist: {
+			type: Array,
+			default: () => [],
 		},
 	},
 	data() {
 		return {
 			statusMsg: '팔로잉',
+			followModalOpen: false,
+			followMsg: '',
 		};
 	},
 
@@ -90,23 +119,42 @@ export default {
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
 
-		logout() {
-			this.setToken(null);
-			this.setUser(null);
-			alert('로그아웃되었습니다.');
-			if (this.$route.path !== '/map') this.$router.push('/map');
-		},
-
 		//팔로우 팔로잉 리스트 뽑아오는거
-		async fetchFollowInfo() {
-			await this.$store.dispatch('fetchFollow', this.user.userId);
+		fetchFollow() {
+			this.$emit('fetchFollow', {
+				userId: this.user.userId,
+				type: 'follow',
+			});
+			if (this.followlist) {
+				this.followModalOpen = true;
+				this.followMsg = '팔로잉';
+			}
+		},
+		fetchFollower() {
+			this.$emit('fetchFollower', {
+				userId: this.user.userId,
+				type: 'follower',
+			});
+			if (this.followlist) {
+				this.followModalOpen = true;
+				this.followMsg = '팔로워';
+			}
 		},
 
 		doFollow() {
+			if (!this.user) {
+				this.$emit('notPermit');
+				return;
+			}
 			this.$emit('doFollow', {
 				toUser: this.users.id,
 				fromUser: this.user.id,
 			});
+		},
+		goUserPage(userId) {
+			if (this.$route.path !== '/user/' + userId) {
+				this.$router.push('/user/' + userId);
+			}
 		},
 	},
 };
@@ -199,6 +247,39 @@ export default {
 	cursor: pointer;
 }
 
+.modal-body {
+	height: 450px;
+}
+
+.follow-wrapper li {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.follow-wrapper img {
+	width: 13%;
+	border-radius: 50%;
+}
+
+.follow-wrapper p {
+	padding-left: 15px;
+	padding-top: 11px;
+}
+
+.modal-body .header {
+	border-bottom: 1px solid;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.modal-body .header p {
+	width: 100%;
+	font-size: 1.2rem;
+}
+
 section {
 	width: 100%;
 }
@@ -220,5 +301,9 @@ ul {
 li {
 	font-size: 0.9rem;
 	margin-right: 28px;
+}
+
+li img {
+	cursor: pointer;
 }
 </style>

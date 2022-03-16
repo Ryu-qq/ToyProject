@@ -1,5 +1,6 @@
 package com.ryu.mypptbe.api.dto.user;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.oauth.domain.RoleType;
 import lombok.Builder;
@@ -17,6 +18,13 @@ public class UserResponseDto {
     private RoleType roleType;
     private String profileImageUrl;
 
+    @QueryProjection
+    public UserResponseDto(Long id, String userId, String username, String profileImageUrl) {
+        this.id = id;
+        this.userId = userId;
+        this.username = username;
+        this.profileImageUrl = profileImageUrl;
+    }
 
     @Builder
     public UserResponseDto(User user){

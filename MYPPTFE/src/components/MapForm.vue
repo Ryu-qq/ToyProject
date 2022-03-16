@@ -32,7 +32,6 @@ export default {
 		return {
 			map: null,
 			markerList: [],
-			selectedMarker: null,
 			overlap: [],
 			isModalOpen: false,
 		};
@@ -72,9 +71,27 @@ export default {
 		},
 
 		setCurrentPos() {
-			let moveLatLon = new kakao.maps.LatLng(this.gps_lat, this.gps_lng);
-			return this.map.setCenter(moveLatLon);
+			navigator.geolocation.getCurrentPosition(position => {
+				console.log(position.coords.latitude);
+				console.log(position.coords.longitude);
+			});
+			// navigator.geolocation.watchPosition(position => {
+			// 	const latitude = position.coords.latitude;
+			// 	const longitude = position.coords.longitude;
+			// 	console.log(latitude);
+			// 	console.log(longitude);
+			// });
+			// navigator.geolocation.watchPosition(position => {
+			// 	this.panTo(
+			// 		this.map,
+			// 		new kakao.maps.LatLng(
+			// 			position.coords.latitude,
+			// 			position.coords.longitude,
+			// 		),
+			// 	);
+			// });
 		},
+
 		makeMaker() {
 			this.initMarkers();
 			if (this.postitems) {
@@ -195,7 +212,7 @@ export default {
 }
 
 .map_wrap .custom_typecontrol {
-	background-color: #fff;
+	background: transparent;
 	position: absolute;
 	top: 10px;
 	right: 23px;
@@ -209,7 +226,6 @@ export default {
 	border: none;
 	font-size: 0.6rem;
 	cursor: pointer;
-	box-shadow: 10px 10px 10px -5px rgba(25, 42, 70, 0.2);
 
 	transition: 0.2s;
 }

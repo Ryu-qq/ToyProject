@@ -17,7 +17,6 @@ public class FollowResponseDto {
     private Long followingCnt;
     private Long id;
 
-
     @Builder
     public FollowResponseDto( Long followerCnt, Long followingCnt, Long id) {
         this.followerCnt = followerCnt;

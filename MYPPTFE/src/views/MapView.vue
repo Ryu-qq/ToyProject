@@ -2,6 +2,10 @@
 	<div class="container">
 		<serch-form @doSearch="doSearch"></serch-form>
 		<spinner :loading="loadingStatus" class="spinner"></spinner>
+		<div class="search-result">
+			<p>검색 결과:</p>
+			<p>{{ searchCnt }} 개</p>
+		</div>
 		<map-form class="map-container" :postitems="postItems"></map-form>
 	</div>
 </template>
@@ -24,6 +28,12 @@ export default {
 			postItems: [],
 		};
 	},
+	computed: {
+		searchCnt() {
+			return this.postItems ? this.postItems.length : 0;
+		},
+	},
+
 	methods: {
 		async doSearch(payload) {
 			this.loadingStatus = true;
@@ -51,5 +61,14 @@ export default {
 
 .spinner {
 	margin-top: -10%;
+}
+
+.search-result {
+	display: flex;
+}
+
+p {
+	margin-right: 5px;
+	font: 1.5rem;
 }
 </style>

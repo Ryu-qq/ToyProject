@@ -5,4 +5,14 @@ function doFollow(payload) {
 	return follow.post('', payload);
 }
 
-export { doFollow };
+function fetchFollow(payload) {
+	const { type, userId } = payload;
+	return follow.get('', {
+		params: {
+			type: type,
+			userId: userId,
+		},
+	});
+}
+
+export { doFollow, fetchFollow };

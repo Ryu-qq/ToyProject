@@ -3,6 +3,7 @@ package com.ryu.mypptbe.service;
 import com.querydsl.core.Tuple;
 import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
 import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
+import com.ryu.mypptbe.api.dto.user.UserResponseDto;
 import com.ryu.mypptbe.domain.follow.Follow;
 import com.ryu.mypptbe.domain.follow.repository.FollowRepository;
 import com.ryu.mypptbe.domain.user.User;
@@ -10,6 +11,8 @@ import com.ryu.mypptbe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,13 @@ public class FollowService {
 
         return responseDto;
     }
+
+    public List<UserResponseDto> getFollowList(FollowRequestDto requestDto){
+
+        return followRepository.getFollowList(requestDto.getUserId(),requestDto.getType());
+
+    }
+
 
     @Transactional
     public FollowResponseDto save(User follower, User following){
