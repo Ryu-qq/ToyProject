@@ -122,7 +122,7 @@ export default {
 		//팔로우 팔로잉 리스트 뽑아오는거
 		fetchFollow() {
 			this.$emit('fetchFollow', {
-				userId: this.user.userId,
+				userId: this.users.userId,
 				type: 'follow',
 			});
 			if (this.followlist) {
@@ -132,7 +132,7 @@ export default {
 		},
 		fetchFollower() {
 			this.$emit('fetchFollower', {
-				userId: this.user.userId,
+				userId: this.users.userId,
 				type: 'follower',
 			});
 			if (this.followlist) {
@@ -249,6 +249,10 @@ export default {
 
 .modal-body {
 	height: 450px;
+}
+
+.modal-body ul {
+	overflow: auto;
 }
 
 .follow-wrapper li {

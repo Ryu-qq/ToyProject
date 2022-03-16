@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/search/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/follow/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/user/**").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll()
                     .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getKey())
