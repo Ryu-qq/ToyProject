@@ -1,13 +1,13 @@
 <template>
 	<div class="container">
 		<my-info-form
-			:users="users"
-			:follow="follow"
+			:member="member"
 			:postitems="postItems"
+			:follow="follow"
 			:followlist="followList"
+			:isfollow="isfollow"
 			@doFollow="doFollow"
 			@fetchFollow="fetchFollow"
-			@fetchFollower="fetchFollow"
 			@notPermit="notPermit"
 			@logout="logout"
 		></my-info-form>
@@ -52,7 +52,7 @@
 			</div>
 		</modal-view>
 
-		<modal-view v-if="isLogout" @onCloseModal="goMainPage">
+		<modal-view v-if="isLogout" @onCloseModal="doLogout">
 			<div slot="body">
 				<div class="alert-msg">
 					<p>로그아웃 되었습니다</p>
@@ -89,17 +89,16 @@ export default {
 			isModalOpen: false,
 			alertModalOpen: false,
 			isLogout: false,
-			endpoint: '',
 			postItems: [],
-			users: {},
+			member: {},
 			follow: {},
 			followList: [],
-			postcnt: '',
+			isfollow: 0,
 		};
 	},
 
 	computed: {
-		...mapGetters(['token', 'user']),
+		...mapGetters(['token']),
 
 		isLoggedIn() {
 			return this.token != null;
@@ -125,7 +124,7 @@ export default {
 		logout() {
 			this.isLogout = true;
 		},
-		goMainPage() {
+		doLogout() {
 			this.setToken(null);
 			this.setUser(null);
 			this.isLogout = false;
@@ -134,21 +133,19 @@ export default {
 
 		async fetchUserInfo() {
 			const { data } = await getUserInfo(this.$route.params.userId);
-			this.postItems = data.body.userInfo.userPostList;
-			this.users = data.body.userInfo.userInfo;
-			this.follow = data.body.userInfo.followInfo;
-			this.postcnt = data.body.userInfo.postCnt;
+			this.member = data.body.user.userInfo;
+			this.postItems = data.body.user.userPostList;
+			this.follow = data.body.user.followInfo;
 		},
 
 		async openPostModal(endpoint) {
-			this.endpoint = endpoint;
 			await this.$store.dispatch('fetchPost', endpoint);
 			this.isModalOpen = true;
 		},
 
 		async doFollow(payload) {
 			const { data } = await doFollow(payload);
-			this.follow = data.body.followInfo;
+			this.isfollow = data.body.follow;
 		},
 
 		async fetchFollow(payload) {

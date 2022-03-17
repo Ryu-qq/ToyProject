@@ -3,12 +3,12 @@
 		<div class="mypage-container">
 			<div class="mypage-header">
 				<div class="mypage-content">
-					<img class="my-picture" :src="users.profileImageUrl" alt="photo" />
+					<img class="my-picture" :src="member.profileImageUrl" alt="photo" />
 				</div>
 				<section>
 					<div class="mypage-info">
 						<div>
-							<span>{{ users.username }} 님</span>
+							<span>{{ member.username }} 님</span>
 						</div>
 
 						<div v-if="isLogin && isMySelf">
@@ -38,10 +38,10 @@
 
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
-						<li class="follow" @click="fetchFollower()">
-							팔로워 {{ follow.followerCnt }}
+						<li class="follow" @click="fetchFollow('follower')">
+							팔로워 {{ followCnt }}
 						</li>
-						<li class="follow" @click="fetchFollow()">
+						<li class="follow" @click="fetchFollow('following')">
 							팔로잉 {{ follow.followingCnt }}
 						</li>
 					</ul>
@@ -54,16 +54,13 @@
 					<p>{{ followMsg }}</p>
 				</div>
 				<ul
-					v-for="(member, index) in followlist"
+					v-for="(fol, index) in followlist"
 					:key="index"
 					class="follow-wrapper"
 				>
 					<li>
-						<img
-							:src="member.profileImageUrl"
-							@click="goUserPage(member.userId)"
-						/>
-						<p>{{ member.username }}</p>
+						<img :src="fol.profileImageUrl" @click="goUserPage(fol.userId)" />
+						<p>{{ fol.username }}</p>
 						<div class="line"></div>
 					</li>
 				</ul>
@@ -79,26 +76,30 @@ import ModalView from '@/components/common/modal/ModalView.vue';
 export default {
 	components: { ModalView },
 	props: {
-		users: {
+		member: {
 			type: Object,
-			required: true,
-		},
-		follow: {
-			type: Object,
-			required: true,
+			default: () => ({}),
 		},
 		postitems: {
 			type: Array,
 			default: () => [],
 		},
+		follow: {
+			type: Object,
+			default: () => ({}),
+		},
 		followlist: {
 			type: Array,
 			default: () => [],
 		},
+		isfollow: {
+			type: Number,
+			required: true,
+		},
 	},
 	data() {
 		return {
-			statusMsg: '팔로잉',
+			statusMsg: '팔로우',
 			followModalOpen: false,
 			followMsg: '',
 		};
@@ -115,35 +116,32 @@ export default {
 		},
 		isMySelf() {
 			return this.user
-				? this.user.userId == this.users.userId
+				? this.user.userId == this.member.userId
 					? true
 					: false
 				: false;
+		},
+		followCnt() {
+			return this.follow.followerCnt;
+		},
+	},
+	watch: {
+		isfollow() {
+			this.countFollow();
 		},
 	},
 
 	methods: {
 		...mapMutations(['setToken', 'setUser']),
 
-		//팔로우 팔로잉 리스트 뽑아오는거
-		fetchFollow() {
+		fetchFollow(type) {
 			this.$emit('fetchFollow', {
-				userId: this.users.userId,
-				type: 'follow',
+				fromUserSeq: this.member.id,
+				type: type,
 			});
 			if (this.followlist) {
 				this.followModalOpen = true;
-				this.followMsg = '팔로잉';
-			}
-		},
-		fetchFollower() {
-			this.$emit('fetchFollower', {
-				userId: this.users.userId,
-				type: 'follower',
-			});
-			if (this.followlist) {
-				this.followModalOpen = true;
-				this.followMsg = '팔로워';
+				this.followMsg = type == 'follower' ? '팔로워' : '팔로잉';
 			}
 		},
 
@@ -153,14 +151,22 @@ export default {
 				return;
 			}
 			this.$emit('doFollow', {
-				toUser: this.users.id,
-				fromUser: this.user.id,
+				toUserSeq: this.member.id,
+				fromUserSeq: this.user.id,
 			});
 		},
+
 		goUserPage(userId) {
 			if (this.$route.path !== '/user/' + userId) {
 				this.$router.push('/user/' + userId);
 			}
+		},
+		countFollow() {
+			console.log(1);
+			this.follow.followerCnt =
+				this.isfollow > 0
+					? this.follow.followerCnt++
+					: this.follow.followerCnt--;
 		},
 	},
 };

@@ -1,30 +1,18 @@
 package com.ryu.mypptbe.domain.follow.repository;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
-import com.ryu.mypptbe.api.dto.follow.QFollowResponseDto;
 import com.ryu.mypptbe.api.dto.user.QUserResponseDto;
 import com.ryu.mypptbe.api.dto.user.UserResponseDto;
-import com.ryu.mypptbe.domain.follow.Follow;
-import com.ryu.mypptbe.domain.follow.QFollow;
-import com.ryu.mypptbe.domain.user.User;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.ryu.mypptbe.domain.follow.QFollow.follow;
 import static com.ryu.mypptbe.domain.user.QUser.user;
-import static org.springframework.util.StringUtils.hasText;
-
 
 @Repository
 public class FollowRepositoryImpl implements FollowRepositoryCustom{
@@ -37,22 +25,24 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom{
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<Long> getFollower(String userId, String type){
+    /**
+     * @param userSeq
+     * @param type
+     * @return 팔로우 팔로워에 따라 그 UserSeq리스트 가져옴
+     */
+
+    public List<Long> getFollowMember(Long userSeq, String type){
         return queryFactory
-                .select(follow.fromUser.id)
+                .select(selectUser(type))
                 .from(follow)
-                .where(userIdEq(userId,type))
+                .where(userIdEq(userSeq,type))
                 .fetch();
     }
 
-
-    public List<Long> getFollowing(String userId, String type){
-        return queryFactory
-                .select(follow.toUser.id)
-                .from(follow)
-                .where(userIdEq(userId,type))
-                .fetch();
-    }
+    /**
+     * @param id
+     * @return UserSeq로 사람들 정보 가져옴
+     */
 
     public List<UserResponseDto> getUserInfo(List<Long> id){
         return queryFactory
@@ -67,67 +57,44 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom{
                 .fetch();
     }
 
-    @Override
-    public FollowResponseDto getCountFollow(User following, User follower) {
-        return queryFactory
-                .select( Projections.fields(FollowResponseDto.class,
-                        ExpressionUtils.as(
-                                JPAExpressions.select(count(follow.id))
-                                        .from(follow)
-                                        .where(follow.toUser.id.eq(following.getId())),
-                                "followerCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(count(follow.id))
-                                        .from(follow)
-                                        .where(follow.fromUser.id.eq(following.getId())),
-                                "followingCnt"),
-                        ExpressionUtils.as(
-                                JPAExpressions.select(follow.id)
-                                        .from(follow)
-                                        .where(follow.toUser.id.in(following.getId()),
-                                                follow.fromUser.id.in(follower.getId())),
-                                "followSeq")
-                        )
-                ).from(follow)
-                .distinct()
-                .fetchOne();
-
-
-
-    }
+    /**
+     * @param fromUserSeq
+     * @param toUserSeq
+     * @return 팔로우 관계라면 시퀀스 값 반환
+     */
 
     @Override
-    public Follow isFollow(Long fromUserId, Long toUserId) {
+    public Long isFollow(Long fromUserSeq, Long toUserSeq) {
         return queryFactory
-                .selectFrom(follow)
-                .where(follow.fromUser.id.eq(fromUserId),
-                        follow.toUser.id.eq(toUserId))
+                .select(follow.id)
+                .from(follow)
+                .where(follow.fromUser.id.eq(fromUserSeq),
+                        follow.toUser.id.eq(toUserSeq))
                 .fetchOne();
     }
 
+    /**
+     * @param userSeq
+     * @param type
+     * @return 각각의 팔로우, 팔로워 리스트
+     */
 
     @Override
-    public List<UserResponseDto> getFollowList(String userId, String type) {
-
-        List<Long> followList;
-
-        if(type.equals("follow")){
-            followList = getFollowing(userId, type);
-        }else{
-            followList = getFollower(userId, type);
-        }
-
-
-        return getUserInfo(followList);
+    public List<UserResponseDto> getFollowList(Long userSeq, String type) {
+        return getUserInfo(getFollowMember(userSeq, type));
     }
 
-
-    private BooleanExpression userIdEq(String userId, String type) {
+    private BooleanExpression userIdEq(Long userSeq, String type) {
         if(type.equals("follower")){
-            return hasText(userId) ? follow.toUser.userId.eq(userId) : null;
+            return userSeq > 0 ? follow.toUser.id.eq(userSeq) : null;
         }else{
-            return hasText(userId) ? follow.fromUser.userId.eq(userId) : null;
+            return userSeq > 0 ? follow.fromUser.id.eq(userSeq) : null;
         }
+    }
+
+    private NumberPath<Long> selectUser(String type) {
+        return type.equals("follower") ? follow.fromUser.id : follow.toUser.id;
+
     }
 
 }

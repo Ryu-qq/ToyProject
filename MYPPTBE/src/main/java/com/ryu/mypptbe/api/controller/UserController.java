@@ -51,7 +51,7 @@ public class UserController {
 
         userInfoResponseDto.setUserPostList(userPostList);
 
-        return ApiResponse.success("userInfo", userInfoResponseDto);
+        return ApiResponse.success("user", userInfoResponseDto);
 
     }
 }

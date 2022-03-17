@@ -1,7 +1,6 @@
 package com.ryu.mypptbe.api.controller;
 
 import com.ryu.mypptbe.api.dto.follow.FollowRequestDto;
-import com.ryu.mypptbe.api.dto.follow.FollowResponseDto;
 import com.ryu.mypptbe.api.dto.user.UserResponseDto;
 import com.ryu.mypptbe.common.ApiResponse;
 import com.ryu.mypptbe.service.FollowService;
@@ -18,10 +17,14 @@ public class FollowController {
     private final FollowService followService;
 
 
-    @PostMapping
-    public ApiResponse<FollowResponseDto> follow(@RequestBody FollowRequestDto requestDto){
 
-        return ApiResponse.success("followInfo", followService.getByToUserIdAndFromUserId(requestDto));
+    /**
+     * FollowRequestDto
+     *  = {toUserId, fromUserId}
+     */
+    @PostMapping
+    public ApiResponse<Long> follow(@RequestBody FollowRequestDto requestDto){
+        return ApiResponse.success("follow", followService.getByToUserIdAndFromUserId(requestDto));
     }
 
     @GetMapping

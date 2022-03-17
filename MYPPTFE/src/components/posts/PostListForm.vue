@@ -26,7 +26,7 @@ export default {
 	props: {
 		postitems: {
 			type: Array,
-			required: true,
+			default: () => [],
 		},
 	},
 	data() {

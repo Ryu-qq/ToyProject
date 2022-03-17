@@ -43,9 +43,6 @@ public class Posts extends BaseTimeEntity {
     @OneToMany(mappedBy = "posts", cascade = CascadeType.ALL)
     private List<Photo> photos = new ArrayList<>();
 
-
-
-
     /**
      * 연관관계 편의 메서드
      */
@@ -72,7 +69,6 @@ public class Posts extends BaseTimeEntity {
         this.contents = contents;
         this.user= user;
         this.store = store;
-
     }
 
 

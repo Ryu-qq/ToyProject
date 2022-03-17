@@ -2,9 +2,7 @@ package com.ryu.mypptbe.api.dto.follow;
 
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ryu.mypptbe.domain.follow.Follow;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

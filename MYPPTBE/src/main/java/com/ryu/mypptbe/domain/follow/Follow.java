@@ -36,14 +36,4 @@ public class Follow {
         this.toUser = toUser;
     }
 
-
-    public void setFromUser(User user){
-        this.fromUser = user;
-        user.getFromUser().add(this);
-    }
-
-    public void setToUser(User user){
-        this.toUser = user;
-        user.getToUser().add(this);
-    }
 }

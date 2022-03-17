@@ -6,11 +6,11 @@ function doFollow(payload) {
 }
 
 function fetchFollow(payload) {
-	const { type, userId } = payload;
+	const { type, fromUserSeq } = payload;
 	return follow.get('', {
 		params: {
 			type: type,
-			userId: userId,
+			fromUserSeq: fromUserSeq,
 		},
 	});
 }
