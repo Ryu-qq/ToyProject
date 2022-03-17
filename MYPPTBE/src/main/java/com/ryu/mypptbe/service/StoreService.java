@@ -1,14 +1,13 @@
 package com.ryu.mypptbe.service;
 
-import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
+import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
+import com.ryu.mypptbe.api.handler.AddressHandler;
+import com.ryu.mypptbe.domain.store.Address;
 import com.ryu.mypptbe.domain.store.Store;
 import com.ryu.mypptbe.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -16,15 +15,25 @@ import java.util.Optional;
 public class StoreService {
 
     private final StoreRepository storeRepository;
+    private final AddressHandler addressHandler;
+
 
 
     @Transactional
-    public Store saveStore(StoreSaveRequestDto requestDto){
-        Store store = Optional.ofNullable(
-                storeRepository.findByAddressAndCategory(requestDto.getAddress(), requestDto.getCategory())
-        ).orElseGet(() -> storeRepository.save(requestDto.toEntity()));
+    public Store saveStore(PostsSaveRequestDto requestDto) throws Exception {
 
-        return store;
+        Address address = addressHandler.getCoordination(
+                requestDto.getPostcode(),
+                requestDto.getStreet(),
+                requestDto.getDetailStreet());
+
+        Store store = storeRepository.findByAddressAndCategory(address, requestDto.getCategory());
+
+        return store != null ? store :
+                            storeRepository.save(Store.builder()
+                                    .address(address)
+                                    .category(requestDto.getCategory())
+                                    .build());
     }
 
 }

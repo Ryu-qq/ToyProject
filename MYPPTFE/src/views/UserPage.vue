@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<my-info-form
+		<user-info-form
 			:member="member"
 			:postitems="postItems"
 			:follow="follow"
@@ -10,7 +10,7 @@
 			@fetchFollow="fetchFollow"
 			@notPermit="notPermit"
 			@logout="logout"
-		></my-info-form>
+		></user-info-form>
 
 		<div class="tappage">
 			<a @click="onClickTab(0)">
@@ -41,7 +41,7 @@
 			@onCloseModal="isModalOpen = false"
 		>
 			<div slot="body">
-				<post-view @onCloseModal="isModalOpen = false"></post-view>
+				<post @onCloseModal="isModalOpen = false"></post>
 			</div>
 		</post-modal>
 		<modal-view v-if="alertModalOpen" @onCloseModal="alertModalOpen = false">
@@ -64,23 +64,23 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
-import MyInfoForm from '../components/MyInfoForm.vue';
 import PostListForm from '@/components/posts/PostListForm.vue';
 import MapForm from '@/components/MapForm.vue';
-import PostView from '@/views/PostView.vue';
+import Post from '@/views/Post.vue';
 import PostModal from '@/components/common/modal/PostModal.vue';
 import ModalView from '@/components/common/modal/ModalView.vue';
 import { doFollow, fetchFollow } from '@/api/follow';
 import { getUserInfo } from '@/api/user';
+import UserInfoForm from '../components/UserInfoForm.vue';
 
 export default {
 	components: {
-		MyInfoForm,
 		PostListForm,
 		MapForm,
-		PostView,
+		Post,
 		PostModal,
 		ModalView,
+		UserInfoForm,
 	},
 	data() {
 		return {

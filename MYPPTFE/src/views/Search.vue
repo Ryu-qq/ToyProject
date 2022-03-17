@@ -19,7 +19,7 @@
 			@onCloseModal="isModalOpen = false"
 		>
 			<div slot="body">
-				<post-view></post-view>
+				<post></post>
 			</div>
 		</modal-view>
 	</div>
@@ -29,12 +29,12 @@
 import serchForm from '@/components/common/serchForm.vue';
 import searchList from '@/components/searchListForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
-import PostView from '@/views/PostView.vue';
+import Post from '@/views/Post.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
 import { getSearch } from '@/api/search';
 
 export default {
-	components: { serchForm, searchList, Spinner, PostView, ModalView },
+	components: { serchForm, searchList, Spinner, Post, ModalView },
 	data() {
 		return {
 			isSearch: false,

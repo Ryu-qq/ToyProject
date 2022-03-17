@@ -1,38 +1,22 @@
 package com.ryu.mypptbe.api.handler;
 
 
-import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
-import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
 import com.ryu.mypptbe.domain.store.Address;
-import com.ryu.mypptbe.domain.store.Store;
-import com.ryu.mypptbe.service.StoreService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 
 @Component
-@RequiredArgsConstructor
 public class AddressHandler {
 
-    public StoreSaveRequestDto getCoordination(PostsSaveRequestDto requestDto) throws Exception {
-
-
-        Address address =Address.builder()
-                .postcode(requestDto.getPostcode())
-                .street(requestDto.getStreet())
-                .detailStreet(requestDto.getDetailStreet())
-                .build();
+    public Address getCoordination(String postCode, String street, String detailStreet) throws Exception {
 
         String encodeAddress = "";  // 한글 주소는 encoding 해서 날려야 함
-        try { encodeAddress = URLEncoder.encode(requestDto.getStreet(), "UTF-8" ); }
+        try { encodeAddress = URLEncoder.encode(street, "UTF-8" ); }
         catch ( UnsupportedEncodingException e ) { e.printStackTrace(); }
 
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="
@@ -66,14 +50,13 @@ public class AddressHandler {
         double xPos = Double.parseDouble(obj.getString("x"));
         double yPos = Double.parseDouble(obj.getString("y"));
 
-        StoreSaveRequestDto store = StoreSaveRequestDto.builder()
-                .address(address)
-                .category(requestDto.getCategory())
+        return Address.builder()
+                .postcode(postCode)
+                .street(street)
+                .detailStreet(detailStreet)
                 .xPos(xPos)
                 .yPos(yPos)
                 .build();
-
-        return store;
     }
 
 }

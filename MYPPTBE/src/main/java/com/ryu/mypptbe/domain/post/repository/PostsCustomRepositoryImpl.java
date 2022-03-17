@@ -38,8 +38,6 @@ public class PostsCustomRepositoryImpl implements PostsCustomRepository{
                         posts.createdDate,
                         posts.modifiedDate,
                         store.address,
-                        store.xPos,
-                        store.yPos,
                         user.id,
                         user.userId,
                         user.username.as("userName"),

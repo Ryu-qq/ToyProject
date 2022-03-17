@@ -1,9 +1,7 @@
 package com.ryu.mypptbe.api.handler;
 
 
-import com.ryu.mypptbe.api.dto.photo.PhotoSaveRequestDto;
 import com.ryu.mypptbe.domain.images.Photo;
-import com.ryu.mypptbe.service.PhotoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -20,14 +18,9 @@ import java.util.UUID;
 @Component
 public class PhotoHandler {
 
-    private final PhotoService photoService;
 
     @Value("${file.dir}")
     private String fileDir;
-
-    public PhotoHandler(PhotoService imageService) {
-        this.photoService = imageService;
-    }
 
     public List<Photo> parseImageInfo(List<MultipartFile> multipartFiles) throws Exception {
 
@@ -82,15 +75,13 @@ public class PhotoHandler {
                 String new_file_name = uuid + originalFileExtension;
 
 
-
                 // Photo 엔티티 생성
-                PhotoSaveRequestDto requestDto = PhotoSaveRequestDto.builder()
+                Photo photo = Photo.builder()
                         .uploadImageName(multipartFile.getOriginalFilename())
                         .filePath(path + File.separator + new_file_name)
                         .fileSize(multipartFile.getSize())
                         .build();
 
-                Photo photo = requestDto.toEntity();
                 // 생성 후 리스트에 추가
                 fileList.add(photo);
                 // 업로드 한 파일 데이터를 지정한 파일에 저장

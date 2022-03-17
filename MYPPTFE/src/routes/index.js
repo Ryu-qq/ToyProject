@@ -13,36 +13,36 @@ export const router = new VueRouter({
 		{
 			path: '/map',
 			name: 'map',
-			component: () => import('@/views/MapView'),
+			component: () => import('@/views/Map'),
 		},
 		{
 			path: '/search',
 			name: 'search',
-			component: () => import('@/views/SearchView'),
+			component: () => import('@/views/Search'),
 		},
 		{
 			path: '/user/:userId',
-			name: 'UserPage',
+			name: 'userPage',
 			component: () => import('@/views/UserPage'),
 		},
 		{
 			path: '/post',
-			name: 'post',
-			component: () => import('@/views/PostAddView'),
+			name: 'postAdd',
+			component: () => import('@/views/PostAdd'),
 		},
 		{
 			path: '/post/:postSeq',
-			name: 'PostView',
-			component: () => import('@/views/PostView'),
+			name: 'post',
+			component: () => import('@/views/Post'),
 		},
 		{
 			path: '/oauth/redirect',
-			name: 'RedirectView',
-			component: () => import('@/views/oauth/RedirectView'),
+			name: 'redirect',
+			component: () => import('@/views/oauth/Redirect'),
 		},
 		{
 			path: '*',
-			component: () => import('@/views/NotFoundPageView'),
+			component: () => import('@/views/NotFound'),
 		},
 	],
 });

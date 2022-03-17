@@ -27,20 +27,16 @@ public class Store {
     @Embedded
     private Address address;
 
-    private double xPos;
-    private double yPos;
-
     @JsonIgnore
     @OneToMany(mappedBy = "store")
     private List<Posts> posts = new ArrayList<>();
 
 
     @Builder
-    public Store( Address address, String category, double xPos, double yPos){
+    public Store( Address address, String category){
         this.address = address;
         this.category = category;
-        this.xPos = xPos;
-        this.yPos = yPos;
+
     }
 
 }

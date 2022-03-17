@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
+import NavBar from '@/components/common/NavBar.vue';
 import LoginModal from '@/components/common/modal/LoginModal.vue';
 import ModalView from '@/components/common/modal/ModalView.vue';
 import { mapGetters, mapMutations } from 'vuex';

@@ -50,8 +50,6 @@ public class SearchRepository {
                         user.username.as("userName"),
                         user.userId,
                         user.profileImageUrl,
-                        store.xPos,
-                        store.yPos,
                         store.address
                 ))
                 .distinct()
@@ -124,8 +122,6 @@ public class SearchRepository {
                         user.username.as("userName"),
                         user.userId,
                         user.profileImageUrl,
-                        store.xPos,
-                        store.yPos,
                         store.address
                 ))
                 .from(posts)

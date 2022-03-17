@@ -8,5 +8,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     Store findByAddressAndCategory(Address address, String category);
 
-
 }

@@ -18,12 +18,18 @@ public class Address {
     @NotEmpty
     private String postcode;
 
+    private double xPos;
+    private double yPos;
+
     @Builder
-    public Address(String street, String detailStreet, String postcode){
+    public Address(String street, String detailStreet, String postcode, double xPos, double yPos){
         this.street =street;
         this.detailStreet= detailStreet;
         this.postcode =postcode;
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 
     protected Address() {}
+
 }

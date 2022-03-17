@@ -18,18 +18,15 @@ public class UserPostResponseDto {
     private String title;
     private String contents;
     private Address address;
-    private double xPos;
-    private double yPos;
+
     private List<PhotoResponseDto> image = new ArrayList<>();
 
     @QueryProjection
-    public UserPostResponseDto(Long postSeq, String title, String contents, Address address, double xPos, double yPos) {
+    public UserPostResponseDto(Long postSeq, String title, String contents, Address address) {
         this.postSeq = postSeq;
         this.title = title;
         this.contents = contents;
         this.address = address;
-        this.xPos = xPos;
-        this.yPos = yPos;
     }
 
 }

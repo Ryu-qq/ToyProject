@@ -46,21 +46,10 @@ public class Posts extends BaseTimeEntity {
     /**
      * 연관관계 편의 메서드
      */
-    public void setUser(User user){
-        this.user = user;
-        user.getPosts().add(this);
-    }
-
-    public void setStore(Store store){
-        this.store = store;
-        store.getPosts().add(this);
-    }
-
     public void addPhoto(Photo photo) {
         this.photos.add(photo);
         photo.setPosts(this);
     }
-
 
 
     @Builder

@@ -1,15 +1,15 @@
 <template>
 	<div id="app">
-		<index-view />
+		<index />
 	</div>
 </template>
 
 <script>
-import IndexView from '@/views/IndexView.vue';
+import Index from '@/views/Index.vue';
 
 export default {
 	name: 'App',
-	components: { IndexView },
+	components: { Index },
 	data() {
 		return {};
 	},

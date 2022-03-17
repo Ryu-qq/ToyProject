@@ -67,7 +67,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository{
                                                 .from(follow)
                                                 .where(userIdEq(fromUserId),
                                                         follow.toUser.userId.in(toUserId)),
-                                        "followSeq")
+                                        "id")
                         )))
                 .from(user)
                 .leftJoin(user.posts, posts)
@@ -83,9 +83,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository{
                         posts.id,
                         posts.title,
                         posts.contents,
-                        store.address,
-                        store.xPos,
-                        store.yPos
+                        store.address
                 ))
                 .distinct()
                 .from(posts)

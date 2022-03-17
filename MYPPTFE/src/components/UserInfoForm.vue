@@ -11,7 +11,7 @@
 							<span>{{ member.username }} 님</span>
 						</div>
 
-						<div v-if="isLogin && isMySelf">
+						<div v-if="isMySelf">
 							<button class="post-btn">
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>
@@ -23,14 +23,10 @@
 						<div v-else>
 							<div>
 								<button
-									:class="[
-										!follow || follow.followSeq > 0
-											? 'followcancel-btn'
-											: 'follow-btn',
-									]"
+									:class="[follow.id > 0 ? 'followcancel-btn' : 'follow-btn']"
 									@click="doFollow()"
 								>
-									{{ statusMsg }}
+									{{ followBox }}
 								</button>
 							</div>
 						</div>
@@ -39,7 +35,7 @@
 					<ul class="mypage-tap">
 						<li>게시물 {{ postCnt }}</li>
 						<li class="follow" @click="fetchFollow('follower')">
-							팔로워 {{ followCnt }}
+							팔로워 {{ follow.followerCnt }}
 						</li>
 						<li class="follow" @click="fetchFollow('following')">
 							팔로잉 {{ follow.followingCnt }}
@@ -94,12 +90,11 @@ export default {
 		},
 		isfollow: {
 			type: Number,
-			required: true,
+			default: 0,
 		},
 	},
 	data() {
 		return {
-			statusMsg: '팔로우',
 			followModalOpen: false,
 			followMsg: '',
 		};
@@ -111,9 +106,7 @@ export default {
 		postCnt() {
 			return this.postitems.length;
 		},
-		isLogin() {
-			return this.user;
-		},
+
 		isMySelf() {
 			return this.user
 				? this.user.userId == this.member.userId
@@ -124,10 +117,17 @@ export default {
 		followCnt() {
 			return this.follow.followerCnt;
 		},
+		followBox() {
+			return this.follow
+				? this.follow.id > 0
+					? '팔로잉'
+					: '팔로우'
+				: '팔로잉';
+		},
 	},
 	watch: {
 		isfollow() {
-			this.countFollow();
+			this.changeInfo();
 		},
 	},
 
@@ -150,6 +150,7 @@ export default {
 				this.$emit('notPermit');
 				return;
 			}
+
 			this.$emit('doFollow', {
 				toUserSeq: this.member.id,
 				fromUserSeq: this.user.id,
@@ -161,12 +162,9 @@ export default {
 				this.$router.push('/user/' + userId);
 			}
 		},
-		countFollow() {
-			console.log(1);
-			this.follow.followerCnt =
-				this.isfollow > 0
-					? this.follow.followerCnt++
-					: this.follow.followerCnt--;
+		changeInfo() {
+			this.follow.id = this.isfollow;
+			this.isfollow > 0 ? this.follow.followerCnt++ : this.follow.followerCnt--;
 		},
 	},
 };

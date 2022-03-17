@@ -25,11 +25,9 @@ import java.util.List;
 public class PostService {
 
     private final PostsRepository postsRepository;
-    private final PhotoRepository photoRepository;
-    private final PhotoHandler photoHandler;
     private final UserService userService;
     private final StoreService storeService;
-    private final AddressHandler addressHandler;
+    private final PhotoService photoService;
 
 
     public PostResponseDto getPost(Long PostSeq){
@@ -38,22 +36,18 @@ public class PostService {
 
 
     @Transactional
-    public Long uploadPost(PostsSaveRequestDto requestDto ) throws Exception {
+    public Long uploadPost(PostsSaveRequestDto requestDto) throws Exception {
 
         User user = userService.getUser(requestDto.getUserId());
-        Store newStore = storeService.saveStore(addressHandler.getCoordination(requestDto));
+        Store store = storeService.saveStore(requestDto);
+        Posts posts = requestDto.toEntity(user, store);
 
-        requestDto.setStore(newStore);
-        requestDto.setUser(user);
+        List<Photo> photoList = photoService.getPhotos(requestDto.getFiles());
 
-        Posts posts = requestDto.toEntity();
-        List<Photo> photoList = photoHandler.parseImageInfo(requestDto.getFiles());
         if(!photoList.isEmpty()){
             for(Photo photo : photoList)
-                // 파일을 DB에 저장
-                posts.addPhoto(photoRepository.save(photo));
+                posts.addPhoto(photo);
         }
-
         return postsRepository.save(posts).getId();
 
     }

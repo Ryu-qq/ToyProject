@@ -1,29 +1,15 @@
 package com.ryu.mypptbe.api.controller;
 
 
-import com.ryu.mypptbe.api.dto.photo.TestDto;
-import com.ryu.mypptbe.api.dto.photo.TestDto2;
 import com.ryu.mypptbe.api.dto.post.PostResponseDto;
 import com.ryu.mypptbe.api.dto.post.PostsSaveRequestDto;
 
-import com.ryu.mypptbe.api.dto.store.StoreSaveRequestDto;
-import com.ryu.mypptbe.api.handler.AddressHandler;
 import com.ryu.mypptbe.common.ApiResponse;
-import com.ryu.mypptbe.domain.store.Address;
-import com.ryu.mypptbe.domain.store.Store;
-import com.ryu.mypptbe.domain.user.User;
 import com.ryu.mypptbe.service.PostService;
-import com.ryu.mypptbe.service.StoreService;
-import com.ryu.mypptbe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
