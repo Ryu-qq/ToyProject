@@ -3,14 +3,14 @@
 		<div class="search-header">
 			<p>사람들이 남긴 후기를 찾아보세요.</p>
 		</div>
-		<serch-form @doSearch="doSearch"></serch-form>
+		<search-form @doSearch="doSearch"></search-form>
 		<div v-show="searchCnt < 1 && isSearch" class="search-msg">
 			<p>검색 결과가 없습니다. 다시 입력해 주세요.</p>
 		</div>
-		<search-list
+		<search-list-form
 			:search="search"
 			@onOpenPostModal="openPostModal"
-		></search-list>
+		></search-list-form>
 		<spinner :loading="loadingStatus" class="spinner"></spinner>
 
 		<modal-view
@@ -26,15 +26,15 @@
 </template>
 
 <script>
-import serchForm from '@/components/common/serchForm.vue';
-import searchList from '@/components/searchListForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
 import Post from '@/views/Post.vue';
 import ModalView from '@/components/common/modal/PostModal.vue';
 import { getSearch } from '@/api/search';
+import SearchListForm from '@/components/SearchListForm.vue';
+import SearchForm from '../components/common/SearchForm.vue';
 
 export default {
-	components: { serchForm, searchList, Spinner, Post, ModalView },
+	components: { Spinner, Post, ModalView, SearchListForm, SearchForm },
 	data() {
 		return {
 			isSearch: false,

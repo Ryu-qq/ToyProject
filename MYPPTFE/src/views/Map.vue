@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<serch-form @doSearch="doSearch"></serch-form>
+		<search-form @doSearch="doSearch"></search-form>
 		<spinner :loading="loadingStatus" class="spinner"></spinner>
 		<div class="search-result">
 			<p>검색 결과:</p>
@@ -11,16 +11,16 @@
 </template>
 
 <script>
-import serchForm from '@/components/common/serchForm.vue';
 import MapForm from '@/components/MapForm.vue';
 import Spinner from '@/components/common/Spinner.vue';
 import { getSearch } from '@/api/search';
+import SearchForm from '@/components/common/SearchForm.vue';
 
 export default {
 	components: {
 		MapForm,
-		serchForm,
 		Spinner,
+		SearchForm,
 	},
 	data() {
 		return {

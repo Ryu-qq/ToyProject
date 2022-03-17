@@ -103,8 +103,8 @@ export default {
 					var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
 					const latlng = new kakao.maps.LatLng(
-						this.postitems[i].ypos,
-						this.postitems[i].xpos,
+						this.postitems[i].address.ypos,
+						this.postitems[i].address.xpos,
 					);
 
 					var marker = new kakao.maps.Marker({
