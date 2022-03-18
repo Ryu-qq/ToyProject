@@ -1,29 +1,6 @@
 Configuration Tree
 -------  
-|-----Map(지도 보기)
-|    |  
-|    | (Search: :가게 상호명, Select Category)
-|    | (Result: [로그인] 모든 가게리뷰 마크업 표시, [비로그인] 팔로우한 사람 리뷰 마크업만 표시) 
-|    |
-|    |----SearchFrom(검색 폼)
-|    |----MapFrom(지도 폼)
-|    |  
-|-----Search(후기 찾기)
-|    |  
-|    | (Search: 가게 상호명, Select Category)
-|    | (Result: [로그인, 비로그인] 모든 가게리뷰 표시) 
-|    |
-|    |----SearchFrom(검색 폼)
-|    |----SearchListForm(검색 결과 폼)
-|    |  
-|-----UserPage(유저 페이지 [로그인])
-|    |  
-|    | (Follow [로그인] 팔로우 기능 사용가능 )
-|    | (Post [로그인] 리뷰 등록 기능 사용가능 )
-|    |
-|    |----UserInfoForm(유저 정보 표시 폼)
-|    |----PostListForm(리뷰 목록 폼)
-|    |----MapForm(유저가 쓴 리뷰만 마크업 표시)
+<img width="792" alt="configurationTree" src="https://user-images.githubusercontent.com/56243159/158922815-3cc41b7b-2fc4-436c-a851-8194da8d24ef.png">
 
 
 화면 설계
@@ -31,7 +8,34 @@ Configuration Tree
 * 유저 화면 프로토 타입  
 <img width="1487" alt="유저프로토타입모음" src="https://user-images.githubusercontent.com/56243159/158102419-61b5b220-f8ce-4aa9-b28b-31758ff09340.png">
   
-    
-    
 * 관리자 화면 프로토 타입  
 개발중..
+
+
+사용 예시 화면
+------------
+* 지도보기   
+<img width="575" alt="지도보기 검색화면" src="https://user-images.githubusercontent.com/56243159/158924484-78a466a8-ceae-4a96-80a0-89f598a0d2f7.png">  
+  
+  
+<img width="575" alt="지도보기 마크업 클릭시" src="https://user-images.githubusercontent.com/56243159/158924572-547bc0f6-2d3d-417b-a0ea-e6491fd17f96.png">
+  
+  
+  
+*후기찾기  
+<img width="575" alt="후기찾기 화면" src="https://user-images.githubusercontent.com/56243159/158924610-cd50939c-1a76-44dc-be1e-b5109aa7f375.png">
+  
+  
+  
+*유저 화면  
+<img width="575" alt="유저화면" src="https://user-images.githubusercontent.com/56243159/158924804-e279d631-4a27-44b2-bbff-ff4e93090363.png">
+  
+  
+  
+*게시물 작성 화면  
+
+
+<img width="575" alt="후기작성 화면" src="https://user-images.githubusercontent.com/56243159/158925327-1d77ce07-8120-47b1-bdc1-0630bb970e29.png">
+
+
+ 
