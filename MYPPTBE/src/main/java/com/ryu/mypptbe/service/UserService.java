@@ -17,7 +17,7 @@ public class UserService {
 
     public User getUser(String userId) {
         return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Can not find username."));
+                .orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
     }
 
 

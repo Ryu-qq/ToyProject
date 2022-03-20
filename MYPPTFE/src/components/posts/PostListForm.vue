@@ -34,7 +34,6 @@ export default {
 			preview: '',
 		};
 	},
-
 	methods: {
 		async goPost(endpoint) {
 			this.$emit('onOpenPostModal', endpoint);

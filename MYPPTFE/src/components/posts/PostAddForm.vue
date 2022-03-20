@@ -17,6 +17,12 @@
 							{{ category }}
 						</option>
 					</select>
+					<p
+						v-if="(!isTitleValid || !isCategoryValid) && isSubmit"
+						class="validation-text warning isContentTooLong"
+					>
+						상호명과 카테고리를 고르셔야 합니다.
+					</p>
 				</div>
 				<div class="address">
 					<div class="zipcode">
@@ -47,9 +53,21 @@
 							style="margin-left: 15px"
 						/>
 					</div>
+					<p
+						v-if="!isStreetValid && isSubmit"
+						class="validation-text warning isContentTooLong"
+					>
+						주소를 입력하셔야 합니다.
+					</p>
 				</div>
 				<div class="photo-upload">
-					<ImageUpload></ImageUpload>
+					<ImageUpload @ImageUpload="imgUpload"></ImageUpload>
+					<p
+						v-if="!isImgaeValid && isSubmit"
+						class="validation-text warning isContentTooLong warningPhoto"
+					>
+						사진은 최소 한장이상 올려주셔야 합니다.
+					</p>
 				</div>
 				<div>
 					<textarea
@@ -63,7 +81,7 @@
 						v-if="!isContentsValid"
 						class="validation-text warning isContentTooLong"
 					>
-						글자 수는 최대 200자 이내입니다.
+						글자 수는 최대 120자 이내입니다.
 					</p>
 				</div>
 
@@ -96,28 +114,40 @@ export default {
 				keyword: '',
 				category: '카테고리',
 			},
+			isSubmit: false,
 		};
 	},
 	computed: {
 		...mapGetters(['token', 'user']),
 
-		getImageList() {
-			return this.$store.getters['imageFiles'];
-		},
-
 		isContentsValid() {
 			return this.contents.length <= 120;
+		},
+		isStreetValid() {
+			return this.street.length > 0;
+		},
+		isTitleValid() {
+			return this.title.length > 0;
+		},
+		isCategoryValid() {
+			return this.form.category == '카테고리' ? false : true;
+		},
+		isImgaeValid() {
+			return this.images ? (this.images.length > 0 ? true : false) : false;
 		},
 	},
 
 	methods: {
+		imgUpload(imageList) {
+			this.images = imageList;
+		},
 		isValid() {
 			if (
 				this.title.length < 0 ||
 				this.form.category == '카테고리' ||
 				this.postcode.length < 0 ||
 				this.street.length < 0 ||
-				this.getImageList.length < 0
+				this.images.length < 0
 			)
 				return false;
 			else {
@@ -140,14 +170,15 @@ export default {
 			}).open();
 		},
 		async submitForm() {
+			this.isSubmit = true;
 			if (!this.isValid()) {
 				return;
 			}
 			try {
 				const formData = new FormData();
-				if (this.getImageList && this.getImageList.length > 0) {
-					for (let i = 0; i < this.getImageList.length; i++) {
-						const imageForm = this.getImageList[i];
+				if (this.images && this.images.length > 0) {
+					for (let i = 0; i < this.images.length; i++) {
+						const imageForm = this.images[i];
 						formData.append('files', imageForm.file);
 					}
 				}
@@ -160,6 +191,7 @@ export default {
 				formData.append('street', this.street);
 				formData.append('detailStreet', this.detailStreet);
 				await uploadPost(formData);
+				this.isSubmit = false;
 				const userId = this.user.userId;
 				if (this.$route.path !== '/user/' + userId) {
 					this.$router.push('/user/' + userId);
@@ -238,11 +270,16 @@ export default {
 
 .photo-upload {
 	display: flex;
+	flex-direction: column;
 }
 
 .bottom {
 	display: flex;
 	justify-content: right;
+}
+
+.warningPhoto {
+	padding-top: 10px;
 }
 input,
 textarea {

@@ -96,7 +96,7 @@ export default {
 						number: i,
 					},
 				];
-				this.$store.dispatch('fetchImageUpload', this.files);
+				this.$emit('ImageUpload', this.files);
 				num = i;
 			}
 
@@ -119,7 +119,7 @@ export default {
 						number: i + this.uploadImageIndex,
 					},
 				];
-				this.$store.dispatch('fetchImageUpload', this.files);
+				this.$emit('ImageUpload', this.files);
 
 				num = i;
 			}
@@ -129,7 +129,8 @@ export default {
 			const name = e.target.getAttribute('name');
 			this.files = this.files.filter(data => data.number !== Number(name));
 
-			this.$store.dispatch('fetchImagedelete', name);
+			this.$emit('ImageUpload', this.files);
+
 			this.uploadImageIndex--;
 			this.clearImage();
 		},

@@ -11,7 +11,7 @@
 				class="fas fa-caret-right fa-2x"
 				@click="goRight()"
 			></i>
-			<div class="post-preview-wrapper">
+			<div v-if="postLength" class="post-preview-wrapper">
 				<img :src="require(`/assets/${post.image[photoIdx].filePath}`)" />
 			</div>
 		</div>
@@ -115,19 +115,21 @@ export default {
 			return this.post.title;
 		},
 		getAddress() {
-			return (
-				this.post.address.postcode +
-				' ' +
-				this.post.address.street +
-				' ' +
-				this.post.address.detailStreet
-			);
+			return this.post.address
+				? this.post.address.postcode +
+						' ' +
+						this.post.address.street +
+						' ' +
+						this.post.address.detailStreet
+				: false;
 		},
 		postLength() {
-			return this.post.image.length;
+			return this.post.image ? this.post.image.length : false;
 		},
 		isContentsValid() {
-			return this.post.contents.length <= 120 && this.post.contents.length > 0;
+			return this.post.contents
+				? this.post.contents.length <= 120 && this.post.contents.length > 0
+				: false;
 		},
 		isValid() {
 			return this.isEditMode && this.isContentsValid ? true : false;
@@ -139,6 +141,9 @@ export default {
 					: false
 				: false;
 		},
+	},
+	created() {
+		this.fetchPost();
 	},
 	methods: {
 		goRight() {
@@ -162,9 +167,12 @@ export default {
 		deleteConfirm() {
 			this.isDeleteModalOpen = true;
 		},
+		async fetchPost(endpoint) {
+			await this.$store.dispatch('fetchPost', endpoint);
+			this.isModalOpen = true;
+		},
 
 		async deletePost() {
-			console.log('1');
 			await deletePost(this.post.postSeq);
 			this.isDeleteModalOpen = false;
 			this.isModalOpen = false;

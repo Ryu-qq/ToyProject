@@ -2,6 +2,7 @@ import store from '@/store/index';
 import axios from 'axios';
 
 let isTokenRefreshing = false;
+const BACKEND_DOMAINPORT = process.env.VUE_APP_API_URL;
 
 export function setInterceptors(instance) {
 	// Add a request interceptor
@@ -59,7 +60,7 @@ async function getRefreshToken(token) {
 		},
 	};
 	const { data } = await axios.post(
-		`http://localhost:8080/api/v1/auth/refresh`,
+		`${BACKEND_DOMAINPORT}/api/v1/auth/refresh`,
 		{ refreshToken: refreshToken },
 		config,
 	);

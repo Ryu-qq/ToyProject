@@ -23,7 +23,7 @@ function createInstanceWithMultiPart(url) {
 }
 export const search = createInstanceWithAuth('search');
 export const user = createInstanceWithAuth('user');
-export const posts = createInstanceWithAuth('posts');
-export const multipart = createInstanceWithMultiPart('posts');
+export const posts = createInstanceWithAuth('post');
+export const multipart = createInstanceWithMultiPart('post');
 export const follow = createInstanceWithAuth('follow');
 export const map = createInstanceWithAuth('map');

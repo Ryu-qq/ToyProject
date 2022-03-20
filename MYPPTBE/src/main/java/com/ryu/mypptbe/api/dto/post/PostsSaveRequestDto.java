@@ -28,7 +28,6 @@ public class PostsSaveRequestDto {
     private String postcode;
     @NotNull
     private String street;
-    @NotNull
     private String detailStreet;
     @NotNull
     private String category;

@@ -23,7 +23,6 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("/login")
     public ApiResponse<UserResponseDto> getUser(Authentication authentication) {
@@ -46,7 +45,8 @@ public class UserController {
             name = authentication.getName();
         }
 
-        UserInfoResponseDto userInfoResponseDto = userRepository.searchUserPost(userId,name);
+        User user = userService.getUser(userId);
+        UserInfoResponseDto userInfoResponseDto = userRepository.searchUserPost(user.getUserId(),name);
         List<UserPostResponseDto> userPostList = userRepository.searchPostsWithPhoto(userId);
 
         userInfoResponseDto.setUserPostList(userPostList);
