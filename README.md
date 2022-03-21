@@ -15,7 +15,7 @@
 
 사용 기술 및 개발 환경
 =======
-* Java, Springboot, IntelliJ, Maven, JPA, QueryDSL, H2, Vue 
+* Java, Springboot, IntelliJ, Gradle, JPA, QueryDSL, H2, Vue 
 
 
 
