@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
@@ -28,7 +30,7 @@ public class PostController {
     }
 
     @PostMapping()
-    public  ApiResponse<Long> uploadPost(@ModelAttribute PostsSaveRequestDto requestDto) throws Exception {
+    public  ApiResponse<Long> uploadPost(@ModelAttribute @Valid PostsSaveRequestDto requestDto) throws Exception {
         return ApiResponse.success("post", postService.uploadPost(requestDto));
 
     }

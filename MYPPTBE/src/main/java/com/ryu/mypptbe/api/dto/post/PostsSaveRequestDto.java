@@ -24,14 +24,14 @@ public class PostsSaveRequestDto {
     private String contents;
     @NotNull(message = "회원분만 이용 가능 합니다.")
     private String UserId;
-    @NotNull
+    @NotNull(message = "주소를 입력해야 합니다.")
     private String postcode;
-    @NotNull
+    @NotNull(message = "주소를 입력해야 합니다.")
     private String street;
     private String detailStreet;
-    @NotNull
+    @NotNull(message = "카테고리를 입력해야 합니다.")
     private String category;
-    @NotNull
+    @NotNull(message = "사진은 최소 1장이상 등록해야 합니다.")
     private List<MultipartFile> files;
 
 
