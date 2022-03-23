@@ -49,7 +49,7 @@ export default {
 			return this.user.profileImageUrl;
 		},
 		isLoggedIn() {
-			if (!this.token) return false;
+			if (this.isEmpty(this.token)) return false;
 			return true;
 		},
 	},
@@ -61,6 +61,20 @@ export default {
 			const userId = this.user.userId;
 			if (this.$route.path !== '/user/' + userId) {
 				this.$router.push('/user/' + userId);
+			}
+		},
+		isEmpty(value) {
+			if (
+				value == '' ||
+				value == null ||
+				value == undefined ||
+				(value != null &&
+					typeof value == 'object' &&
+					!Object.keys(value).length)
+			) {
+				return true;
+			} else {
+				return false;
 			}
 		},
 	},

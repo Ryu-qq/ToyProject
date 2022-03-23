@@ -1,11 +1,13 @@
-const BACKEND_DOMAINPORT = process.env.VUE_APP_API_URL;
-const FRONTEND_DOMAINPORT = process.env.VUE_APP_API_URL;
-
-const REDIRECT_URI = `${FRONTEND_DOMAINPORT}/oauth/redirect`;
+// const BACKEND_DOMAINPORT = process.env.VUE_APP_API_URL;
+// const FRONTEND_DOMAINPORT = process.env.VUE_APP_API_URL;
+const BACKEND_PORT = process.env.BACKEND_PORT === null ? '' : `:8080`;
+const BACKEND_URL = `${location.protocol}//${location.hostname}${BACKEND_PORT}`;
+const FRONTEND_PORT = process.env.FRONTEND_PORT === null ? '' : `:3000`;
+const REDIRECT_URI = `${location.protocol}//${location.hostname}${FRONTEND_PORT}/oauth/redirect`;
 
 export default {
 	getSocialLoginUrl(socialType) {
-		return `${BACKEND_DOMAINPORT}/oauth2/authorization/${socialType}?redirect_uri=${REDIRECT_URI}`;
+		return `${BACKEND_URL}/oauth2/authorization/${socialType}?redirect_uri=${REDIRECT_URI}`;
 	},
 	getSocialImage(socialType) {
 		switch (socialType) {
