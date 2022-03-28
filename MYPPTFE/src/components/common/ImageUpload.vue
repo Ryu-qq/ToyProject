@@ -65,11 +65,23 @@
 				</div>
 			</div>
 		</div>
+		<modal-view v-if="alertModalOpen" @onCloseModal="alertModalOpen = false">
+			<div slot="body">
+				<div class="alert-msg">
+					<p>PNG, JPG, JPEG 파일만 업로드 가능합니다 !!</p>
+				</div>
+			</div>
+		</modal-view>
 	</div>
 </template>
 
 <script>
+import ModalView from '@/components/common/modal/ModalView.vue';
+
 export default {
+	components: {
+		ModalView,
+	},
 	data() {
 		return {
 			files: [], //업로드용 파일
@@ -77,6 +89,8 @@ export default {
 			uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 			isTure: false,
 			uploadReady: true, // 파일 초기화를 위한 변수
+			FileExt: ['PNG', 'JPG', 'JPEG'],
+			alertModalOpen: false,
 		};
 	},
 	methods: {
@@ -84,6 +98,10 @@ export default {
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
+				if (!this.checkFile(this.$refs.files.files[i], this.FileExt)) {
+					return;
+				}
+
 				this.files = [
 					...this.files,
 					//이미지 업로드
@@ -107,6 +125,9 @@ export default {
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
+				if (!this.checkFile(this.$refs.files.files[i], this.FileExt)) {
+					return;
+				}
 				this.files = [
 					...this.files,
 					//이미지 업로드
@@ -140,6 +161,25 @@ export default {
 			this.$nextTick(() => {
 				this.uploadReady = true;
 			});
+		},
+		//확장자 체크
+		checkFile(obj, ext) {
+			var check = false;
+			var extName = obj.name
+				.substring(obj.name.lastIndexOf('.') + 1)
+				.toUpperCase();
+
+			for (var i = 0; i < ext.length; i++) {
+				console.log(ext[i]);
+				if (extName == ext[i]) {
+					check = true;
+					break;
+				} else check = false;
+			}
+			if (!check) {
+				this.alertModalOpen = true;
+			}
+			return check;
 		},
 	},
 };
@@ -433,5 +473,12 @@ export default {
 
 .room-write-button:hover {
 	opacity: 0.8;
+}
+.alert-msg {
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	padding-top: 16px;
 }
 </style>
