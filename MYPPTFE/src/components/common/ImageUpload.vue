@@ -89,7 +89,8 @@ export default {
 			uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 			isTure: false,
 			uploadReady: true, // 파일 초기화를 위한 변수
-			FileExt: ['PNG', 'JPG', 'JPEG'],
+			FileExt: ['PNG', 'JPG', 'JPEG'], //확장자명
+			fSExt: ['Bytes', 'KB', 'MB', 'GB'], //파일크기
 			alertModalOpen: false,
 		};
 	},
@@ -98,7 +99,10 @@ export default {
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
-				if (!this.checkFile(this.$refs.files.files[i], this.FileExt)) {
+				if (
+					!this.checkFile(this.$refs.files.files[i], this.FileExt) |
+					!this.checkFileSize(this.$refs.files.files[i], this.fSExt)
+				) {
 					return;
 				}
 
@@ -125,7 +129,10 @@ export default {
 			//하나의 배열로 넣기
 			let num = -1;
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
-				if (!this.checkFile(this.$refs.files.files[i], this.FileExt)) {
+				if (
+					!this.checkFile(this.$refs.files.files[i], this.FileExt) |
+					!this.checkFileSize(this.$refs.files.files[i], this.fSExt)
+				) {
 					return;
 				}
 				this.files = [
@@ -178,6 +185,27 @@ export default {
 			}
 			if (!check) {
 				this.alertModalOpen = true;
+			}
+			return check;
+		},
+		//파일사이즈 크기 제한
+		checkFileSize(obj, fSExt) {
+			var check = false;
+			var MaxSize = 10;
+			var checkSize = 1024 * 1024 * MaxSize;
+			var sizeinbytes = obj.size;
+			var i = 0;
+			while (checkSize > 900) {
+				checkSize /= 1024;
+				i++;
+			}
+			checkSize = Math.round(checkSize * 100) / 100 + ' ' + fSExt[i];
+			var fSize = sizeinbytes;
+			if (fSize > checkSize) {
+				alert('첨부파일은 ' + checkSize + ' 이하로 첨부 바랍니다.');
+				check = false;
+			} else {
+				check = true;
 			}
 			return check;
 		},
