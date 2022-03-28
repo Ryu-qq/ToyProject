@@ -20,8 +20,8 @@ spring:
     multipart:
       enabled: true
       file-size-threshold: 1MB
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 1MB
+      max-request-size: 10MB
 
 
   jpa:
@@ -30,7 +30,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor

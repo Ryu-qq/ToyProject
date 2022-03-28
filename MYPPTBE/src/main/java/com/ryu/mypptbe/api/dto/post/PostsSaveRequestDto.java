@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
 public class PostsSaveRequestDto {
 
     @NotNull
-    @Max(value = 15, message = "가게 글자 수는 최대 15자 이내입니다.")
+    @Size(min =1 , max = 15, message = "가게 글자 수는 최소 1자 이상,  최대 15자 이내입니다.")
     private String title;
     @NotNull
-    @Max(value = 120, message = "후기 글자 수는 최대 120자 이내입니다.")
+    @Size(min = 5 , max = 120, message = "후기 글자 수는 최소 5자 이상, 최대 120자 이내입니다.")
     private String contents;
     @NotNull(message = "회원분만 이용 가능 합니다.")
     private String UserId;

@@ -16,7 +16,7 @@
 								<router-link to="/post">게시물 등록하기</router-link>
 							</button>
 							<button @click="$emit('logout')">
-								<i class="fas fa-sign-out-alt" @click="logout()"></i>
+								<i class="fas fa-sign-out-alt"></i>
 							</button>
 						</div>
 

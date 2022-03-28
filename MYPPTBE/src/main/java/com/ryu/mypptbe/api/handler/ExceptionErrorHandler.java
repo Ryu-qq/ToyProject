@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class test {
+public class ExceptionErrorHandler {
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(BindException ex){
@@ -18,5 +18,10 @@ public class test {
         ex.getBindingResult().getAllErrors()
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleValidationExceptions(IllegalStateException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

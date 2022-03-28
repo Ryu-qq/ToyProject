@@ -67,7 +67,7 @@ public class PhotoHandler {
                     else if (contentType.contains("image/png"))
                         originalFileExtension = ".png";
                     else  // 다른 확장자일 경우 처리 x
-                        break;
+                        throw new IllegalStateException("허용되지 않는 확장자입니다");
                 }
 
                 // 파일명 중복 피하기 위해
