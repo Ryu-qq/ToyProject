@@ -68,7 +68,7 @@
 		<modal-view v-if="alertModalOpen" @onCloseModal="alertModalOpen = false">
 			<div slot="body">
 				<div class="alert-msg">
-					<p>PNG, JPG, JPEG 파일만 업로드 가능합니다 !!</p>
+					<p>{{ alertMsg }}</p>
 				</div>
 			</div>
 		</modal-view>
@@ -90,8 +90,8 @@ export default {
 			isTure: false,
 			uploadReady: true, // 파일 초기화를 위한 변수
 			FileExt: ['PNG', 'JPG', 'JPEG'], //확장자명
-			fSExt: ['Bytes', 'KB', 'MB', 'GB'], //파일크기
 			alertModalOpen: false,
+			alertMsg: '',
 		};
 	},
 	methods: {
@@ -101,7 +101,7 @@ export default {
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
 				if (
 					!this.checkFile(this.$refs.files.files[i], this.FileExt) |
-					!this.checkFileSize(this.$refs.files.files[i], this.fSExt)
+					!this.checkFileSize(this.$refs.files.files[i])
 				) {
 					return;
 				}
@@ -131,7 +131,7 @@ export default {
 			for (let i = 0; i < this.$refs.files.files.length; i++) {
 				if (
 					!this.checkFile(this.$refs.files.files[i], this.FileExt) |
-					!this.checkFileSize(this.$refs.files.files[i], this.fSExt)
+					!this.checkFileSize(this.$refs.files.files[i])
 				) {
 					return;
 				}
@@ -177,32 +177,26 @@ export default {
 				.toUpperCase();
 
 			for (var i = 0; i < ext.length; i++) {
-				console.log(ext[i]);
 				if (extName == ext[i]) {
 					check = true;
 					break;
 				} else check = false;
 			}
 			if (!check) {
+				this.alertMsg = 'PNG, JPG, JPEG 파일만 업로드 가능합니다 !!';
 				this.alertModalOpen = true;
 			}
 			return check;
 		},
 		//파일사이즈 크기 제한
-		checkFileSize(obj, fSExt) {
+		checkFileSize(obj) {
 			var check = false;
-			var MaxSize = 10;
+			var MaxSize = 1;
 			var checkSize = 1024 * 1024 * MaxSize;
 			var sizeinbytes = obj.size;
-			var i = 0;
-			while (checkSize > 900) {
-				checkSize /= 1024;
-				i++;
-			}
-			checkSize = Math.round(checkSize * 100) / 100 + ' ' + fSExt[i];
-			var fSize = sizeinbytes;
-			if (fSize > checkSize) {
-				alert('첨부파일은 ' + checkSize + ' 이하로 첨부 바랍니다.');
+			if (sizeinbytes > checkSize) {
+				this.alertMsg = '사진 업로드 크기 제한은 1MB입니다.';
+				this.alertModalOpen = true;
 				check = false;
 			} else {
 				check = true;
