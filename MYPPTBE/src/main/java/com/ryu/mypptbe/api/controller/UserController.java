@@ -24,6 +24,13 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
+    /**
+     * 소셜(구글)로 로그인과 동시에 회원 가입(db에 정보 저장)
+     *
+     * @param authentication 인증된 정보
+     * @return
+     */
+
     @GetMapping("/login")
     public ApiResponse<UserResponseDto> getUser(Authentication authentication) {
 
@@ -36,11 +43,20 @@ public class UserController {
 
     }
 
+    /**
+     * 유저 정보페이지를 조회한다.
+     *
+     * @param userId 조회하고싶은 유저의 id
+     * @param authentication
+     * @return
+     */
+
     @GetMapping("/{userId}")
     public ApiResponse<UserInfoResponseDto> getPostList(@PathVariable String userId, Authentication authentication){
 
         String name = "";
 
+        //유저페이지에서 팔로우 한사람인지 아닌지 판단하기 위해 searchUserPost에 같이 넣어줌.
         if(authentication !=null){
             name = authentication.getName();
         }

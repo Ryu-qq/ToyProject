@@ -18,6 +18,14 @@ public class StoreService {
     private final AddressHandler addressHandler;
 
 
+    /**
+     * 리뷰를 등록시
+     * 주소를 기반으로 가게를 검색후 가게가 없다면
+     * 새롭게 등록한다.
+     * @param requestDto
+     * @return
+     * @throws Exception
+     */
 
     @Transactional
     public Store saveStore(PostsSaveRequestDto requestDto) throws Exception {

@@ -31,6 +31,15 @@ public class AuthController {
     private final static long THREE_DAYS_MSEC = 259200000;
     private final static String REFRESH_TOKEN = "refresh_token";
 
+    /**
+     * 토근 만료시 리프레시
+     *
+     * @param request
+     * @param response
+     * @param refreshTokenDto
+     * @return
+     */
+
     @PostMapping("/refresh")
     public ApiResponse refreshToken (HttpServletRequest request, HttpServletResponse response, @RequestBody RefreshTokenDto refreshTokenDto ) {
         // access token 확인

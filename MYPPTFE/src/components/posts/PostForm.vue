@@ -142,9 +142,7 @@ export default {
 				: false;
 		},
 	},
-	created() {
-		this.fetchPost();
-	},
+
 	methods: {
 		goRight() {
 			const leng = this.post.image.length;
@@ -167,11 +165,6 @@ export default {
 		deleteConfirm() {
 			this.isDeleteModalOpen = true;
 		},
-		async fetchPost(endpoint) {
-			await this.$store.dispatch('fetchPost', endpoint);
-			this.isModalOpen = true;
-		},
-
 		async deletePost() {
 			await deletePost(this.post.postSeq);
 			this.isDeleteModalOpen = false;

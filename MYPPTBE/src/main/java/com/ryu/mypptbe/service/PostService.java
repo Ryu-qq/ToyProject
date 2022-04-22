@@ -30,10 +30,24 @@ public class PostService {
     private final PhotoService photoService;
 
 
+    /**
+     * 리뷰를 조회한다.
+     * @param PostSeq
+     * @return
+     */
     public PostResponseDto getPost(Long PostSeq){
         return postsRepository.getPost(PostSeq);
     }
 
+    /**
+     * 리뷰를 업로드한다.
+     * 회원만 작성할 수 있다.
+     * 리뷰 업로드시 사진은 최소 1장에서 최대 3장이다.
+     * 제목, 주소, 리뷰 누락시 에러 발생
+     * @param requestDto
+     * @return
+     * @throws Exception
+     */
 
     @Transactional
     public Long uploadPost(PostsSaveRequestDto requestDto) throws Exception {
@@ -52,6 +66,14 @@ public class PostService {
 
     }
 
+    /**
+     * 리뷰를 수정한다.
+     * 리뷰 수정은 본문 수정만 가능하다.
+     * @param postSeq
+     * @param contents
+     * @return
+     */
+
     @Transactional
     public Long updatePost(Long postSeq, String contents) {
         Posts posts = postsRepository.findById(postSeq)
@@ -61,6 +83,10 @@ public class PostService {
         return postSeq;
     }
 
+    /**
+     * 리뷰를 삭제한다.
+     * @param postSeq
+     */
     @Transactional
     public void deletePost(Long postSeq){
         postsRepository.deleteById(postSeq);
