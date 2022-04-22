@@ -15,10 +15,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * 유저 정보를 가져온다.
+     * @param userId
+     * @return
+     */
     public User getUser(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
     }
-
 
 }

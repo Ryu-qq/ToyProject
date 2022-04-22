@@ -19,6 +19,12 @@ public class SearchService {
 
     private final SearchRepository searchRepository;
 
+    /**
+     * 지도찾기와 후기찾기에서의 검색 결과들을 가져온다.
+     * @param requestDto
+     * @param pageable
+     * @return
+     */
     public Page<SearchPostResponseDto> getSearchList(SearchRequestDto requestDto, Pageable pageable ){
         if(requestDto.getUserId() !=null){
             //맵에서 내가 팔로잉한 사람 게시물 가져오기

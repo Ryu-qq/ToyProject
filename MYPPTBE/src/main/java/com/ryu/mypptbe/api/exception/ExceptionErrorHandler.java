@@ -1,4 +1,4 @@
-package com.ryu.mypptbe.api.handler;
+package com.ryu.mypptbe.api.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

@@ -17,6 +17,13 @@ public class PhotoService {
     private final PhotoRepository photoRepository;
     private final PhotoHandler photoHandler;
 
+    /**
+     * 파일들의 확장자를 제한하고 파일명 중복을 피하기 위해 UUID를 사용한다.
+     * 파일들의 저장 경로를 가져온다.
+     * @param files
+     * @return
+     * @throws Exception
+     */
 
     public List<Photo> getPhotos(List<MultipartFile> files) throws Exception {
 
