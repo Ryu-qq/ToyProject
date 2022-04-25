@@ -46,6 +46,15 @@ export default {
 </script>
 
 <style scoped>
+.container {
+	display: flex;
+	flex-direction: column;
+	align-content: space-between;
+	width: 100%;
+	height: 850px;
+	padding: 70px 0;
+}
+
 .map-container {
 	height: 100%;
 }

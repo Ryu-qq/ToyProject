@@ -2,7 +2,9 @@
 	<div>
 		<div class="map_wrap">
 			<div id="map" class="map"></div>
-
+			<button class="custom_typecontrol" @click="setCurrentPos()">
+				<i id="icon" class="fas fa-crosshairs fa-3x"></i>
+			</button>
 			<map-modal
 				v-if="isModalOpen"
 				class="post-modal"
@@ -239,11 +241,5 @@ export default {
 	border: 1px solid #ccc;
 	border-bottom: 2px solid #ddd;
 	float: left;
-}
-
-@media only screen and (max-width: 480px) {
-	.map_wrap {
-		height: 400px;
-	}
 }
 </style>

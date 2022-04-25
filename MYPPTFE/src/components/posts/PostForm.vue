@@ -11,11 +11,6 @@
 				class="fas fa-caret-right fa-2x"
 				@click="goRight()"
 			></i>
-			<img
-				class="fix-profile"
-				:src="post.profileImageUrl"
-				@click="goUserPage(post.userId)"
-			/>
 			<div v-if="postLength" class="post-preview-wrapper">
 				<img :src="require(`/assets/${post.image[photoIdx].filePath}`)" />
 			</div>
@@ -39,11 +34,6 @@
 			<div class="store-title">
 				<h3>{{ postTitle }}</h3>
 			</div>
-			<i
-				v-if="isMySelf && !isEditMode"
-				class="fas fa-solid fa-bars"
-				@click="openEditModal()"
-			></i>
 			<div class="store-address">
 				<label> {{ getAddress }}</label>
 				<i class="fas fa-map fa-1x"></i>
@@ -343,9 +333,6 @@ export default {
 	position: absolute;
 	right: 10px;
 }
-.fix-profile {
-	display: none;
-}
 
 span {
 	margin-left: 15px;
@@ -358,7 +345,7 @@ i {
 	z-index: 2;
 	color: #fff;
 }
-.post-preview-wrapper img {
+img {
 	position: relative;
 	top: 0;
 	left: 0;
@@ -378,33 +365,5 @@ button {
 	border-radius: 10px;
 	background-color: #d1d4d6;
 	text-decoration: none;
-}
-
-@media only screen and (max-width: 767px) {
-	.post-container {
-		flex-direction: column;
-		height: 98%;
-	}
-	.photo-container {
-		max-width: 100%;
-	}
-	.review-container {
-		width: 100%;
-	}
-	.review-container .title {
-		display: none;
-	}
-
-	.fix-profile {
-		top: 0;
-		right: 0;
-		z-index: 2;
-		position: absolute;
-		cursor: pointer;
-		display: block;
-		border-radius: 50%;
-		width: 35px;
-		height: 35px;
-	}
 }
 </style>

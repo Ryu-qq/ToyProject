@@ -1,8 +1,8 @@
 .warning {
     color: #ff4057;
-}
+  }
 
-.validation-text {
+  .validation-text {
 	margin-top: -0.5rem;
 	margin-bottom: 0.5rem;
 	font-size: 0.7rem;
@@ -10,12 +10,6 @@
 	flex-direction: row-reverse;
 	justify-content: space-between;
 	
-}
-
-.container {
-	display: flex;
-	flex-direction: column;
-	padding-top: 90px;
 }
 
 textarea{

@@ -7,9 +7,7 @@
 						<router-link to="/" class="logo">
 							<span> 맛잘알 </span>
 						</router-link>
-						<li class="search-map">
-							<router-link to="/">지도 보기</router-link>
-						</li>
+						<li><router-link to="/">지도 보기</router-link></li>
 						<li><router-link to="/search">후기 찾기</router-link></li>
 					</ul>
 				</nav>
@@ -125,6 +123,7 @@ export default {
 
 .nav_links li {
 	display: inline-block;
+
 	padding: 0px 15px;
 	transition: 0.2s;
 }
@@ -178,11 +177,5 @@ img {
 	border-radius: 50%;
 	width: 40%;
 	height: 40%;
-}
-
-@media only screen and (max-width: 480px) {
-	.nav_links .search-map {
-		display: none;
-	}
 }
 </style>
