@@ -23,4 +23,10 @@ export default {
 	width: 100%;
 	height: 650px;
 }
+
+@media only screen and (max-width: 736px) {
+	div {
+		height: 100%;
+	}
+}
 </style>

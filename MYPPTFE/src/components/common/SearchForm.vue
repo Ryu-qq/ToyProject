@@ -96,4 +96,23 @@ export default {
 	border: 3px solid #a6a6a6;
 	outline: none;
 }
+
+@media only screen and (max-width: 480px) {
+	.search {
+		flex-direction: column;
+	}
+	.search-input-options {
+		padding-top: 6px;
+	}
+
+	.search-input-options button {
+		height: 30px;
+		width: 50%;
+		padding: 0;
+	}
+	.search-input-options select {
+		height: 30px;
+		width: 50%;
+	}
+}
 </style>
