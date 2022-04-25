@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -139,51 +140,56 @@ public class SearchRepository {
 
     public Page<SearchPostResponseDto> searchPostsInMap(SearchRequestDto requestDto,  Pageable pageable){
 
+        List<SearchPostResponseDto> result = new ArrayList<>();
+        JPAQuery<Posts> countQuery = new JPAQuery<>();
+
         String userId = requestDto.getUserId();
         //팔로잉하는사람들 가져오기
         List<SearchFollowResponseDto> userList = getFollow(userId);
 
-        List<Long> toUserId = userList.stream()
-                .map(o -> o.getToUserId())
-                .collect(Collectors.toList());
+        if(userList.size()>0){
+            List<Long> toUserId = userList.stream()
+                    .map(o -> o.getToUserId())
+                    .collect(Collectors.toList());
 
-        //팔로잉하는사람들 아이디로 그 사람들 포스트 가져오기
-        List<SearchPostResponseDto> result = getFollowPost(toUserId ,requestDto, pageable);
+            //팔로잉하는사람들 아이디로 그 사람들 포스트 가져오기
+            result = getFollowPost(toUserId ,requestDto, pageable);
 
-        List<Long> postId = result.stream()
-                .map(o -> o.getPostSeq())
-                .collect(Collectors.toList());
+            List<Long> postId = result.stream()
+                    .map(o -> o.getPostSeq())
+                    .collect(Collectors.toList());
 
-        //포스트별 사진 가져오기
-        List<PhotoResponseDto> photoFilePath = queryFactory
-                .select(new QPhotoResponseDto(
-                        photo.posts.id,
-                        photo.filePath
-                ))
-                .from(photo)
-                .where(photo.posts.id.in(postId))
-                .fetch();
-
-
-        Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
-                .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getId()));
+            //포스트별 사진 가져오기
+            List<PhotoResponseDto> photoFilePath = queryFactory
+                    .select(new QPhotoResponseDto(
+                            photo.posts.id,
+                            photo.filePath
+                    ))
+                    .from(photo)
+                    .where(photo.posts.id.in(postId))
+                    .fetch();
 
 
-        result.forEach(o -> o.setImage(photoFilePathMap.get(o.getPostSeq())));
+            Map<Long, List<PhotoResponseDto>> photoFilePathMap = photoFilePath.stream()
+                    .collect(Collectors.groupingBy(PhotoResponseDto -> PhotoResponseDto.getId()));
 
 
-        //쿼리용
+            result.forEach(o -> o.setImage(photoFilePathMap.get(o.getPostSeq())));
 
-        JPAQuery<Posts> countQuery = queryFactory
-                .selectFrom(posts)
-                .leftJoin(posts.store, store)
-                .where(userSeqEq(toUserId),
-                        keywordEq(requestDto.getKeyword()),
-                        categoryEq(requestDto.getCategory()));
 
+            //쿼리용
+            countQuery = queryFactory
+                    .selectFrom(posts)
+                    .leftJoin(posts.store, store)
+                    .where(userSeqEq(toUserId),
+                            keywordEq(requestDto.getKeyword()),
+                            categoryEq(requestDto.getCategory()));
+
+            return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchCount);
+
+        }
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchCount);
-
     }
 
     private BooleanExpression userSeqEq(List<Long> userId) {

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-if="postitems.length < 1" class="post-container">
-			게시물이 없습니다.
+			<p>게시물이 없습니다.</p>
 		</div>
 
 		<div class="post-preview-container">
@@ -54,6 +54,12 @@ export default {
 	row-gap: 28px;
 	column-gap: 28px;
 	width: 100%;
+}
+
+.post-container p {
+	margin-top: 20px;
+	font-size: 1.5rem;
+	text-align: center;
 }
 
 img {

@@ -33,6 +33,5 @@ public class SearchService {
             //후기찾기에서 게시물 다 가져오기
             return searchRepository.searchPostsWithPhoto(requestDto, pageable);
         }
-
     }
 }
