@@ -5,7 +5,7 @@
 				<div class="mypage-content">
 					<img class="my-picture" :src="member.profileImageUrl" alt="photo" />
 				</div>
-				<section>
+				<section class="mypage-section">
 					<div class="mypage-info">
 						<div>
 							<span>{{ member.username }} 님</span>
@@ -187,8 +187,13 @@ export default {
 }
 
 .mypage-content {
-	width: 15%;
-	margin-right: 121px;
+	width: 110px;
+	margin-right: 120px;
+}
+
+.mypage-section {
+	flex-basis: 30px;
+	flex-grow: 2;
 }
 
 .mypage-setting {
@@ -319,5 +324,31 @@ li {
 
 li img {
 	cursor: pointer;
+}
+
+@media only screen and (max-width: 736px) {
+	.mypage-tap {
+		display: none;
+	}
+
+	.mypage-content {
+		width: 80px;
+		margin: 0%;
+		flex-shrink: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+	}
+	.mypage-info {
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 12px;
+		margin-left: 10px;
+	}
+
+	.mypage-info span {
+		margin-left: 12px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
 }
 </style>
