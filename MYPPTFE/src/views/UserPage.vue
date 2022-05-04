@@ -119,6 +119,7 @@ export default {
 
 		notPermit() {
 			this.alertModalOpen = true;
+			//TEST
 		},
 
 		logout() {
@@ -160,11 +161,7 @@ export default {
 * {
 	box-sizing: border-box;
 }
-.container {
-	display: flex;
-	flex-direction: column;
-	padding: 70px 0;
-}
+
 .highLight {
 	color: #000;
 }
