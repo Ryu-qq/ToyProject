@@ -119,6 +119,7 @@ export default {
 
 		notPermit() {
 			this.alertModalOpen = true;
+			//TEST
 		},
 
 		logout() {
